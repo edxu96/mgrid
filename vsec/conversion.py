@@ -1,13 +1,10 @@
-"""Functions to convert two different graphs.
-
-"""
+"""Functions to convert two different graphs."""
 from typing import Callable, Optional, Tuple, Union
 
 from loguru import logger
 import networkx as nx
 from networkx.algorithms.minors import contracted_edge
 from networkx.relabel import relabel_nodes
-
 from vsec.geometry import GeoGraph
 from vsec.graph import WeightGraph
 
@@ -16,14 +13,14 @@ def join_terminal_labels(edge: Tuple[str, str]) -> str:
     """Join labels of two terminals of a contracted edge.
 
     Args:
-        edge: an edge to be contracted
+        edge: an edge to be contracted.
 
     Returns:
         Label of the new node.
     """
     if not (isinstance(edge[0], str) and isinstance(edge[0], str)):
         res = str(edge[0]) + str(edge[1])
-        logger.warning('Some label is not string, which might be problematic.')
+        logger.warning("Some label is not string, which might be problematic.")
     else:
         res = edge[0] + edge[1]
     return res
@@ -50,7 +47,7 @@ def contract(
         if attributes[attr]:
             edge_contracted = (u, v)
             graph = contracted_edge(graph, edge_contracted, self_loops=False)
-            logger.debug(f'Edge {edge_contracted} has been contracted.')
+            logger.debug(f"Edge {edge_contracted} has been contracted.")
 
             # Find which node is kept.
             if u in graph.nodes:
@@ -65,7 +62,7 @@ def contract(
 
 
 def split(graph: GeoGraph):
-    """[summary]
+    """Split nodes.
 
     Args:
         graph (GeoGraph): [description]

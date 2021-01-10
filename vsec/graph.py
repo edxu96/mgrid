@@ -14,8 +14,8 @@ from pandas.core.frame import DataFrame
 class WeightGraph(nx.Graph):
     """Mutable objects for directed graph with geographical information."""
 
-    _col_edges = ['source', 'target']
-    _col_pos = ['node', 'x', 'y']
+    _col_edges = ["source", "target"]
+    _col_pos = ["node", "x", "y"]
 
     def __init__(self, g: Optional[nx.DiGraph] = None):
         """Init an empty directed graph or existing directed graph.
@@ -67,9 +67,9 @@ class WeightGraph(nx.Graph):
         dict_node_attr = nx.get_node_attributes(self, attr)
         if len(dict_node_attr) < num_nodes:
             logger.exception(
-                f'There are {num_nodes - len(dict_node_attr)} nodes '
+                f"There are {num_nodes - len(dict_node_attr)} nodes "
                 f'without the attribute "{attr}".'
-                )
+            )
             res = False
         return res
 
@@ -87,8 +87,8 @@ class WeightGraph(nx.Graph):
         dict_edge_attr = nx.get_edge_attributes(self, attr)
         if len(dict_edge_attr) < num_edges:
             logger.exception(
-                f'There are {num_edges - len(dict_edge_attr)} edges '
+                f"There are {num_edges - len(dict_edge_attr)} edges "
                 f'without the attribute "{attr}".'
-                )
+            )
             res = False
         return res

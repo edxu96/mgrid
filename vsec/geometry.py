@@ -7,7 +7,6 @@ contracted to nodes.
 from typing import Optional
 
 import networkx as nx
-
 from vsec.graph import WeightGraph
 
 

@@ -1,0 +1,7 @@
+[flake8]
+import-order-style = google
+application-import-names = DistNetTopo, tests
+per-file-ignores =
+    tests/*: D104
+    docs/conf.py: A001
+    docs/conf.py: D100
