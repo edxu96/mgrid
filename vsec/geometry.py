@@ -8,10 +8,10 @@ from typing import Optional
 
 import networkx as nx
 
-from vsec.graph import Graph
+from vsec.graph import WeightGraph
 
 
-class GeoGraph(Graph):
+class GeoGraph(WeightGraph):
     """Planar geometric graph with geographical information."""
 
     def __init__(self, g: Optional[nx.Graph] = None):

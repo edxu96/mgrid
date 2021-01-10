@@ -11,7 +11,7 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 
 
-class Graph(nx.Graph):
+class WeightGraph(nx.Graph):
     """Mutable objects for directed graph with geographical information."""
 
     _col_edges = ['source', 'target']
