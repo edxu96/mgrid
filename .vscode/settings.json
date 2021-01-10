@@ -1,0 +1,15 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.pythonPath": "~/Library/Caches/pypoetry/virtualenvs/vsec-EbkIp1_F-py3.7",
+    "editor.wordWrapColumn": 79,
+    "editor.rulers": [72, 79],
+    "cSpell.language": "en-GB",
+    "rewrap.wrappingColumn": 72,
+    "cSpell.words": [
+        "pytest",
+        "sqlite"
+    ],
+    "autoDocstring.guessTypes": false,
+    "autoDocstring.docstringFormat": "google",
+}
