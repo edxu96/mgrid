@@ -2,7 +2,6 @@
 
 Geographically, some edges might look like points. They can be
 contracted to nodes.
-
 """
 from typing import Callable, Optional, Tuple, Union
 
@@ -12,7 +11,13 @@ from vsec.graph import WeightGraph
 
 
 class GeoGraph(WeightGraph):
-    """Planar geometric graph with geographical information."""
+    """Planar geometric graph with geographical information.
+
+    Note:
+        ``GeoGraph`` is based on ``WeightGraph`` class, so add their
+        common features like ``df_edges`` and ``complete_edge_attr``
+        in ``WeightGraph``.
+    """
 
     def __init__(self, g: Optional[nx.Graph] = None):
         """Init an empty directed graph or existing directed graph.

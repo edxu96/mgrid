@@ -10,8 +10,12 @@ from loguru import logger
 import networkx as nx
 from networkx.algorithms.minors import contracted_edge
 from networkx.relabel import relabel_nodes
+import pandas as pd
+from pandas.core.frame import DataFrame
 from vsec.geometry import GeoGraph
 from vsec.graph import WeightGraph
+
+COLUMNS = ["first", "second"]
 
 
 def join_terminal_labels(edge: Tuple[str, str]) -> str:
@@ -72,7 +76,7 @@ def split(
     naming: Callable[[str], Tuple[str, str]],
     attr: str,
     is_first: Callable[[str], Union[bool, None]],
-) -> WeightGraph:
+) -> Tuple[WeightGraph, DataFrame]:
     """Split multiple vertices of a planar geometric graph.
 
     Args:
@@ -85,9 +89,17 @@ def split(
             is returned, an error will be logged.
 
     Returns:
-        Weighted graph.
+        Resulted weighted graph, and correspondence between split
+        vertices & resulted new vertices.
     """
-    for vertex in vertices:
-        graph.split(vertex, naming, attr, is_first)
+    vertex_dict = {}
 
-    return graph
+    for vertex in vertices:
+        vertex_dict[vertex] = graph.split(vertex, naming, attr, is_first)
+
+    vertex_df = pd.DataFrame.from_dict(
+        vertex_dict, orient="index", columns=COLUMNS,
+    )
+    vertex_df.index.name = "original"
+
+    return graph, vertex_df

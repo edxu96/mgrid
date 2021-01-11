@@ -13,6 +13,9 @@ ATTR = "voltage"
 NAMING = lambda x: (x + "_hv", x + "_lv")
 IS_FIRST = lambda x: x == 10
 
+# Two columns in dataframe for resulted new vertices.
+COLUMNS = {"first", "second"}
+
 
 @pt.mark.usefixtures("case_simple")
 def test_contract(case_simple: nx.Graph):
@@ -41,5 +44,8 @@ def test_split(case_grid: GeoGraph, vertices_grid: DataFrame):
             attributes.
     """
     vertices_split = vertices_grid.index[vertices_grid["type"] == "STAT1004"]
-    res = split(case_grid, vertices_split, NAMING, ATTR, IS_FIRST)
-    assert type(nx.to_pandas_edgelist(res)) is DataFrame
+    graph, vertex_df = split(case_grid, vertices_split, NAMING, ATTR, IS_FIRST)
+    assert isinstance(nx.to_pandas_edgelist(graph), DataFrame)
+    assert isinstance(vertex_df, DataFrame)
+    assert vertex_df.index.name == "original"
+    assert set(vertex_df.columns) == COLUMNS
