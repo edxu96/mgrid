@@ -103,3 +103,28 @@ def split(
     vertex_df.index.name = "original"
 
     return graph, vertex_df
+
+
+def split_vertex_df(
+    vertices: Set[str], naming: Callable[[str], Tuple[str, str]],
+) -> DataFrame:
+    """Gather split vertices and resulted new vertices.
+
+    Warning:
+        This should be used when vertex splitting is known to be
+        correct, because there is no validation.
+
+    Args:
+        vertices: vertices ought to be modelled as edges.
+        naming: how two resulted vertices should be named.
+
+    Returns:
+        Correspondence between split vertices & resulted new vertices.
+    """
+    vertex_dict = {}
+    for vertex in vertices:
+        vertex_dict[vertex] = naming(vertex)
+
+    res = pd.DataFrame.from_dict(vertex_dict, orient="index", columns=COLUMNS,)
+    res.index.name = "original"
+    return res

@@ -2,7 +2,7 @@
 import networkx as nx
 from pandas.core.frame import DataFrame
 import pytest as pt
-from vsec.conversion import contract, split
+from vsec.conversion import contract, split, split_vertex_df
 from vsec.geometry import GeoGraph
 
 # There are only two edges left, but sequences might be different.
@@ -43,7 +43,9 @@ def test_split(case_grid: GeoGraph, vertices_grid: DataFrame):
         vertices_grid: vertices in ``case_grid`` and their **type**
             attributes.
     """
+    # Only split 10-0.4 kV transformers.
     vertices_split = vertices_grid.index[vertices_grid["type"] == "STAT1004"]
+
     graph, vertex_df = split(case_grid, vertices_split, NAMING, ATTR, IS_FIRST)
 
     assert isinstance(nx.to_pandas_edgelist(graph), DataFrame)
@@ -51,3 +53,21 @@ def test_split(case_grid: GeoGraph, vertices_grid: DataFrame):
     assert isinstance(vertex_df, DataFrame)
     assert vertex_df.index.name == "original"
     assert set(vertex_df.columns) == COLUMNS
+    assert vertex_df.shape == (34, 2)
+
+
+@pt.mark.usefixtures("vertices_grid")
+def test_split_vertex_df(vertices_grid: DataFrame):
+    """Check if can gather split vertices and resulted new vertices.
+
+    Args:
+        vertices_grid: vertices in ``case_grid`` and their **type**
+            attributes.
+    """
+    # Only split 10-0.4 kV transformers.
+    vertices_split = vertices_grid.index[vertices_grid["type"] == "STAT1004"]
+
+    res = split_vertex_df(vertices_split, NAMING)
+    assert set(res.columns) == COLUMNS
+    assert res.shape == (34, 2)
+    assert res.index.name == "original"
