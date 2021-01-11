@@ -1,5 +1,10 @@
-"""Functions to convert two different graphs."""
-from typing import Callable, Optional, Tuple, Union
+"""Functions to convert two different graphs.
+
+When to specify which vertices should be split, it is not recommended to
+use some vertex attribute. Multiple sets of vertices can be passed.
+Different arguments can be used each time accordingly.
+"""
+from typing import Callable, Optional, Set, Tuple, Union
 
 from loguru import logger
 import networkx as nx
@@ -61,10 +66,28 @@ def contract(
     return GeoGraph(graph)
 
 
-def split(graph: GeoGraph):
-    """Split nodes.
+def split(
+    graph: GeoGraph,
+    vertices: Set[str],
+    naming: Callable[[str], Tuple[str, str]],
+    attr: str,
+    is_first: Callable[[str], Union[bool, None]],
+) -> WeightGraph:
+    """Split multiple vertices of a planar geometric graph.
 
     Args:
-        graph (GeoGraph): [description]
+        graph: a planar geometric graph with multiple vertex to be
+            split.
+        vertices: vertices ought to be modelled as edges.
+        naming: how two resulted vertices should be named.
+        attr: edge attribute used as input in ``is_first``.
+        is_first: how to choose between resulted vertices. When None
+            is returned, an error will be logged.
+
+    Returns:
+        Weighted graph.
     """
-    pass
+    for vertex in vertices:
+        graph.split(vertex, naming, attr, is_first)
+
+    return graph

@@ -35,7 +35,7 @@ class GeoGraph(WeightGraph):
         """Split a vertex and handle new vertices and associated edges.
 
         Args:
-            vertex: a vertex ought to be modelled by an edge.
+            vertex: a vertex ought to be modelled as an edge.
             naming: how two resulted vertices should be named.
             attr: edge attribute used as input in ``is_first``.
             is_first: how to choose between resulted vertices. When None
@@ -43,6 +43,7 @@ class GeoGraph(WeightGraph):
 
         Returns:
             Two resulted vertices.
+
         """
         edges_asso = list(self.edges(nbunch=vertex, data=True))
         vertices = naming(vertex)
