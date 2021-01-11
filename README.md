@@ -1,7 +1,9 @@
-# vsec &middot; [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org)
+# `vsec` vertex splitting & edge contraction
+
+[![GitHub license](https://img.shields.io/github/license/edxu96/vsec)](./LICENSE) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org)
 
 `vsec` provides a data structure when some edges in a graph are planar
-points in essence. It is short for vertex splitting & edge contraction.
+points in essence. It is short for .
 
 ```
 a   d  --------------->  a             d
@@ -20,17 +22,12 @@ associated with geographical points.
 Additionally, there are some functions to handle `pandas` dataframes associated
 with such two objects.
 
-Terms originate from:
+Terms originate from [david2009random] and [heggernes2014contracting].
+
+## Reference
 
 - David, F., Dukes, W. M. B., Jonsson, T., & Stefansson, S. O. (2009). Random
   tree growth by vertex splitting. Journal of Statistical Mechanics: Theory and
   Experiment, 2009(04), P04009.
 - Heggernes, P., Van’t Hof, P., Lévêque, B., Lokshtanov, D., & Paul, C. (2014).
   Contracting graphs to paths and trees. Algorithmica, 68(1), 109-132.
-
-## Key Points
-
-- During vertex splitting, curves associated with such vertex should be
-  distinguished to two sets according to some attribute.
-- end vertex
-- adjacent to-be-split vertices
