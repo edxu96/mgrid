@@ -4,11 +4,11 @@
 points in essence. It is short for vertex splitting & edge contraction.
 
 ```
-        a   d  --------------->  a             d
-         \ /   Vertex Splitting   \           /
-          g                        g_hv - g_lv
-         / \   Edge Contraction   /           \
-        c   f  <---------------  c             f
+a   d  --------------->  a             d
+ \ /   Vertex Splitting   \           /
+  g                        g_hv - g_lv
+ / \   Edge Contraction   /           \
+c   f  <---------------  c             f
 ```
 
 It is used when we (at [Utiligize](https://www.utiligize.com/)) model
