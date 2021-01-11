@@ -45,7 +45,9 @@ def test_split(case_grid: GeoGraph, vertices_grid: DataFrame):
     """
     vertices_split = vertices_grid.index[vertices_grid["type"] == "STAT1004"]
     graph, vertex_df = split(case_grid, vertices_split, NAMING, ATTR, IS_FIRST)
+
     assert isinstance(nx.to_pandas_edgelist(graph), DataFrame)
+    assert nx.is_connected(graph)
     assert isinstance(vertex_df, DataFrame)
     assert vertex_df.index.name == "original"
     assert set(vertex_df.columns) == COLUMNS

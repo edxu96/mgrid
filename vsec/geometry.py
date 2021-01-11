@@ -78,5 +78,6 @@ class GeoGraph(WeightGraph):
         # Add resulted new edge.
         if vertices:
             self.add_edge(vertices[0], vertices[1], split_=True)
+            self.remove_node(vertex)
 
         return vertices

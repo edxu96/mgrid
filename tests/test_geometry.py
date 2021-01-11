@@ -36,3 +36,4 @@ def test_split(case_readme: nx.Graph):
     assert (
         set(gg.edges).difference(EDGES_NEW) == set()
     ), "Terminals of associated edges should be renamed correctly."
+    assert nx.is_connected(gg)

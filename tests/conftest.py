@@ -58,7 +58,7 @@ def case_grid() -> GeoGraph:
     res = nx.from_pandas_edgelist(
         df, source="from_node", target="to_node", edge_attr=["voltage"]
     )
-
+    assert nx.is_connected(res)
     return GeoGraph(res)
 
 
