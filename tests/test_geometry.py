@@ -15,6 +15,8 @@ EDGES_NEW = {
     ("g_lv", "d"),
     ("f", "g_lv"),
     ("g_lv", "f"),
+    ("g_lv", "g_hv"),
+    ("g_hv", "g_lv"),
 }
 
 

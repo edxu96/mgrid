@@ -43,10 +43,11 @@ class GeoGraph(WeightGraph):
 
         Returns:
             Two resulted vertices.
-
         """
         edges_asso = list(self.edges(nbunch=vertex, data=True))
         vertices = naming(vertex)
+
+        # Rename terminals of associated edges.
         for u, v, attributes in edges_asso:
             if is_first(attributes[attr]) is None:
                 vertex_new = None
@@ -68,5 +69,9 @@ class GeoGraph(WeightGraph):
                 )
                 vertices = None
                 break
+
+        # Add resulted new edge.
+        if vertices:
+            self.add_edge(vertices[0], vertices[1], split_=True)
 
         return vertices
