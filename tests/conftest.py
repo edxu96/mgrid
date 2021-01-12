@@ -3,7 +3,6 @@ import networkx as nx
 import pandas as pd
 from pandas.core.frame import DataFrame
 import pytest as pt
-from vsec.geometry import GeoGraph
 
 # Dictionary to map entries in a column.
 VOLTAGES = {
@@ -28,13 +27,13 @@ def case_simple() -> nx.Graph:
 
 
 @pt.fixture(scope="package")
-def case_readme() -> nx.Graph:
+def case_readme() -> nx.DiGraph:
     """Init the test case shown in README file.
 
     Returns:
         A test case shown in README file.
     """
-    res = nx.Graph()
+    res = nx.DiGraph()
     res.add_edge("a", "g", level="high")
     res.add_edge("c", "g", level="high")
     res.add_edge("d", "g", level="low")
@@ -43,7 +42,7 @@ def case_readme() -> nx.Graph:
 
 
 @pt.fixture(scope="package")
-def case_grid() -> GeoGraph:
+def case_grid() -> nx.Graph:
     """Init a case with 207 edges and **voltage** attributes.
 
     Note:
@@ -59,7 +58,7 @@ def case_grid() -> GeoGraph:
         df, source="from_node", target="to_node", edge_attr=["voltage"]
     )
     assert nx.is_connected(res)
-    return GeoGraph(res)
+    return res
 
 
 @pt.fixture(scope="package")

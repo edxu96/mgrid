@@ -34,6 +34,7 @@ class Graph(nx.DiGraph):
         self._new_dict = {}
         self._renamed_dict = {}
 
+        # Initiate ``edgelist``.
         idx = pd.MultiIndex.from_tuples(self.edges, names=COLUMNS)
         self.edgelist = pd.DataFrame(
             data={
@@ -81,17 +82,28 @@ class Graph(nx.DiGraph):
 
             if vertex_new:
                 self.remove_edge(u, v)
+
+                # Find the only corresponding edge in the initiated graph.
+                index_origin = self.edgelist.index[
+                    (self.edgelist["first"] == u)
+                    & (self.edgelist["second"] == v)
+                ]
+                assert len(index_origin) == 1, (
+                    "The corresponding edge "
+                    f"{index_origin.to_flat_index().tolist()} is not correct."
+                )
+
                 if u == vertex:
                     self.add_edge(vertex_new, v, **attributes)
 
                     new_column = pd.Series(
-                        [vertex_new], name="first", index=[(u, v)]
+                        [vertex_new], name="first", index=index_origin
                     )
                     self._renamed_dict[(u, v)] = (vertex_new, v)
                 else:
                     self.add_edge(u, vertex_new, **attributes)
                     new_column = pd.Series(
-                        [vertex_new], name="second", index=[(u, v)]
+                        [vertex_new], name="second", index=index_origin
                     )
                     self._renamed_dict[(u, v)] = (u, vertex_new)
 
@@ -211,6 +223,4 @@ class Graph(nx.DiGraph):
         Returns:
             True if this undirected graph is connected.
         """
-        g = nx.Graph(self)
-        res = nx.is_connected(g)
-        return res
+        return nx.is_connected(self.to_undirected())
