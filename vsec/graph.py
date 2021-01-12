@@ -10,7 +10,7 @@ COLUMNS = ["first", "second"]
 COLUMNS_POS = ["node", "x", "y"]
 
 
-class Graph(nx.Graph):
+class Graph(nx.DiGraph):
     """Graph with vertices to be split and edges to be contracted.
 
     Note:
@@ -20,7 +20,7 @@ class Graph(nx.Graph):
         - Edges don't have name in ``networkx``.
     """
 
-    def __init__(self, g: Optional[nx.Graph] = None):
+    def __init__(self, g: Optional[nx.DiGraph] = None):
         """Init an empty directed graph or existing directed graph.
 
         Args:
@@ -34,6 +34,15 @@ class Graph(nx.Graph):
         self._new_dict = {}
         self._renamed_dict = {}
 
+        idx = pd.MultiIndex.from_tuples(self.edges, names=COLUMNS)
+        self.edgelist = pd.DataFrame(
+            data={
+                "first": idx.get_level_values(0),
+                "second": idx.get_level_values(1),
+            },
+            index=idx,
+        )
+
     def split(
         self,
         vertex: str,
@@ -44,6 +53,10 @@ class Graph(nx.Graph):
     ):
         """Split a vertex and handle new vertices and associated edges.
 
+        Warning:
+            Only one edge attribute can be used to distinguish
+            associated edges to two clusters.
+
         Args:
             vertex: which ought to be modelled as an edge.
             vertex_first: the first resulted vertex.
@@ -52,7 +65,10 @@ class Graph(nx.Graph):
             is_first: how to choose between resulted vertices. When None
                 is returned, an error will be logged.
         """
-        edges_asso = list(self.edges(nbunch=vertex, data=True))
+        # Find all the associated edges.
+        edges_asso = list(self.in_edges(nbunch=vertex, data=True)) + list(
+            self.out_edges(nbunch=vertex, data=True)
+        )
 
         # Rename terminals of associated edges.
         for u, v, attributes in edges_asso:
@@ -67,10 +83,19 @@ class Graph(nx.Graph):
                 self.remove_edge(u, v)
                 if u == vertex:
                     self.add_edge(vertex_new, v, **attributes)
+
+                    new_column = pd.Series(
+                        [vertex_new], name="first", index=[(u, v)]
+                    )
                     self._renamed_dict[(u, v)] = (vertex_new, v)
                 else:
                     self.add_edge(u, vertex_new, **attributes)
+                    new_column = pd.Series(
+                        [vertex_new], name="second", index=[(u, v)]
+                    )
                     self._renamed_dict[(u, v)] = (u, vertex_new)
+
+                self.edgelist.update(new_column)
             else:
                 logger.critical(
                     f"Unable to determine new terminal of edge ({u}, {v}) "
@@ -78,9 +103,13 @@ class Graph(nx.Graph):
                 )
                 break
 
+        # Validate if all associated edges have been renamed.
+        edges_asso = list(self.edges(nbunch=vertex, data=True))
+        assert len(edges_asso) == 0
+
         # Add the resulted new edge and remove the original vertex.
         self.add_edge(vertex_first, vertex_second, split_=True)
-        self.remove_node(vertex)
+        self.remove_node(vertex)  # Removes the node and all adjacent edges.
         self._new_dict[vertex] = (vertex_first, vertex_second)
 
     @property
@@ -99,7 +128,7 @@ class Graph(nx.Graph):
 
     @property
     def renamed_(self) -> DataFrame:
-        """Gather edges renamed because of split or contraction.
+        """Gather renamed edges compared to initial graph.
 
         Returns:
             Edges renamed because of split or contraction.
@@ -173,4 +202,15 @@ class Graph(nx.Graph):
                 f'without the attribute "{attr}".'
             )
             res = False
+        return res
+
+    @property
+    def is_connected_graph(self) -> bool:
+        """Check if this undirected graph is connected.
+
+        Returns:
+            True if this undirected graph is connected.
+        """
+        g = nx.Graph(self)
+        res = nx.is_connected(g)
         return res

@@ -8,20 +8,15 @@ ATTR = "level"
 IS_FIRST = lambda x: x == "high"
 EDGES_NEW = {
     ("a", "g_hv"),
-    ("g_hv", "a"),
     ("c", "g_hv"),
-    ("g_hv", "c"),
     ("d", "g_lv"),
-    ("g_lv", "d"),
     ("f", "g_lv"),
-    ("g_lv", "f"),
-    ("g_lv", "g_hv"),
     ("g_hv", "g_lv"),
 }
 
 
 @pt.mark.usefixtures("case_readme")
-def test_split(case_readme: nx.Graph):
+def test_split(case_readme: nx.DiGraph):
     """Check basic features of ``split`` method in ``GeoGraph``.
 
     Note:
@@ -34,9 +29,9 @@ def test_split(case_readme: nx.Graph):
     res.split("g", "g_hv", "g_lv", ATTR, IS_FIRST)
 
     assert (
-        set(res.edges).difference(EDGES_NEW) == set()
+        set(res.edges) == EDGES_NEW
     ), "Terminals of associated edges should be renamed correctly."
-    assert nx.is_connected(res)
+    assert res.is_connected_graph
 
     _new = res.new_
     assert isinstance(_new, DataFrame)
