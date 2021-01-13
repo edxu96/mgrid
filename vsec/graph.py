@@ -32,7 +32,6 @@ class Graph(nx.DiGraph):
             super().__init__(g)
 
         self._new_dict = {}
-        self._renamed_dict = {}
 
         # Initiate dataframe **raw** for edges in the original edge.
         idx = pd.MultiIndex.from_tuples(self.edges, names=COLUMNS)
@@ -47,10 +46,10 @@ class Graph(nx.DiGraph):
     def split(
         self,
         vertex: str,
-        first: str,
-        second: str,
+        source: str,
+        target: str,
         attr: str,
-        is_first: Callable[[str], Union[bool, None]],
+        is_connect_source: Callable[[str], Union[bool, None]],
     ):
         """Split a vertex and handle new vertices and associated edges.
 
@@ -60,68 +59,45 @@ class Graph(nx.DiGraph):
 
         Args:
             vertex: which ought to be modelled as an edge.
-            first: the first resulted vertex.
-            second: the second resulted vertex.
+            source: the first resulted vertex.
+            target: the second resulted vertex.
             attr: edge attribute used as input in ``is_first``.
-            is_first: how to choose between resulted vertices. When None
+            is_connect_source: if an associated edge should be connected
+                to the resulted new vertex called **source**. When None
                 is returned, an error will be logged.
         """
-        # Find all the associated edges.
-        edges_asso = list(self.in_edges(nbunch=vertex, data=True)) + list(
-            self.out_edges(nbunch=vertex, data=True)
-        )
-
-        # Rename terminals of associated edges.
-        for u, v, attributes in edges_asso:
-            if is_first(attributes[attr]) is None:
-                vertex_new = None
-            elif is_first(attributes[attr]):
-                vertex_new = first
-            else:
-                vertex_new = second
-
-            if vertex_new:
-                self.remove_edge(u, v)
-
-                # Find the only corresponding edge in the initiated graph.
-                index_origin = self.raw.index[
-                    (self.raw["first"] == u) & (self.raw["second"] == v)
-                ]
-                assert len(index_origin) == 1, (
-                    "The corresponding edge "
-                    f"{index_origin.to_flat_index().tolist()} is not correct."
-                )
-
-                if u == vertex:
-                    self.add_edge(vertex_new, v, **attributes)
-
-                    new_column = pd.Series(
-                        [vertex_new], name="first", index=index_origin
-                    )
-                    self._renamed_dict[(u, v)] = (vertex_new, v)
-                else:
-                    self.add_edge(u, vertex_new, **attributes)
-                    new_column = pd.Series(
-                        [vertex_new], name="second", index=index_origin
-                    )
-                    self._renamed_dict[(u, v)] = (u, vertex_new)
-
-                self.raw.update(new_column)
-            else:
+        in_edges = self.in_edges(nbunch=vertex, data=True)
+        for u, v, data in in_edges:
+            if is_connect_source(data[attr]) is None:
                 logger.critical(
-                    f"Unable to determine new terminal of edge ({u}, {v}) "
-                    f"with attributes {attributes}."
+                    f"Unable to determine new terminals of edge ({u}, {v}) "
+                    f"with attributes {data}."
                 )
-                break
+            elif is_connect_source(data[attr]):
+                self.add_edge(u, source, **data)
+            else:
+                self.add_edge(u, target, **data)
 
-        # Validate if all associated edges have been renamed.
+        out_edges = self.out_edges(nbunch=vertex, data=True)
+        for u, v, data in out_edges:
+            if is_connect_source(data[attr]) is None:
+                logger.critical(
+                    f"Unable to determine new terminals of edge ({u}, {v}) "
+                    f"with attributes {data}."
+                )
+            elif is_connect_source(data[attr]):
+                self.add_edge(source, v, **data)
+            else:
+                self.add_edge(target, v, **data)
+
+        # Validate if all associated edges have been updated.
         edges_asso = list(self.edges(nbunch=vertex, data=True))
         assert len(edges_asso) == 0
 
         # Add the resulted new edge and remove the original vertex.
-        self.add_edge(first, second, split_=True)
+        self.add_edge(source, target)
         self.remove_node(vertex)  # Removes the node and all adjacent edges.
-        self._new_dict[vertex] = (first, second)
+        self._new_dict[vertex] = (source, target)
 
     @property
     def new_(self) -> DataFrame:
@@ -137,18 +113,10 @@ class Graph(nx.DiGraph):
         res.index.name = "vertex"
         return res
 
-    @property
-    def renamed_(self) -> DataFrame:
-        """Gather renamed edges compared to initial graph.
-
-        Returns:
-            Edges renamed because of split or contraction.
-        """
-        res = pd.DataFrame.from_dict(
-            self._renamed_dict, columns=COLUMNS, orient="index",
-        )
-        res.index = pd.MultiIndex.from_tuples(res.index, names=COLUMNS)
-        return res
+    # @property
+    # def with_cuts(self):
+    #     ite_edges = self.raw[COLUMNS].itertuples(index=False, name=None)
+    #     return self.edge_subgraph(ite_edges)
 
     def merge_raw(self, right: DataFrame, right_on: Tuple[str, str]):
         """Merge columns from another dataframe for original edges.
