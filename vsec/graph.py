@@ -1,5 +1,5 @@
 """A class for two operations at the same time."""
-from typing import Callable, Optional, Tuple, Union
+from typing import Callable, Optional, Set, Tuple, Union
 
 from loguru import logger
 import networkx as nx
@@ -130,6 +130,22 @@ class Graph(nx.DiGraph):
             self._new_dict, columns=COLUMNS, orient="index",
         )
         res.index.name = "vertex"
+        return res
+
+    def find_vertices_component(self, vertex: str) -> Union[Set[str], None]:
+        """Get a set for all the vertices in the same component.
+
+        Args:
+            vertex: a vertex in the graph (after splitting).
+
+        Returns:
+            A set of vertices or None if ``vertex`` is not the graph.
+        """
+        if vertex not in self.nodes:
+            logger.error(f"Vertex {vertex} is not in the graph.")
+            res = None
+        else:
+            res = nx.node_connected_component(self.with_cuts, vertex)
         return res
 
     @property

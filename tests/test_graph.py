@@ -47,3 +47,6 @@ def test_split(case_readme: nx.DiGraph):
     with_cuts = res.with_cuts
     assert set(with_cuts.edges) == EDGES_NEW - {("g_hv", "g_lv")}
     assert isinstance(with_cuts, nx.Graph)
+
+    assert res.find_vertices_component("g_hv") == {"g_hv", "a", "c"}
+    assert res.find_vertices_component("g_lv") == {"g_lv", "d", "f"}
