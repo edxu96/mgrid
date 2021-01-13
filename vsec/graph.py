@@ -132,6 +132,17 @@ class Graph(nx.DiGraph):
         res.index.name = "vertex"
         return res
 
+    @property
+    def vertices_new(self) -> Set[str]:
+        """Gather all the new vertices in a set.
+
+        Returns:
+            All the new vertices.
+        """
+        return set(self.new_[COLUMNS[0]].unique()) | set(
+            self.new_[COLUMNS[1]].unique()
+        )
+
     def find_vertices_component(self, vertex: str) -> Union[Set[str], None]:
         """Get a set for all the vertices in the same component.
 

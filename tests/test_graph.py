@@ -50,3 +50,5 @@ def test_split(case_readme: nx.DiGraph):
 
     assert res.find_vertices_component("g_hv") == {"g_hv", "a", "c"}
     assert res.find_vertices_component("g_lv") == {"g_lv", "d", "f"}
+
+    assert res.vertices_new == {"g_hv", "g_lv"}
