@@ -68,6 +68,9 @@ class Graph(nx.DiGraph):
         """
         in_edges = self.in_edges(nbunch=vertex, data=True)
         for u, v, data in in_edges:
+            edge_original = self.raw.index[
+                (self.raw["first"] == u) & (self.raw["second"] == v)
+            ]
             if is_connect_source(data[attr]) is None:
                 logger.critical(
                     f"Unable to determine new terminals of edge ({u}, {v}) "
@@ -75,11 +78,16 @@ class Graph(nx.DiGraph):
                 )
             elif is_connect_source(data[attr]):
                 self.add_edge(u, source, **data)
+                self._update_raw((u, source), edge_original)
             else:
                 self.add_edge(u, target, **data)
+                self._update_raw((u, target), edge_original)
 
         out_edges = self.out_edges(nbunch=vertex, data=True)
         for u, v, data in out_edges:
+            edge_original = self.raw.index[
+                (self.raw["first"] == u) & (self.raw["second"] == v)
+            ]
             if is_connect_source(data[attr]) is None:
                 logger.critical(
                     f"Unable to determine new terminals of edge ({u}, {v}) "
@@ -87,8 +95,10 @@ class Graph(nx.DiGraph):
                 )
             elif is_connect_source(data[attr]):
                 self.add_edge(source, v, **data)
+                self._update_raw((source, v), edge_original)
             else:
                 self.add_edge(target, v, **data)
+                self._update_raw((target, v), edge_original)
 
         # Validate if all associated edges have been updated.
         edges_asso = list(self.edges(nbunch=vertex, data=True))
@@ -98,6 +108,15 @@ class Graph(nx.DiGraph):
         self.add_edge(source, target)
         self.remove_node(vertex)  # Removes the node and all adjacent edges.
         self._new_dict[vertex] = (source, target)
+
+    def _update_raw(self, edge_updated: str, edge_original: Tuple[str, str]):
+        """Correspond updated edge to that in the original graph.
+
+        Args:
+            edge_updated: the edge after update.
+            edge_original: the corresponding edge in the original graph.
+        """
+        self.raw.loc[edge_original, COLUMNS] = edge_updated
 
     @property
     def new_(self) -> DataFrame:
@@ -113,10 +132,16 @@ class Graph(nx.DiGraph):
         res.index.name = "vertex"
         return res
 
-    # @property
-    # def with_cuts(self):
-    #     ite_edges = self.raw[COLUMNS].itertuples(index=False, name=None)
-    #     return self.edge_subgraph(ite_edges)
+    @property
+    def with_cuts(self) -> nx.Graph:
+        """Get undirected graph with all resulted edges being cuts.
+
+        Returns:
+            An undirected graph.
+        """
+        ite_edges = self.raw[COLUMNS].itertuples(index=False, name=None)
+        dg = self.edge_subgraph(ite_edges)
+        return dg.to_undirected()
 
     def merge_raw(self, right: DataFrame, right_on: Tuple[str, str]):
         """Merge columns from another dataframe for original edges.

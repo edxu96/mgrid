@@ -38,8 +38,12 @@ def test_split(case_readme: nx.DiGraph):
     assert _new.shape == (1, 2)
     assert list(_new.columns) == COLUMNS
 
-    _renamed = res.renamed_
-    assert isinstance(_renamed, DataFrame)
-    assert _renamed.shape == (4, 2)
-    assert list(_renamed.columns) == COLUMNS
-    assert list(_renamed.index.names) == COLUMNS
+    raw = res.raw
+    assert isinstance(raw, DataFrame)
+    assert raw.shape == (4, 2)
+    assert list(raw.columns) == COLUMNS
+    assert list(raw.index.names) == COLUMNS
+
+    with_cuts = res.with_cuts
+    assert set(with_cuts.edges) == EDGES_NEW - {("g_hv", "g_lv")}
+    assert isinstance(with_cuts, nx.Graph)
