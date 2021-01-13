@@ -1,5 +1,5 @@
 """A class for two operations at the same time."""
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Tuple, Union
 
 from loguru import logger
 import networkx as nx
@@ -13,10 +13,10 @@ COLUMNS_POS = ["node", "x", "y"]
 class Graph(nx.DiGraph):
     """Graph with vertices to be split and edges to be contracted.
 
+    Two methods ``merge_raw`` and ``merge_new`` are handy for
+    transforming dataframes for curves and points respectively.
+
     Note:
-        - ``GeoGraph`` is based on ``WeightGraph`` class, so add their
-          common features like ``df_edges`` and ``complete_edge_attr``
-          in ``WeightGraph``.
         - Edges don't have name in ``networkx``.
     """
 
@@ -34,9 +34,9 @@ class Graph(nx.DiGraph):
         self._new_dict = {}
         self._renamed_dict = {}
 
-        # Initiate ``edgelist``.
+        # Initiate dataframe **raw** for edges in the original edge.
         idx = pd.MultiIndex.from_tuples(self.edges, names=COLUMNS)
-        self.edgelist = pd.DataFrame(
+        self.raw = pd.DataFrame(
             data={
                 "first": idx.get_level_values(0),
                 "second": idx.get_level_values(1),
@@ -47,8 +47,8 @@ class Graph(nx.DiGraph):
     def split(
         self,
         vertex: str,
-        vertex_first: str,
-        vertex_second: str,
+        first: str,
+        second: str,
         attr: str,
         is_first: Callable[[str], Union[bool, None]],
     ):
@@ -60,8 +60,8 @@ class Graph(nx.DiGraph):
 
         Args:
             vertex: which ought to be modelled as an edge.
-            vertex_first: the first resulted vertex.
-            vertex_second: the second resulted vertex.
+            first: the first resulted vertex.
+            second: the second resulted vertex.
             attr: edge attribute used as input in ``is_first``.
             is_first: how to choose between resulted vertices. When None
                 is returned, an error will be logged.
@@ -76,17 +76,16 @@ class Graph(nx.DiGraph):
             if is_first(attributes[attr]) is None:
                 vertex_new = None
             elif is_first(attributes[attr]):
-                vertex_new = vertex_first
+                vertex_new = first
             else:
-                vertex_new = vertex_second
+                vertex_new = second
 
             if vertex_new:
                 self.remove_edge(u, v)
 
                 # Find the only corresponding edge in the initiated graph.
-                index_origin = self.edgelist.index[
-                    (self.edgelist["first"] == u)
-                    & (self.edgelist["second"] == v)
+                index_origin = self.raw.index[
+                    (self.raw["first"] == u) & (self.raw["second"] == v)
                 ]
                 assert len(index_origin) == 1, (
                     "The corresponding edge "
@@ -107,7 +106,7 @@ class Graph(nx.DiGraph):
                     )
                     self._renamed_dict[(u, v)] = (u, vertex_new)
 
-                self.edgelist.update(new_column)
+                self.raw.update(new_column)
             else:
                 logger.critical(
                     f"Unable to determine new terminal of edge ({u}, {v}) "
@@ -120,9 +119,9 @@ class Graph(nx.DiGraph):
         assert len(edges_asso) == 0
 
         # Add the resulted new edge and remove the original vertex.
-        self.add_edge(vertex_first, vertex_second, split_=True)
+        self.add_edge(first, second, split_=True)
         self.remove_node(vertex)  # Removes the node and all adjacent edges.
-        self._new_dict[vertex] = (vertex_first, vertex_second)
+        self._new_dict[vertex] = (first, second)
 
     @property
     def new_(self) -> DataFrame:
@@ -150,6 +149,46 @@ class Graph(nx.DiGraph):
         )
         res.index = pd.MultiIndex.from_tuples(res.index, names=COLUMNS)
         return res
+
+    def merge_raw(self, right: DataFrame, right_on: Tuple[str, str]):
+        """Merge columns from another dataframe for original edges.
+
+        Args:
+            right: another dataframe with at least two separate columns
+                specifying **source** and **target** of some original
+                edges.
+            right_on: names of those two columns corresponding to
+                **source** and **target**.
+
+        Returns:
+            Dataframe for original edges with more columns merged. Two
+            columns specified by **right_on** are not included.
+        """
+        return pd.merge(
+            left=self.raw,
+            right=right,
+            left_index=True,
+            right_on=right_on,
+            how="left",
+        )
+
+    def merge_new(self, right: DataFrame):
+        """Merge other columns for new edges (already-split vertices).
+
+        Args:
+            right: another dataframe with index being names of
+                already-split vertices.
+
+        Returns:
+            Dataframe for original edges with more columns merged.
+        """
+        return pd.merge(
+            left=self.new_,
+            right=right,
+            left_index=True,
+            right_index=True,
+            how="left",
+        )
 
     @property
     def df_edges(self) -> DataFrame:
