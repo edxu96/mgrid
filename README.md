@@ -1,4 +1,4 @@
-# `vsec` vertex splitting & edge contraction
+# `vsec`: vertex splitting & edge contraction
 
 [![GitHub license](https://img.shields.io/github/license/edxu96/vsec)](./LICENSE) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org)
 
@@ -19,10 +19,15 @@ in a graph representing the grid, but they are points geographically. On
 the other hand, data on electrical devices like power plants is usually
 associated with geographical points.
 
-Additionally, there are some functions to handle `pandas` dataframes associated
+Additionally, there are some methods to handle `pandas` dataframes associated
 with such two objects.
 
 Terms originate from [david2009random] and [heggernes2014contracting].
+
+## Why
+
+- More validation.
+- No redundant renaming operation on different dataframes.
 
 ## Reference
 
