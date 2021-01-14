@@ -1,8 +1,14 @@
-"""A class for two operations at the same time."""
+"""A class for two operations at the same time.
+
+Any modification after the initiation should be avoided, or many methods
+and properties will not work as expected.
+"""
 from typing import Callable, Optional, Set, Tuple, Union
 
 from loguru import logger
 import networkx as nx
+from networkx.algorithms.minors import contracted_edge
+from networkx.relabel import relabel_nodes
 import pandas as pd
 from pandas.core.frame import DataFrame
 
@@ -283,3 +289,37 @@ class Graph(nx.DiGraph):
             True if this undirected graph is connected.
         """
         return nx.is_connected(self.to_undirected())
+
+    def contract(
+        self, attr: str, naming: Optional[Callable[[Tuple[str, str]], str]],
+    ) -> nx.Graph:
+        """Contract edges with ``attr`` being true in ``Graph``.
+
+        Args:
+            attr: some bool edge attribute indicating contraction if
+                true.
+            naming: a function to name the new node based on labels of
+                two terminals of the contracted edge.
+
+        Returns:
+            A graph with less edge(s).
+        """
+        graph = nx.Graph(self)
+        for u, v, attributes in self.edges(data=True):
+            if attributes[attr]:
+                edge_contracted = (u, v)
+                graph = contracted_edge(
+                    graph, edge_contracted, self_loops=False
+                )
+                logger.debug(f"Edge {edge_contracted} has been contracted.")
+
+                # Find which node is kept.
+                if u in graph.nodes:
+                    mapping = {u: naming(edge_contracted)}
+                else:
+                    mapping = {v: naming(edge_contracted)}
+
+                # Rename the kept node.
+                relabel_nodes(graph, mapping, copy=False)
+
+        return graph

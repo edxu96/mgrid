@@ -3,6 +3,7 @@ import networkx as nx
 from pandas.core.frame import DataFrame
 import pytest as pt
 from vsec.graph import COLUMNS, Graph
+from vsec.utils import join_terminal_labels
 
 ATTR = "level"
 IS_FIRST = lambda x: x == "high"
@@ -13,11 +14,13 @@ EDGES_NEW = {
     ("f", "g_lv"),
     ("g_hv", "g_lv"),
 }
+# There are only two edges left, but sequences might be different.
+EDGES = {("n1", "n2n3"), ("n2n3", "n1"), ("n2n3", "n4"), ("n4", "n2n3")}
 
 
 @pt.mark.usefixtures("case_readme")
 def test_split(case_readme: nx.DiGraph):
-    """Check basic features of ``split`` method in ``GeoGraph``.
+    """Check basic features after one vertex splitting.
 
     Note:
         ``split`` method is not tested thoroughly here.
@@ -52,3 +55,18 @@ def test_split(case_readme: nx.DiGraph):
     assert res.find_vertices_component("g_lv") == {"g_lv", "d", "f"}
 
     assert res.vertices_new == {"g_hv", "g_lv"}
+
+
+@pt.mark.skip(reason="not sure about edge contraction yet")
+@pt.mark.usefixtures("case_simple")
+def test_contract(case_simple: nx.Graph):
+    """Check if edge in a graph contracted and its terminals renamed.
+
+    Args:
+        case_simple: a simple graph with 3 edges.
+    """
+    g = Graph(case_simple)
+    res = g.contract("contraction", join_terminal_labels)
+    print(res.nodes)
+    assert type(res) is Graph
+    assert set(res.edges).difference(EDGES) == set()
