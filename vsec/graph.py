@@ -29,6 +29,11 @@ class Graph(nx.DiGraph):
     def __init__(self, g: Optional[nx.DiGraph] = None):
         """Init an empty directed graph or existing directed graph.
 
+        Note:
+            It is essential to have the option for empty graph, or some
+            built-in ``networkx`` function will not work. Don't know
+            why.
+
         Args:
             g: an existing directed graph. Default to be None.
         """
@@ -37,6 +42,7 @@ class Graph(nx.DiGraph):
         else:
             super().__init__(g)
 
+        # Initiate dictionary to store already-split vertices.
         self._new_dict = {}
 
         # Initiate dataframe **raw** for edges in the original edge.
@@ -169,11 +175,19 @@ class Graph(nx.DiGraph):
     def with_cuts(self) -> nx.Graph:
         """Get undirected graph with all resulted edges being cuts.
 
+        Note:
+            According to ``networkx`` documentation, the graph, edge,
+            and node attributes in the returned subgraph view are
+            references to the corresponding attributes in the original
+            graph. The view is read-only. To create a full graph version
+            of the subgraph with its own copy of the edge or node
+            attributes, use ``g.edge_subgraph().copy()``.
+
         Returns:
             An undirected graph.
         """
         ite_edges = self.raw[COLUMNS].itertuples(index=False, name=None)
-        dg = self.edge_subgraph(ite_edges)
+        dg = self.edge_subgraph(ite_edges).copy()
         return dg.to_undirected()
 
     def merge_raw(self, right: DataFrame, right_on: Tuple[str, str]):
