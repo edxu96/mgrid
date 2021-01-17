@@ -13,6 +13,7 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 
 COLUMNS = ["first", "second"]
+INDEX_NAMES = ["source_original", "target_original"]
 COLUMNS_POS = ["node", "x", "y"]
 
 
@@ -46,7 +47,7 @@ class Graph(nx.DiGraph):
         self._new_dict = {}
 
         # Initiate dataframe **raw** for edges in the original edge.
-        idx = pd.MultiIndex.from_tuples(self.edges, names=COLUMNS)
+        idx = pd.MultiIndex.from_tuples(self.edges, names=INDEX_NAMES)
         self.raw = pd.DataFrame(
             data={
                 "first": idx.get_level_values(0),
@@ -174,12 +175,13 @@ class Graph(nx.DiGraph):
             logger.error(f"Vertex {vertex} is not in the graph.")
             res = None
         else:
-            res = nx.node_connected_component(self.with_cuts, vertex)
+            g = self.with_cuts.to_undirected()
+            res = nx.node_connected_component(g, vertex)
         return res
 
     @property
-    def with_cuts(self) -> nx.Graph:
-        """Get undirected graph with all resulted edges being cuts.
+    def with_cuts(self) -> nx.DiGraph:
+        """Get directed graph with all resulted edges being cuts.
 
         Note:
             According to ``networkx`` documentation, the graph, edge,
@@ -190,13 +192,18 @@ class Graph(nx.DiGraph):
             attributes, use ``g.edge_subgraph().copy()``.
 
         Returns:
-            An undirected graph.
+            A directed graph.
         """
         ite_edges = self.raw[COLUMNS].itertuples(index=False, name=None)
         dg = self.edge_subgraph(ite_edges).copy()
-        return dg.to_undirected()
+        return dg
 
-    def merge_raw(self, right: DataFrame, right_on: Tuple[str, str]):
+    def merge_raw(
+        self,
+        right: DataFrame,
+        right_on: Tuple[str, str],
+        how: Optional[str] = "right",
+    ):
         """Merge columns from another dataframe for original edges.
 
         Args:
@@ -205,6 +212,10 @@ class Graph(nx.DiGraph):
                 edges.
             right_on: names of those two columns corresponding to
                 **source** and **target**.
+            how: type of merge to be performed. See [pandas.merge]_.
+
+        .. pandas.merge:
+            https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.merge.html
 
         Returns:
             Dataframe for original edges with more columns merged. Two
@@ -215,7 +226,7 @@ class Graph(nx.DiGraph):
             right=right,
             left_index=True,
             right_on=right_on,
-            how="left",
+            how=how,
         )
 
     def merge_new(self, right: DataFrame):

@@ -2,7 +2,7 @@
 import networkx as nx
 from pandas.core.frame import DataFrame
 import pytest as pt
-from vsec.graph import COLUMNS, Graph
+from vsec.graph import COLUMNS, Graph, INDEX_NAMES
 from vsec.utils import join_terminal_labels
 
 ATTR = "level"
@@ -45,11 +45,11 @@ def test_split(case_readme: nx.DiGraph):
     assert isinstance(raw, DataFrame)
     assert raw.shape == (4, 2)
     assert list(raw.columns) == COLUMNS
-    assert list(raw.index.names) == COLUMNS
+    assert list(raw.index.names) == INDEX_NAMES
 
     with_cuts = res.with_cuts
     assert set(with_cuts.edges) == EDGES_NEW - {("g_hv", "g_lv")}
-    assert isinstance(with_cuts, nx.Graph)
+    assert isinstance(with_cuts, nx.DiGraph)
 
     assert res.find_vertices_component("g_hv") == {"g_hv", "a", "c"}
     assert res.find_vertices_component("g_lv") == {"g_lv", "d", "f"}
