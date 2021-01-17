@@ -66,7 +66,7 @@ class Graph(nx.DiGraph):
         """Split a vertex and handle new vertices and associated edges.
 
         Warning:
-            Only one edge attribute can be used to distinguish
+            For now, only one edge attribute can be used to distinguish
             associated edges to two clusters.
 
         Args:
@@ -78,11 +78,12 @@ class Graph(nx.DiGraph):
                 to the resulted new vertex called **source**. When None
                 is returned, an error will be logged.
         """
-        in_edges = self.in_edges(nbunch=vertex, data=True)
+        in_edges = list(self.in_edges(nbunch=vertex, data=True))
         for u, v, data in in_edges:
             edge_original = self.raw.index[
                 (self.raw["first"] == u) & (self.raw["second"] == v)
             ]
+            self.remove_edge(u, v)
             if is_connect_source(data[attr]) is None:
                 logger.critical(
                     f"Unable to determine new terminals of edge ({u}, {v}) "
@@ -95,11 +96,12 @@ class Graph(nx.DiGraph):
                 self.add_edge(u, target, **data)
                 self._update_raw((u, target), edge_original)
 
-        out_edges = self.out_edges(nbunch=vertex, data=True)
+        out_edges = list(self.out_edges(nbunch=vertex, data=True))
         for u, v, data in out_edges:
             edge_original = self.raw.index[
                 (self.raw["first"] == u) & (self.raw["second"] == v)
             ]
+            self.remove_edge(u, v)
             if is_connect_source(data[attr]) is None:
                 logger.critical(
                     f"Unable to determine new terminals of edge ({u}, {v}) "
@@ -114,7 +116,11 @@ class Graph(nx.DiGraph):
 
         # Validate if all associated edges have been updated.
         edges_asso = list(self.edges(nbunch=vertex, data=True))
-        assert len(edges_asso) == 0
+        if len(edges_asso) != 0:
+            logger.critical(
+                f"There is still edge(s) {edges_asso} associated with "
+                f"vertex {vertex}."
+            )
 
         # Add the resulted new edge and remove the original vertex.
         self.add_edge(source, target)
