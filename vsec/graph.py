@@ -1,4 +1,4 @@
-"""A class for two operations at the same time.
+"""A class for vertex splitting and edge contraction at the same time.
 
 Any modification after the initiation should be avoided, or many methods
 and properties will not work as expected.
@@ -139,11 +139,10 @@ class Graph(nx.DiGraph):
 
     @property
     def new_(self) -> DataFrame:
-        """Gather vertex and edge resulted from split or contraction.
+        """Gather vertex and edge resulted from split.
 
         Returns:
-            Vertex and edge resulted from split or contraction in
-            sequence.
+            Vertex and edge resulted from split in sequence.
         """
         res = pd.DataFrame.from_dict(
             self._new_dict, columns=COLUMNS, orient="index",
@@ -246,31 +245,6 @@ class Graph(nx.DiGraph):
             right_index=True,
             how="left",
         )
-
-    @property
-    def df_edges(self) -> DataFrame:
-        """Collect all edges and their attributes in a data frame.
-
-        Returns:
-            All the edges and their attributes in RDF.
-        """
-        return nx.to_pandas_edgelist(self)
-
-    @property
-    def df_nodes(self) -> DataFrame:
-        """Collect all nodes and their attributes in a data frame.
-
-        Returns:
-            DataFrame: containing all nodes and their attributes.
-        """
-        dat = {}
-        dat[self.COLUMNS_POS[0]] = list(self.nodes)  # Get names of all nodes.
-        for col in self.COLUMNS_POS[1:]:
-            if self.complete_node_attr(col):
-                dat[col] = [
-                    self.nodes[node][col] for node in dat[self.COLUMNS_POS[0]]
-                ]
-        return pd.DataFrame(dat)
 
     def complete_node_attr(self, attr: str) -> bool:
         """Check if all nodes in the graph have the given attribute.

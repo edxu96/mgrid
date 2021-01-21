@@ -19,6 +19,3 @@ def join_terminal_labels(edge: Tuple[str, str]) -> str:
     else:
         res = edge[0] + edge[1]
     return res
-
-
-# TODO: (#26) function to rename dataframes associated with edges.
