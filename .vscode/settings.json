@@ -8,7 +8,7 @@
     "rewrap.wrappingColumn": 72,
     "cSpell.words": [
         "pytest",
-        "sqlite"
+        "sqlite",
     ],
     "autoDocstring.guessTypes": false,
     "autoDocstring.docstringFormat": "google",
