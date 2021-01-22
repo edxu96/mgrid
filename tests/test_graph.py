@@ -18,7 +18,6 @@ EDGES_NEW = {
 EDGES = {("n1", "n2n3"), ("n2n3", "n1"), ("n2n3", "n4"), ("n4", "n2n3")}
 
 
-@pt.mark.usefixtures("case_readme")
 def test_split(case_readme: nx.DiGraph):
     """Check basic features after one vertex splitting.
 
@@ -55,6 +54,11 @@ def test_split(case_readme: nx.DiGraph):
     assert res.find_vertices_component("g_lv") == {"g_lv", "d", "f"}
 
     assert res.vertices_new == {"g_hv", "g_lv"}
+
+    component, edges = res.component_with_vertex("g_lv")
+    assert set(component.nodes) == {"g_lv", "d", "f"}
+    assert list(edges.columns) == COLUMNS
+    assert edges.shape == (2, 2)
 
 
 @pt.mark.skip(reason="not sure about edge contraction yet")

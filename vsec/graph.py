@@ -161,11 +161,45 @@ class Graph(nx.DiGraph):
             self.new_[COLUMNS[1]].unique()
         )
 
+    def component_with_vertex(
+        self, vertex: str
+    ) -> Tuple[nx.DiGraph, DataFrame]:
+        """Find component with ``vertex`` and map to original edges.
+
+        Args:
+            vertex: a vertex in the component (after splitting).
+
+        Returns:
+            The component and a dataframe mapping its edges to original
+            edges. None if ``vertex`` is not the graph, or the component
+            is not connected.
+        """
+        vertices = self.find_vertices_component(vertex)
+        if vertices:
+            res = self.with_cuts.subgraph(vertices)
+
+            if nx.is_connected(res.to_undirected()):
+                idx_edges = list(res.edges)
+                edges = (
+                    self.raw.reset_index().set_index(COLUMNS).loc[idx_edges, :]
+                )
+                edges.reset_index(inplace=True)
+                edges.set_index(INDEX_NAMES, inplace=True)
+            else:
+                logger.error("The resulted component is not connected.")
+                res = None
+                edges = None
+        else:
+            res = None
+            edges = None
+
+        return res, edges
+
     def find_vertices_component(self, vertex: str) -> Union[Set[str], None]:
         """Get a set for all the vertices in the same component.
 
         Args:
-            vertex: a vertex in the graph (after splitting).
+            vertex: a vertex in the component (after splitting).
 
         Returns:
             A set of vertices or None if ``vertex`` is not the graph.
@@ -180,7 +214,7 @@ class Graph(nx.DiGraph):
 
     @property
     def with_cuts(self) -> nx.DiGraph:
-        """Get directed graph with all resulted edges being cuts.
+        """Get directed graph with all the resulted edges being cuts.
 
         Note:
             According to ``networkx`` documentation, the graph, edge,
