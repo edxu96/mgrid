@@ -81,6 +81,7 @@ class PlanarGraph(nx.DiGraph):
                 )
 
         res = pd.DataFrame.from_dict(res_dict, orient="index", columns=COLUMNS)
+        res.index.name = "node"
         return res
 
     @classmethod
