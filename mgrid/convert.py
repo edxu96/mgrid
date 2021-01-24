@@ -26,6 +26,10 @@ def planar2multilayer(g: PlanarGraph) -> MultilayerGrid:
     intra_edges[COLUMNS_DI_ORIGINAL[1]] = intra_edges[COLUMNS_DI[1]]
     intra_edges.set_index(COLUMNS_DI_ORIGINAL, inplace=True)
 
+    inter_edges = nx.to_pandas_edgelist(g)
+    inter_edges[COLUMNS_DI_ORIGINAL[0]] = inter_edges[COLUMNS_DI[0]]
+    inter_edges[COLUMNS_DI_ORIGINAL[1]] = inter_edges[COLUMNS_DI[1]]
+
     def update_intra_edges(
         edges_original: Tuple[str, str], edges: Tuple[str, str]
     ):
@@ -52,4 +56,5 @@ def planar2multilayer(g: PlanarGraph) -> MultilayerGrid:
 
     res = MultilayerGrid(dg)
     res.intra_edges = intra_edges
+    res.inter_edges = g.inter_nodes
     return res

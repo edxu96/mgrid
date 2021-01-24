@@ -2,7 +2,7 @@
 from itertools import chain
 
 from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2multilayer
-from mgrid.planar import COLUMNS_DI
+from mgrid.planar import COLUMNS, COLUMNS_DI
 
 
 def test_planar2multilayer(simple):
@@ -19,3 +19,7 @@ def test_planar2multilayer(simple):
     assert all(
         col in intra_edges.columns for col in chain(COLUMNS_DI, ["layer"])
     )
+
+    inter_edges = res.inter_edges
+    assert list(inter_edges.columns) == COLUMNS
+    assert inter_edges.index.name == "node"
