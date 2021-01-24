@@ -15,6 +15,9 @@ COLUMNS_DI = ["source", "target"]
 class PlanarGraph(nx.DiGraph):
     """Model multilayer network as planar graph.
 
+    All the edges are intra-edges, so they must be associated with some
+    layer. There are two kinds of nodes.
+
     Attributes:
         inter_nodes (DataFrame): all the inter-nodes, with two columns,
             "upper" and "lower".
@@ -72,8 +75,9 @@ class PlanarGraph(nx.DiGraph):
                 pass
             else:
                 LOGGER.warning(
-                    f"Incorrect specification for node {node} with max layer "
-                    f"{upper} and min layer {lower}."
+                    f"Incorrect specification for node {node} corresponding "
+                    f"to an inter-edge with max layer {upper} and min layer "
+                    f" {lower}."
                 )
 
         res = pd.DataFrame.from_dict(res_dict, orient="index", columns=COLUMNS)
@@ -132,6 +136,10 @@ class PlanarGraph(nx.DiGraph):
 
     def layer_graph(self, layer: int) -> nx.DiGraph:
         """Build a directed graph for one layer.
+
+        Note:
+            Nodes corresponding to inter-edges are not distinguished in
+            different layers.
 
         Args:
             layer: integer index of a layer.

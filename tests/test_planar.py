@@ -12,15 +12,16 @@ def simple() -> PlanarGraph:
     """Init a planar graph from a directed graph.
 
     Returns:
-        A simple planar graph with two intralinks.
+        A simple planar graph with two intra-edges and one inter-edge.
     """
     dg = nx.DiGraph()
     dg.add_edge("a", "b", layer=0)
-    dg.add_edge("a", "c", layer=-1)
+    dg.add_edge("a", "c", layer=1)
 
     res = PlanarGraph(dg)
     assert list(res.inter_nodes.columns) == COLUMNS
-    assert res.layers == {0, -1}
+    assert res.layers == {0, 1}
+    assert len(res.edges) == 2
     return res
 
 
