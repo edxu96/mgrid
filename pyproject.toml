@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vsec"
-version = "0.1.8"
+version = "0.1.9"
 description = "Data structure when some edges in a graph are planar points in essence"
 authors = ["edxu96 <edxu96@outlook.com>"]
 

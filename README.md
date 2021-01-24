@@ -28,6 +28,7 @@ Terms originate from [david2009random] and [heggernes2014contracting].
 
 - More validation.
 - No redundant renaming operation on different dataframes.
+- Divide into components when new edges seen as cut-sets.
 
 ## Reference
 
