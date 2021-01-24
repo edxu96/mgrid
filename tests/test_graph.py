@@ -2,8 +2,8 @@
 import networkx as nx
 from pandas.core.frame import DataFrame
 import pytest as pt
-from vsec.graph import COLUMNS, Graph, INDEX_NAMES
-from vsec.utils import join_terminal_labels
+from mgrid.graph import COLUMNS, Graph, INDEX_NAMES
+from mgrid.utils import join_terminal_labels
 
 ATTR = "level"
 IS_FIRST = lambda x: x == "high"

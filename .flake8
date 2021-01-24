@@ -1,6 +1,6 @@
 [flake8]
 import-order-style = google
-application-import-names = DistNetTopo, tests
+application-import-names = mgrid, tests
 per-file-ignores =
     tests/*: D104, E731
     docs/conf.py: A001
