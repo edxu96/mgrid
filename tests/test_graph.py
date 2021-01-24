@@ -2,6 +2,7 @@
 import networkx as nx
 from pandas.core.frame import DataFrame
 import pytest as pt
+
 from mgrid.graph import COLUMNS, Graph, INDEX_NAMES
 from mgrid.utils import join_terminal_labels
 
