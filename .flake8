@@ -2,6 +2,6 @@
 import-order-style = google
 application-import-names = mgrid, tests
 per-file-ignores =
-    tests/*: D104, E731
+    tests/*: D104, E731, DAR101, DAR201
     docs/conf.py: A001
     docs/conf.py: D100
