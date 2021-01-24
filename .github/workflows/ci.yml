@@ -43,6 +43,6 @@ jobs:
     - name: Run pre-commit and tests
       run: |
         source .venv/bin/activate
-        pre-commit install
-        pre-commit run --all-files
+        poetry run pre-commit install
+        poetry run pre-commit run --all-files
         pytest tests/
