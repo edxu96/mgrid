@@ -1,6 +1,6 @@
 """A class for planar graph corresponding to a multilayer network."""
 from itertools import chain
-from typing import Optional
+from typing import Optional, Set
 
 import networkx as nx
 import pandas as pd
@@ -9,10 +9,17 @@ from pandas.core.frame import DataFrame
 from mgrid.log import LOGGER
 
 COLUMNS = ["upper", "lower"]
+COLUMNS_DI = ["source", "target"]
 
 
 class PlanarGraph(nx.DiGraph):
-    """Model multilayer network as planar graph."""
+    """Model multilayer network as planar graph.
+
+    Attributes:
+        inter_nodes (DataFrame): all the inter-nodes, with two columns,
+            "upper" and "lower".
+        layers (Set[int]): integer indices of all the layers.
+    """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
         """Init an empty directed graph or existing directed graph.
@@ -31,6 +38,15 @@ class PlanarGraph(nx.DiGraph):
             super().__init__(dg)
 
         self.inter_nodes = self._find_inter_nodes()
+
+        # Find integer indices of all the layers.
+        edgelist = nx.to_pandas_edgelist(self)
+        if "layer" in edgelist:
+            max_layer = edgelist["layer"].max()
+            min_layer = edgelist["layer"].min()
+            self.layers = set(range(min_layer, max_layer + 1))
+        else:
+            self.layers = set()
 
     def _find_inter_nodes(self) -> DataFrame:
         """Find all the inter-nodes.
@@ -65,11 +81,7 @@ class PlanarGraph(nx.DiGraph):
 
     @classmethod
     def from_edgelist(
-        cls,
-        df: DataFrame,
-        source: str,
-        target: str,
-        edge_attr: Optional[str] = "layer",
+        cls, df: DataFrame, source: str, target: str,
     ):
         """Init a planar graph from an edgelist dataframe.
 
@@ -77,13 +89,11 @@ class PlanarGraph(nx.DiGraph):
             df: an edgelist with at least three columns.
             source: column name indicating sources of edges.
             target: column name indicating targets of edges.
-            edge_attr: column name indicating layers of edges. Default
-                to be "layer".
 
         Returns:
-            PlanarGraph
+            A ``PlanarGraph`` when the dataframe have essential columns.
         """
-        if (source not in df) or (target not in df) or (edge_attr not in df):
+        if (source not in df) or (target not in df):
             LOGGER.critical(
                 f"Column {source} or {target} not found in dataframe."
             )
@@ -93,7 +103,7 @@ class PlanarGraph(nx.DiGraph):
                 df,
                 source=source,
                 target=target,
-                edge_attr=edge_attr,
+                edge_attr="layer",
                 create_using=nx.DiGraph(),
             )
             res = cls(res)
@@ -103,3 +113,36 @@ class PlanarGraph(nx.DiGraph):
     def planar_nodes(self) -> DataFrame:
         """Gather all the planar nodes in a dataframe."""
         pass
+
+    def layer_edges(self, layer: int) -> Set[tuple]:
+        """Gather all the edges and edge attributes in one layer.
+
+        Args:
+            layer: integer index of a layer.
+
+        Returns:
+            An edgelist for those in one layer.
+        """
+        if layer in self.layers:
+            edge_list = nx.to_pandas_edgelist(self)
+            res = edge_list[edge_list["layer"] == layer]
+        else:
+            res = None
+        return res
+
+    def layer_graph(self, layer: int) -> nx.DiGraph:
+        """Build a directed graph for one layer.
+
+        Args:
+            layer: integer index of a layer.
+
+        Returns:
+            A directed graph representing a given layer.
+        """
+        if layer in self.layers:
+            edges = self.layer_edges(layer)
+            ite_edges = edges[COLUMNS_DI].itertuples(index=False, name=None)
+            res = self.edge_subgraph(ite_edges).copy()
+        else:
+            res = None
+        return res
