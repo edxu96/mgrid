@@ -1,6 +1,6 @@
 """A class for planar graph corresponding to a multilayer network."""
 from itertools import chain
-from typing import Optional, Set
+from typing import Optional, Set, Tuple
 
 import networkx as nx
 import pandas as pd
@@ -42,6 +42,7 @@ class PlanarGraph(nx.DiGraph):
         else:
             super().__init__(dg)
 
+        self.inter_nodes = None
         self.inter_nodes = self._find_inter_nodes()
 
         # Find integer indices of all the layers.
@@ -61,15 +62,7 @@ class PlanarGraph(nx.DiGraph):
         """
         res_dict = {}
         for node in self.nodes:
-            layers = [
-                layer
-                for _, _, layer in chain(
-                    self.in_edges(node, data="layer"),
-                    self.out_edges(node, data="layer"),
-                )
-            ]
-            upper = min(layers)
-            lower = max(layers)
+            upper, lower = self.find_layer(node)
 
             if upper == lower - 1:
                 res_dict[node] = [upper, lower]
@@ -158,11 +151,61 @@ class PlanarGraph(nx.DiGraph):
             res = None
         return res
 
-    def add_inter_node(self, layer: int, node: str):
-        """Add an edge with a node from another layer.
+    def find_layer(self, node: str) -> Tuple[int, int]:
+        """Find layer(s) of a given node.
+
+        Note:
+            - It is assumed that there is no isolated planar node.
+            - If an inter-node is isolated in some layer, only the other
+              layer will be returned.
 
         Args:
-            layer: where the new edge is.
-            node: name of a node in another adjacent layer.
+            node: name of a planar node or an inter-node.
+
+        Returns:
+            Integer indices of upper and lower layers.
         """
-        pass
+        if (self.inter_nodes is not None) and (node in self.inter_nodes.index):
+            upper = self.inter_nodes.loc[node, "upper"]
+            lower = self.inter_nodes.loc[node, "lower"]
+        else:
+            layers = [
+                layer
+                for _, _, layer in chain(
+                    self.in_edges(node, data="layer"),
+                    self.out_edges(node, data="layer"),
+                )
+            ]
+
+            upper = min(layers)
+            lower = max(layers)
+
+        return (upper, lower)
+
+    def add_inter_node(self, node: str, upper: Optional[bool] = True):
+        """Turn a planar node to an inter-node with an adjacent layer.
+
+        Args:
+            node: name of the inter-node.
+            upper: whether to add inter-node with upper layer.
+        """
+        if node not in self.nodes:
+            LOGGER.error(f"Node {node} does not exist.")
+        elif node in self.inter_nodes.index:
+            LOGGER.error(f"Inter-node {node} already exist.")
+        else:
+            layer = self.find_layer(node)[0]
+            if upper:
+                upper = layer - 1
+                lower = layer
+            else:
+                upper = layer
+                lower = layer + 1
+
+            df_new = pd.DataFrame(
+                {"upper": upper, "lower": lower}, index=[node]
+            )
+            self.inter_nodes = self.inter_nodes.append(df_new)
+            LOGGER.info(
+                f"New inter-node {node} for layer {upper} and {lower}."
+            )
