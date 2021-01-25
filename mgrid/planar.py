@@ -13,10 +13,12 @@ COLUMNS_DI = ["source", "target"]
 
 
 class PlanarGraph(nx.DiGraph):
-    """Model multilayer network as planar graph.
+    """Model multilayer graph in plane by contracting inter-edges.
 
-    All the edges are intra-edges, so they must be associated with some
-    layer. There are two kinds of nodes.
+    All the edges left are intra-edges, so they must be associated with
+    some layer.
+
+    There are two kinds of nodes, inter-nodes and planar nodes.
 
     Attributes:
         inter_nodes (DataFrame): all the inter-nodes, with two columns,
@@ -25,7 +27,7 @@ class PlanarGraph(nx.DiGraph):
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
-        """Init an empty directed graph or existing directed graph.
+        """Init an empty directed graph or from existing directed graph.
 
         Note:
             It is essential to have the option for empty graph, or some
@@ -66,10 +68,10 @@ class PlanarGraph(nx.DiGraph):
                     self.out_edges(node, data="layer"),
                 )
             ]
-            upper = max(layers)
-            lower = min(layers)
+            upper = min(layers)
+            lower = max(layers)
 
-            if upper == lower + 1:
+            if upper == lower - 1:
                 res_dict[node] = [upper, lower]
             elif upper == lower:
                 pass
@@ -155,3 +157,12 @@ class PlanarGraph(nx.DiGraph):
         else:
             res = None
         return res
+
+    def add_inter_node(self, layer: int, node: str):
+        """Add an edge with a node from another layer.
+
+        Args:
+            layer: where the new edge is.
+            node: name of a node in another adjacent layer.
+        """
+        pass
