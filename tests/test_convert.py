@@ -32,5 +32,5 @@ def test_case_grid(case_grid: PlanarGraph):
         case_grid: the case with 208 intra-edges and 34 inter-edges.
     """
     res = planar2multilayer(case_grid)
-    assert res.inter_edges.shape == (34, 2)
-    assert res.number_of_edges() == 208 + 34
+    assert res.inter_edges.shape == (35, 2)
+    assert res.number_of_edges() == 208 + 35

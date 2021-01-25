@@ -6,10 +6,13 @@ from mgrid.planar import PlanarGraph
 from .test_planar import simple  # noqa: F401
 
 # Dictionary to map entries in column "voltage" to layers.
-VOLTAGES = {
-    "04kv": 2,
-    "10kv": 1,
-    "60kv": 0,
+VOLTAGES = {"04kv": 2, "10kv": 1, "60kv": 0}
+LAYERS = {
+    "CABINET04": 2,
+    "STAT1004": 1.5,
+    "CONNECTOR10": 1,
+    "STAT6010": 0.5,
+    "CONNECTOR60": 0,
 }
 
 
@@ -22,6 +25,9 @@ def case_grid() -> PlanarGraph:
         - "EVO_6777175" is not recognised as inter-node directly,
           because there is no intra-edge in layer 0. Also, layer 0 does
           not exist, because there is no intra-edge there.
+        - "EVO_2100520" is not recognised as inter-node directly as
+          well, because there is no intra-edge in layer 2 connecting to
+          it.
 
     Returns:
         A case with 208 intra-edges and 34 inter-edges.
@@ -34,5 +40,13 @@ def case_grid() -> PlanarGraph:
 
     assert res.layers == {1, 2}
     res.add_inter_node("EVO_6777175")
+    res.add_inter_node("EVO_2100520", upper=False)
     assert res.layers == {0, 1, 2}
+
+    nodes = pd.read_csv("./data/nodes.csv")
+    nodes["layer"] = nodes["type"].map(LAYERS, na_action="ignore")
+    inter_nodes = set(
+        nodes.loc[nodes["layer"].isin([0.5, 1.5]), "name"].unique()
+    )
+    assert set(res.inter_nodes.index) == inter_nodes
     return res
