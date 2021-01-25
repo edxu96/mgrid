@@ -198,9 +198,19 @@ class PlanarGraph(nx.DiGraph):
             if upper:
                 upper = layer - 1
                 lower = layer
+
+                if upper not in self.layers:
+                    self.layers.add(upper)
+                    LOGGER.info(f"New top layer {upper} resulted from {node}.")
             else:
                 upper = layer
                 lower = layer + 1
+
+                if lower not in self.layers:
+                    self.layers.add(lower)
+                    LOGGER.info(
+                        f"New bottom layer {lower} resulted from {node}."
+                    )
 
             df_new = pd.DataFrame(
                 {"upper": upper, "lower": lower}, index=[node]
