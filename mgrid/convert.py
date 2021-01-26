@@ -85,10 +85,13 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
 
     # Build nodelist using dictionary for nodes in different layers.
     keys_sorted = sorted(node_dict)
-    nodelist = pd.Series(
-        data=chain(*[[key] * len(node_dict[key]) for key in keys_sorted]),
+    nodelist = pd.DataFrame(
+        {
+            "layer": chain(
+                *[[key] * len(node_dict[key]) for key in keys_sorted]
+            )
+        },
         index=chain(*[node_dict[key] for key in keys_sorted]),
-        name="layer",
     )
 
     # Build supra-grid.

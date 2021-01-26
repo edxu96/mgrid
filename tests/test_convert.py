@@ -40,4 +40,4 @@ def test_case_grid(case_grid: PlanarGrid):
     assert nx.is_frozen(res)
     assert res.inter_edges.shape == (35, 4)
     assert res.number_of_edges() == 208 + 35
-    assert res.nodelist.shape[0] == 244
+    assert res.nodelist.shape == (244, 1)
