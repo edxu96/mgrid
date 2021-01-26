@@ -4,8 +4,20 @@ from typing import Optional
 import networkx as nx
 
 
+class MultilayerGrid:
+    """Power grid with multiple voltage levels as multilayer network."""
+
+    def __init__(self):
+        """Initiate an empty network."""
+        pass
+
+
 class SupraGrid(nx.DiGraph):
-    """Power grid with multiple voltage levels as multilayer graph.
+    """Power grid with multiple voltage levels as supra-graph.
+
+    Supra-graph is way to represent a multilayer network in one graph.
+    Especially, intra-edges and inter-edges exist at the same time,
+    while there is no inter-edge in :class:`planar.PlanarGrid`.
 
     Note:
         Any terminal pair of inter-edges is replica nodes. In planar

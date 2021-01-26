@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest as pt
 
-from mgrid.planar import PlanarGraph
+from mgrid.planar import PlanarGrid
 from .test_planar import simple  # noqa: F401
 
 # Dictionary to map entries in column "voltage" to layers.
@@ -17,7 +17,7 @@ LAYERS = {
 
 
 @pt.fixture(scope="package")
-def case_grid() -> PlanarGraph:
+def case_grid() -> PlanarGrid:
     """Init a case with 207 edges and **voltage** attributes.
 
     Note:
@@ -35,7 +35,7 @@ def case_grid() -> PlanarGraph:
     df = pd.read_csv("./data/intra-edges.csv", index_col="name")
     df["layer"] = df["voltage"].map(VOLTAGES, na_action="ignore")
 
-    res = PlanarGraph.from_edgelist(df, "from_node", "to_node")
+    res = PlanarGrid.from_edgelist(df, "from_node", "to_node")
     assert res.number_of_edges() == 208
 
     assert res.layers == {1, 2}

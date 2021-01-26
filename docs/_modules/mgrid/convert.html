@@ -87,10 +87,6 @@
 
 
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.multilayer.html">multilayer</a></li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">bibliography</a></li>
 </ul>
 
@@ -166,12 +162,12 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">mgrid.multilayer</span> <span class="kn">import</span> <span class="n">SupraGrid</span>
-<span class="kn">from</span> <span class="nn">mgrid.planar</span> <span class="kn">import</span> <span class="n">COLUMNS</span><span class="p">,</span> <span class="n">COLUMNS_DI</span><span class="p">,</span> <span class="n">PlanarGraph</span>
+<span class="kn">from</span> <span class="nn">mgrid.planar</span> <span class="kn">import</span> <span class="n">COLUMNS</span><span class="p">,</span> <span class="n">COLUMNS_DI</span><span class="p">,</span> <span class="n">PlanarGrid</span>
 
 <span class="n">COLUMNS_DI_ORIGINAL</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source_original&quot;</span><span class="p">,</span> <span class="s2">&quot;target_original&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../index.html#mgrid.convert.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">PlanarGraph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
+<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../index.html#mgrid.convert.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">PlanarGrid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Convert a planar graph to corresponding supra-graph.</span>
 
 <span class="sd">    Args:</span>

@@ -12,13 +12,13 @@ COLUMNS = ["upper", "lower"]
 COLUMNS_DI = ["source", "target"]
 
 
-class PlanarGraph(nx.DiGraph):
+class PlanarGrid(nx.DiGraph):
     """Model multilayer graph in plane by contracting inter-edges.
 
-    All the edges left are intra-edges, so they must be associated with
-    some layer.
-
-    There are two kinds of nodes, inter-nodes and planar nodes.
+    Note:
+        There are two kinds of nodes, inter-nodes and planar nodes. If
+        an inter-node is isolated in some layer, it cannot be recognised
+        directly.
 
     Attributes:
         inter_nodes (DataFrame): all the inter-nodes, with two columns,
@@ -30,9 +30,11 @@ class PlanarGraph(nx.DiGraph):
         """Init an empty directed graph or from existing directed graph.
 
         Note:
-            It is essential to have the option for empty graph, or some
-            built-in ``networkx`` function will not work. Don't know
-            why.
+            - All the edges left are intra-edges, so they must be
+              associated with some layer.
+            - It is essential to have the option for empty graph, or
+              some built-in ``networkx`` function will not work. Don't
+              know why.
 
         Args:
             dg: an existing directed graph. Default to be None.
@@ -91,7 +93,7 @@ class PlanarGraph(nx.DiGraph):
             target: column name indicating targets of edges.
 
         Returns:
-            A ``PlanarGraph`` when the dataframe have essential columns.
+            A ``PlanarGrid`` when the dataframe have essential columns.
         """
         if (source not in df) or (target not in df):
             LOGGER.critical(
@@ -134,8 +136,7 @@ class PlanarGraph(nx.DiGraph):
         """Build a directed graph for one layer.
 
         Note:
-            Nodes corresponding to inter-edges are not distinguished in
-            different layers.
+            Inter-nodes are not distinguished in different layers.
 
         Args:
             layer: integer index of a layer.
@@ -155,7 +156,8 @@ class PlanarGraph(nx.DiGraph):
         """Find layer(s) of a given node.
 
         Note:
-            - It is assumed that there is no isolated planar node.
+            - It is assumed that there is no isolated planar node, or
+              its layer must be specified by node attribute.
             - If an inter-node is isolated in some layer, only the other
               layer will be returned.
 

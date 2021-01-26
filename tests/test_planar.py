@@ -4,11 +4,11 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 import pytest as pt
 
-from mgrid.planar import COLUMNS, PlanarGraph
+from mgrid.planar import COLUMNS, PlanarGrid
 
 
 @pt.fixture(scope="module")
-def simple() -> PlanarGraph:
+def simple() -> PlanarGrid:
     """Init a planar graph from a directed graph.
 
     Returns:
@@ -18,7 +18,7 @@ def simple() -> PlanarGraph:
     dg.add_edge("a", "b", layer=0)
     dg.add_edge("a", "c", layer=1)
 
-    res = PlanarGraph(dg)
+    res = PlanarGrid(dg)
     assert list(res.inter_nodes.columns) == COLUMNS
     assert res.layers == {0, 1}
     assert len(res.edges) == 2
@@ -31,11 +31,11 @@ def test_from_edgelist():
         {"source": ["a", "a"], "target": ["b", "c"], "layer": [0, -1]}
     )
 
-    res = PlanarGraph.from_edgelist(df, source="source", target="target")
+    res = PlanarGrid.from_edgelist(df, source="source", target="target")
     assert list(res.inter_nodes.columns) == COLUMNS
 
 
-def test_methods(simple: PlanarGraph):
+def test_methods(simple: PlanarGrid):
     """Check methods, properties, and attributes.
 
     Args:
