@@ -1,11 +1,20 @@
-"""Main module for ``vsec``."""
-from mgrid.convert import planar2multilayer
-from mgrid.multilayer import MultilayerGrid
+"""Multilayer network for power grid with multiple voltage levels.
+
+The multilayer network in this package has the following features:
+
+- Inter-edges only exist between consecutive layers.
+- Nodes are never replicated or related, except those associated with
+  inter-edges. So the network is not multiplex network, multi-slice,
+  network, or network of networks for sure.
+
+"""
+from mgrid.convert import planar2supra
+from mgrid.multilayer import SupraGrid
 from mgrid.planar import PlanarGraph
 
 __version__ = "0.2.0"
 __all__ = [
-    "planar2multilayer",
-    "MultilayerGrid",
+    "planar2supra",
+    "SupraGrid",
     "PlanarGraph",
 ]
