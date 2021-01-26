@@ -6,12 +6,12 @@ import networkx as nx
 import pandas as pd
 
 from mgrid.multilayer import SupraGrid
-from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph
+from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGrid
 
 COLUMNS_DI_ORIGINAL = ["source_original", "target_original"]
 
 
-def planar2supra(g: PlanarGraph) -> SupraGrid:
+def planar2supra(g: PlanarGrid) -> SupraGrid:
     """Convert a planar graph to corresponding supra-graph.
 
     Args:

@@ -13,11 +13,9 @@ A Python package to model power grid with multiple voltage levels.
 Classes
 -------
 
-.. toctree::
-   :maxdepth: 2
-
-   mgrid.planar
-   mgrid.multilayer
+- :class:`mgrid.planar.PlanarGrid`
+- :class:`mgrid.multilayer.SupraGrid`
+- :class:`mgrid.multilayer.MultilayerGrid`
 
 Classes Conversion
 ------------------

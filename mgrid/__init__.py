@@ -10,11 +10,11 @@ The multilayer network in this package has the following features:
 """
 from mgrid.convert import planar2supra
 from mgrid.multilayer import SupraGrid
-from mgrid.planar import PlanarGraph
+from mgrid.planar import PlanarGrid
 
 __version__ = "0.2.0"
 __all__ = [
     "planar2supra",
     "SupraGrid",
-    "PlanarGraph",
+    "PlanarGrid",
 ]

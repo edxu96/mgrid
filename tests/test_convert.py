@@ -4,10 +4,10 @@ from itertools import chain
 import networkx as nx
 
 from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2supra
-from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph
+from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGrid
 
 
-def test_planar2supra(simple: PlanarGraph):
+def test_planar2supra(simple: PlanarGrid):
     """Check if a planar graph can be converted to supra-graph.
 
     Args:
@@ -29,7 +29,7 @@ def test_planar2supra(simple: PlanarGraph):
     assert inter_edges.index.name == "node"
 
 
-def test_case_grid(case_grid: PlanarGraph):
+def test_case_grid(case_grid: PlanarGrid):
     """Check the case with 208 intra-edges and 34 inter-edges.
 
     Args:
@@ -40,4 +40,4 @@ def test_case_grid(case_grid: PlanarGraph):
     assert nx.is_frozen(res)
     assert res.inter_edges.shape == (35, 4)
     assert res.number_of_edges() == 208 + 35
-    assert res.idx.shape[0] == 244
+    assert res.nodelist.shape[0] == 244
