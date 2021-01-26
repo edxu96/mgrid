@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>planar &mdash; mgrid v0.2.0 documentation</title>
+  <title>planar &mdash; mgrid v0.2.2 documentation</title>
 
 
 
@@ -215,13 +215,18 @@ know why.</p></li>
 
 <dl class="py method">
 <dt id="mgrid.planar.PlanarGrid.add_inter_node">
-<code class="sig-name descname">add_inter_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">upper</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/planar.html#PlanarGrid.add_inter_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.planar.PlanarGrid.add_inter_node" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_inter_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">upper</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/planar.html#PlanarGrid.add_inter_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.planar.PlanarGrid.add_inter_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a planar node to an inter-node with an adjacent layer.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Upper layer has a smaller integer index.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the inter-node.</p></li>
-<li><p><strong>upper</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – whether to add inter-node with upper layer.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the inter-node.</p></li>
+<li><p><strong>upper</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – whether the other terminal of the corresponding
+inter-edge is on upper layer.</p></li>
 </ul>
 </dd>
 </dl>

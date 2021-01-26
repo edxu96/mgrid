@@ -184,26 +184,30 @@ class PlanarGrid(nx.DiGraph):
 
         return (upper, lower)
 
-    def add_inter_node(self, node: str, upper: Optional[bool] = True):
+    def add_inter_node(self, name: str, upper: Optional[bool] = True):
         """Turn a planar node to an inter-node with an adjacent layer.
 
+        Warning:
+            Upper layer has a smaller integer index.
+
         Args:
-            node: name of the inter-node.
-            upper: whether to add inter-node with upper layer.
+            name: name of the inter-node.
+            upper: whether the other terminal of the corresponding
+                inter-edge is on upper layer.
         """
-        if node not in self.nodes:
-            LOGGER.error(f"Node {node} does not exist.")
-        elif node in self.inter_nodes.index:
-            LOGGER.error(f"Inter-node {node} already exist.")
+        if name not in self.nodes:
+            LOGGER.error(f"Node {name} does not exist.")
+        elif name in self.inter_nodes.index:
+            LOGGER.error(f"Inter-node {name} already exist.")
         else:
-            layer = self.find_layer(node)[0]
+            layer = self.find_layer(name)[0]
             if upper:
                 upper = layer - 1
                 lower = layer
 
                 if upper not in self.layers:
                     self.layers.add(upper)
-                    LOGGER.info(f"New top layer {upper} resulted from {node}.")
+                    LOGGER.info(f"New top layer {upper} resulted from {name}.")
             else:
                 upper = layer
                 lower = layer + 1
@@ -211,13 +215,13 @@ class PlanarGrid(nx.DiGraph):
                 if lower not in self.layers:
                     self.layers.add(lower)
                     LOGGER.info(
-                        f"New bottom layer {lower} resulted from {node}."
+                        f"New bottom layer {lower} resulted from {name}."
                     )
 
             df_new = pd.DataFrame(
-                {"upper": upper, "lower": lower}, index=[node]
+                {"upper": upper, "lower": lower}, index=[name]
             )
             self.inter_nodes = self.inter_nodes.append(df_new)
             LOGGER.info(
-                f"New inter-node {node} for layer {upper} and {lower}."
+                f"New inter-node {name} for layer {upper} and {lower}."
             )

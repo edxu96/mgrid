@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>mgrid.convert &mdash; mgrid v0.2.0 documentation</title>
+  <title>mgrid.convert &mdash; mgrid v0.2.2 documentation</title>
 
 
 
@@ -241,10 +241,13 @@
 
     <span class="c1"># Build nodelist using dictionary for nodes in different layers.</span>
     <span class="n">keys_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">node_dict</span><span class="p">)</span>
-    <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-        <span class="n">data</span><span class="o">=</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_sorted</span><span class="p">]),</span>
+    <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="n">chain</span><span class="p">(</span>
+                <span class="o">*</span><span class="p">[[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_sorted</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">},</span>
         <span class="n">index</span><span class="o">=</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">node_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_sorted</span><span class="p">]),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;layer&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Build supra-grid.</span>

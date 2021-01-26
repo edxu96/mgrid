@@ -10,7 +10,7 @@ copyright = f"2020-{date.today().year}, Edward Xu"  # noqa: A001
 author = "Edward Xu"
 
 # The full version, including alpha/beta/rc tags
-release = "v0.2.0"
+release = "v0.2.2"
 
 # -- General configuration ---------------------------------------------------
 
