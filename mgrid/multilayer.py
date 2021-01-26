@@ -4,7 +4,7 @@ from typing import Optional
 import networkx as nx
 
 
-class MultilayerGrid(nx.DiGraph):
+class SupraGrid(nx.DiGraph):
     """Power grid with multiple voltage levels as multilayer graph.
 
     Note:
@@ -26,6 +26,7 @@ class MultilayerGrid(nx.DiGraph):
         inter_edges (DataFrame): correspondence between inter-nodes in
             planar graph and inter-edges in multilayer graph. The index
             is "node", and two columns are "upper" & "lower".
+        nodelist (Series): sorted nodelist containing layer information.
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -48,3 +49,4 @@ class MultilayerGrid(nx.DiGraph):
 
         self.intra_edges = None
         self.inter_edges = None
+        self.nodelist = None

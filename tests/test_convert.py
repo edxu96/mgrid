@@ -3,18 +3,18 @@ from itertools import chain
 
 import networkx as nx
 
-from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2multilayer
+from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2supra
 from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph
 
 
-def test_planar2multilayer(simple: PlanarGraph):
-    """Check if a planar graph can be converted to multilayer graph.
+def test_planar2supra(simple: PlanarGraph):
+    """Check if a planar graph can be converted to supra-graph.
 
     Args:
         simple: a simple planar graph with two intra-edges and one
             inter-edge.
     """
-    res = planar2multilayer(simple)
+    res = planar2supra(simple)
 
     assert nx.is_frozen(res)
 
@@ -35,8 +35,9 @@ def test_case_grid(case_grid: PlanarGraph):
     Args:
         case_grid: the case with 208 intra-edges and 34 inter-edges.
     """
-    res = planar2multilayer(case_grid)
+    res = planar2supra(case_grid)
 
     assert nx.is_frozen(res)
     assert res.inter_edges.shape == (35, 4)
     assert res.number_of_edges() == 208 + 35
+    assert res.idx.shape[0] == 244
