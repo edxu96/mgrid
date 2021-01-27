@@ -12,7 +12,7 @@ from mgrid.convert import planar2supra
 from mgrid.multilayer import SupraGrid
 from mgrid.planar import PlanarGrid
 
-__version__ = "0.2.2"
+__version__ = "0.2.4"
 __all__ = [
     "planar2supra",
     "SupraGrid",

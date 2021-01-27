@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>mgrid.planar &mdash; mgrid v0.2.2 documentation</title>
+  <title>mgrid.planar &mdash; mgrid v0.2.4 documentation</title>
 
 
 
@@ -341,7 +341,11 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PlanarGrid.add_inter_node"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Turn a planar node to an inter-node with an adjacent layer.</span>
+        <span class="sd">&quot;&quot;&quot;Specify a planar node as an inter-node with an adjacent layer.</span>
+
+<span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in some</span>
+<span class="sd">        layer, then it will not be recognised as an inter-node. It must be</span>
+<span class="sd">        specified manually.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            Upper layer has a smaller integer index.</span>
@@ -363,7 +367,9 @@
 
                 <span class="k">if</span> <span class="n">upper</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span>
-                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New top layer </span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2"> resulted from </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;New top layer </span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2"> resulted from node </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">upper</span> <span class="o">=</span> <span class="n">layer</span>
                 <span class="n">lower</span> <span class="o">=</span> <span class="n">layer</span> <span class="o">+</span> <span class="mi">1</span>

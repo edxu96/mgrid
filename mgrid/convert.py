@@ -77,9 +77,10 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
             Returns:
                 Node name of source or target.
             """
-            node_new = (str(node) + f"_layer{row[COLUMNS[binary]]}",)
+            layer = row[COLUMNS[binary]]
+            node_new = str(node) + f"_layer{layer}"
             inter_edges.loc[node, COLUMNS_DI[binary]] = node_new
-            node_dict[row[COLUMNS[binary]]].add(node_new)
+            node_dict[layer].add(node_new)
             return node_new
 
         source = init_node4inter(0)

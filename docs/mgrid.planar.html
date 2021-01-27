@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>planar &mdash; mgrid v0.2.2 documentation</title>
+  <title>planar &mdash; mgrid v0.2.4 documentation</title>
 
 
 
@@ -216,7 +216,10 @@ know why.</p></li>
 <dl class="py method">
 <dt id="mgrid.planar.PlanarGrid.add_inter_node">
 <code class="sig-name descname">add_inter_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">upper</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/planar.html#PlanarGrid.add_inter_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.planar.PlanarGrid.add_inter_node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a planar node to an inter-node with an adjacent layer.</p>
+<dd><p>Specify a planar node as an inter-node with an adjacent layer.</p>
+<p>Sometimes, one terminal of an inter-edge is an isolated node in some
+layer, then it will not be recognised as an inter-node. It must be
+specified manually.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Upper layer has a smaller integer index.</p>
