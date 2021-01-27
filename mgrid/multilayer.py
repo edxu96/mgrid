@@ -32,12 +32,15 @@ class SupraGrid(nx.DiGraph):
 
     Attributes:
         intra_edges (DataFrame): correspondence between intra-edges in
-            planar graph and in multilayer graph. The index has two
-            levels, "source_original" and "target_original". There are
-            at least three columns, "source", "target", and "layer".
+            planar graph and in multilayer graph. Two-level index,
+            "source_original" and "target_original". "source", object,
+            source bus. "target", object, target bus. "layer", int64,
+            integer index of layer.
         inter_edges (DataFrame): correspondence between inter-nodes in
-            planar graph and inter-edges in multilayer graph. The index
-            is "node", and two columns are "upper" & "lower".
+            planar graph and inter-edges in multilayer graph. No index.
+            "upper", int64, integer index of upper layer. "lower",
+            int64, integer index of lower layer. "source", object,
+            source bus. "target", object, target bus.
         nodelist (Series): sorted nodelist containing layer information.
     """
 

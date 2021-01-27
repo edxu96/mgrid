@@ -6,6 +6,9 @@ import networkx as nx
 from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2supra
 from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGrid
 
+_columns_inter_edges = ["upper", "lower", "source", "target"]
+_columns_intra_edges = ["source", "target", "layer"]
+
 
 def test_planar2supra(simple: PlanarGrid):
     """Check if a planar graph can be converted to supra-graph.
@@ -38,7 +41,15 @@ def test_case_grid(case_grid: PlanarGrid):
     res = planar2supra(case_grid)
 
     assert nx.is_frozen(res)
-    assert res.inter_edges.shape == (35, 4)
     assert res.number_of_edges() == 208 + 35
     assert res.nodelist.shape == (244, 1)
-    assert res.intra_edges.shape == (208, 3)
+
+    inter_edges = res.inter_edges
+    assert res.inter_edges.shape == (35, 4)
+    assert all(col in inter_edges for col in _columns_inter_edges)
+    assert inter_edges.index.name is None
+
+    intra_edges = res.intra_edges
+    assert intra_edges.shape == (208, 3)
+    assert all(col in intra_edges for col in _columns_intra_edges)
+    assert intra_edges.index.names == ["source_original", "target_original"]
