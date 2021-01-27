@@ -5,6 +5,7 @@ from typing import Tuple
 import networkx as nx
 import pandas as pd
 
+from mgrid.log import LOGGER
 from mgrid.multilayer import SupraGrid
 from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGrid
 
@@ -39,16 +40,20 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
     intra_edges[COLUMNS_DI_ORIGINAL[1]] = intra_edges[COLUMNS_DI[1]]
     intra_edges.set_index(COLUMNS_DI_ORIGINAL, inplace=True)
 
-    def update_intra_edges(
-        edges_original: Tuple[str, str], edges: Tuple[str, str]
-    ):
+    def update_intra_edges(edge: Tuple[str, str], edge_new: Tuple[str, str]):
         """Update intra-edges' relationship after splitting inter-nodes.
 
         Args:
-            edges_original: intra-edges in planar graph.
-            edges: corresponding edge in supra-graph.
+            edge: intra-edges in planar graph.
+            edge_new: corresponding edge in supra-graph.
         """
-        intra_edges.loc[edges_original, COLUMNS_DI] = edges
+        edges_original = intra_edges.index[
+            (intra_edges[COLUMNS_DI[0]] == edge[0])
+            & (intra_edges[COLUMNS_DI[1]] == edge[1])
+        ].tolist()
+        if len(edges_original) != 1:
+            LOGGER.error(f"The origin of edge {edge} is incorrect.")
+        intra_edges.loc[edges_original[0], COLUMNS_DI] = edge_new
 
     # Split all the inter-nodes to inter-edges.
     for node, row in g.inter_nodes.iterrows():
