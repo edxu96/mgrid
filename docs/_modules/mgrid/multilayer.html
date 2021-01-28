@@ -188,12 +188,15 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        intra_edges (DataFrame): correspondence between intra-edges in</span>
-<span class="sd">            planar graph and in multilayer graph. The index has two</span>
-<span class="sd">            levels, &quot;source_original&quot; and &quot;target_original&quot;. There are</span>
-<span class="sd">            at least three columns, &quot;source&quot;, &quot;target&quot;, and &quot;layer&quot;.</span>
+<span class="sd">            planar graph and in multilayer graph. Two-level index,</span>
+<span class="sd">            &quot;source_original&quot; and &quot;target_original&quot;. &quot;source&quot;, object,</span>
+<span class="sd">            source bus. &quot;target&quot;, object, target bus. &quot;layer&quot;, int64,</span>
+<span class="sd">            integer index of layer.</span>
 <span class="sd">        inter_edges (DataFrame): correspondence between inter-nodes in</span>
-<span class="sd">            planar graph and inter-edges in multilayer graph. The index</span>
-<span class="sd">            is &quot;node&quot;, and two columns are &quot;upper&quot; &amp; &quot;lower&quot;.</span>
+<span class="sd">            planar graph and inter-edges in multilayer graph. No index.</span>
+<span class="sd">            &quot;upper&quot;, int64, integer index of upper layer. &quot;lower&quot;,</span>
+<span class="sd">            int64, integer index of lower layer. &quot;source&quot;, object,</span>
+<span class="sd">            source bus. &quot;target&quot;, object, target bus.</span>
 <span class="sd">        nodelist (Series): sorted nodelist containing layer information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

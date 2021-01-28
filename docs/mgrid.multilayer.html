@@ -196,9 +196,10 @@ is frozen using <code class="docutils literal notranslate"><span class="pre">net
 <dt id="mgrid.multilayer.SupraGrid.intra_edges">
 <code class="sig-name descname">intra_edges</code><a class="headerlink" href="#mgrid.multilayer.SupraGrid.intra_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>correspondence between intra-edges in
-planar graph and in multilayer graph. The index has two
-levels, “source_original” and “target_original”. There are
-at least three columns, “source”, “target”, and “layer”.</p>
+planar graph and in multilayer graph. Two-level index,
+“source_original” and “target_original”. “source”, object,
+source bus. “target”, object, target bus. “layer”, int64,
+integer index of layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>DataFrame</p>
@@ -210,8 +211,10 @@ at least three columns, “source”, “target”, and “layer”.</p>
 <dt id="mgrid.multilayer.SupraGrid.inter_edges">
 <code class="sig-name descname">inter_edges</code><a class="headerlink" href="#mgrid.multilayer.SupraGrid.inter_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>correspondence between inter-nodes in
-planar graph and inter-edges in multilayer graph. The index
-is “node”, and two columns are “upper” &amp; “lower”.</p>
+planar graph and inter-edges in multilayer graph. No index.
+“upper”, int64, integer index of upper layer. “lower”,
+int64, integer index of lower layer. “source”, object,
+source bus. “target”, object, target bus.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>DataFrame</p>
