@@ -196,10 +196,44 @@ is frozen using <code class="docutils literal notranslate"><span class="pre">net
 <dt id="mgrid.multilayer.SupraGrid.intra_edges">
 <code class="sig-name descname">intra_edges</code><a class="headerlink" href="#mgrid.multilayer.SupraGrid.intra_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>correspondence between intra-edges in
-planar graph and in multilayer graph. Two-level index,
-“source_original” and “target_original”. “source”, object,
-source bus. “target”, object, target bus. “layer”, int64,
-integer index of layer.</p>
+planar graph and in multilayer graph.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 13%" />
+<col style="width: 41%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+<th class="head"><p>is_index</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>source_original</p></td>
+<td><p>object</p></td>
+<td><p>source in planar graph</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>target_original</p></td>
+<td><p>object</p></td>
+<td><p>target in planar graph</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>object</p></td>
+<td><p>current source bus</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>target</p></td>
+<td><p>object</p></td>
+<td><p>current target bus</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>DataFrame</p>
@@ -211,10 +245,44 @@ integer index of layer.</p>
 <dt id="mgrid.multilayer.SupraGrid.inter_edges">
 <code class="sig-name descname">inter_edges</code><a class="headerlink" href="#mgrid.multilayer.SupraGrid.inter_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>correspondence between inter-nodes in
-planar graph and inter-edges in multilayer graph. No index.
-“upper”, int64, integer index of upper layer. “lower”,
-int64, integer index of lower layer. “source”, object,
-source bus. “target”, object, target bus.</p>
+planar graph and inter-edges in multilayer graph.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 14%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+<th class="head"><p>is_index</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>upper</p></td>
+<td><p>int64</p></td>
+<td><p>integer index of upper layer</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>lower</p></td>
+<td><p>int64</p></td>
+<td><p>integer index of lower layer</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>object</p></td>
+<td><p>source bus in supra graph</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>target</p></td>
+<td><p>object</p></td>
+<td><p>target bus in supra graph</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>DataFrame</p>
@@ -225,10 +293,38 @@ source bus. “target”, object, target bus.</p>
 <dl class="py attribute">
 <dt id="mgrid.multilayer.SupraGrid.nodelist">
 <code class="sig-name descname">nodelist</code><a class="headerlink" href="#mgrid.multilayer.SupraGrid.nodelist" title="Permalink to this definition">¶</a></dt>
-<dd><p>sorted nodelist containing layer information.</p>
+<dd><p>sorted nodelist containing layer
+information.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 16%" />
+<col style="width: 49%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+<th class="head"><p>is_index</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>object</p></td>
+<td><p>node name</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>layer</p></td>
+<td><p>int64</p></td>
+<td><p>integer index of layer</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Series</p>
+<dd class="field-odd"><p>DataFrame</p>
 </dd>
 </dl>
 </dd></dl>

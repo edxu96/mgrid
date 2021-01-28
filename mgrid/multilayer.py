@@ -32,16 +32,39 @@ class SupraGrid(nx.DiGraph):
 
     Attributes:
         intra_edges (DataFrame): correspondence between intra-edges in
-            planar graph and in multilayer graph. Two-level index,
-            "source_original" and "target_original". "source", object,
-            source bus. "target", object, target bus. "layer", int64,
-            integer index of layer.
+            planar graph and in multilayer graph.
+
+            ===============  =======  ======================  ==========
+            name             dtype    definition              is_index
+            ===============  =======  ======================  ==========
+            source_original  object   source in planar graph  True
+            target_original  object   target in planar graph  True
+            source           object   current source bus      False
+            target           object   current target bus      False
+            ===============  =======  ======================  ==========
+
         inter_edges (DataFrame): correspondence between inter-nodes in
-            planar graph and inter-edges in multilayer graph. No index.
-            "upper", int64, integer index of upper layer. "lower",
-            int64, integer index of lower layer. "source", object,
-            source bus. "target", object, target bus.
-        nodelist (Series): sorted nodelist containing layer information.
+            planar graph and inter-edges in multilayer graph.
+
+            ======  =======  ============================  ==========
+            name    dtype    definition                    is_index
+            ======  =======  ============================  ==========
+            upper   int64    integer index of upper layer  False
+            lower   int64    integer index of lower layer  False
+            source  object   source bus in supra graph     False
+            target  object   target bus in supra graph     False
+            ======  =======  ============================  ==========
+
+        nodelist (DataFrame): sorted nodelist containing layer
+            information.
+
+            ======  =======  ======================  ==========
+            name    dtype    definition              is_index
+            ======  =======  ======================  ==========
+            name    object   node name               True
+            layer   int64    integer index of layer  False
+            ======  =======  ======================  ==========
+
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):

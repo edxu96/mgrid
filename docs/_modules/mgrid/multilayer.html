@@ -188,16 +188,39 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        intra_edges (DataFrame): correspondence between intra-edges in</span>
-<span class="sd">            planar graph and in multilayer graph. Two-level index,</span>
-<span class="sd">            &quot;source_original&quot; and &quot;target_original&quot;. &quot;source&quot;, object,</span>
-<span class="sd">            source bus. &quot;target&quot;, object, target bus. &quot;layer&quot;, int64,</span>
-<span class="sd">            integer index of layer.</span>
+<span class="sd">            planar graph and in multilayer graph.</span>
+
+<span class="sd">            ===============  =======  ======================  ==========</span>
+<span class="sd">            name             dtype    definition              is_index</span>
+<span class="sd">            ===============  =======  ======================  ==========</span>
+<span class="sd">            source_original  object   source in planar graph  True</span>
+<span class="sd">            target_original  object   target in planar graph  True</span>
+<span class="sd">            source           object   current source bus      False</span>
+<span class="sd">            target           object   current target bus      False</span>
+<span class="sd">            ===============  =======  ======================  ==========</span>
+
 <span class="sd">        inter_edges (DataFrame): correspondence between inter-nodes in</span>
-<span class="sd">            planar graph and inter-edges in multilayer graph. No index.</span>
-<span class="sd">            &quot;upper&quot;, int64, integer index of upper layer. &quot;lower&quot;,</span>
-<span class="sd">            int64, integer index of lower layer. &quot;source&quot;, object,</span>
-<span class="sd">            source bus. &quot;target&quot;, object, target bus.</span>
-<span class="sd">        nodelist (Series): sorted nodelist containing layer information.</span>
+<span class="sd">            planar graph and inter-edges in multilayer graph.</span>
+
+<span class="sd">            ======  =======  ============================  ==========</span>
+<span class="sd">            name    dtype    definition                    is_index</span>
+<span class="sd">            ======  =======  ============================  ==========</span>
+<span class="sd">            upper   int64    integer index of upper layer  False</span>
+<span class="sd">            lower   int64    integer index of lower layer  False</span>
+<span class="sd">            source  object   source bus in supra graph     False</span>
+<span class="sd">            target  object   target bus in supra graph     False</span>
+<span class="sd">            ======  =======  ============================  ==========</span>
+
+<span class="sd">        nodelist (DataFrame): sorted nodelist containing layer</span>
+<span class="sd">            information.</span>
+
+<span class="sd">            ======  =======  ======================  ==========</span>
+<span class="sd">            name    dtype    definition              is_index</span>
+<span class="sd">            ======  =======  ======================  ==========</span>
+<span class="sd">            name    object   node name               True</span>
+<span class="sd">            layer   int64    integer index of layer  False</span>
+<span class="sd">            ======  =======  ======================  ==========</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SupraGrid.__init__"><a class="viewcode-back" href="../../mgrid.multilayer.html#mgrid.multilayer.SupraGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
