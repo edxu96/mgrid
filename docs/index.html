@@ -165,7 +165,7 @@ the same voltage level. A directed bipartite for a pair of adjacent
 layers represents transformers connecting two voltage levels.</p>
 <p>There are two kinds of edges in multilayer network. Any intra-edge can
 only exist in a single layer, and correspond to cables. Inter-edges
-connect layers, and correspond to transformers.</p>
+connect layers, and correspond to transformers in terms of power grids.</p>
 <p>There are more features when modelling power grid as multilayer network:</p>
 <ul class="simple">
 <li><p>At least one inter-edge connecting upper layer for a component</p></li>
@@ -180,17 +180,54 @@ with inter-edges.</p></li>
 <li><p>Terminals of any inter-edges are unique. Put another way, there is no
 pair of inter-edges sharing a terminal.</p></li>
 </ul>
-<div class="section" id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p>There are at least eight operations:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGrid" title="mgrid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.planar.PlanarGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.SupraGrid</span></code></a></p></li>
-<li><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.MultilayerGrid" title="mgrid.multilayer.MultilayerGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.MultilayerGrid</span></code></a></p></li>
+<li><p>Model a power grid as <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> using data on cables.</p></li>
+<li><p>Specify some planar nodes to be inter-nodes.</p></li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> to <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>.</p></li>
+<li><p>Get subgraph in one layer with some inter-nodes.</p></li>
+<li><p>Get all the nodes in one layer in <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>.</p></li>
+<li><p>Get subgraph in one layer in <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>.</p></li>
+<li><p>Select inter-nodes in <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> (inter-edges in <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>).</p></li>
+<li><p>Find layer of a node in <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> or <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>.</p></li>
 </ul>
+<div class="section" id="three-representation-methods">
+<h2>Three Representation Methods<a class="headerlink" href="#three-representation-methods" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 57%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python class</p></th>
+<th class="head"><p>intra-edge</p></th>
+<th class="head"><p>inter-edge</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGrid" title="mgrid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.planar.PlanarGrid</span></code></a></p></td>
+<td><p>in planar graph</p></td>
+<td><p>contracted</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.SupraGrid</span></code></a></p></td>
+<td><p>in planar graph</p></td>
+<td><p>in planar graph</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.MultilayerGrid" title="mgrid.multilayer.MultilayerGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.MultilayerGrid</span></code></a></p></td>
+<td><p>in layer</p></td>
+<td><p>between layers</p></td>
+</tr>
+</tbody>
+</table>
+<p>Usually, datasets are stored with respect to <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code>, then all
+the edges and nodes can have geographical information. When modelling,
+it should be converted to <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>. As a result, all the nodes can
+be seen as buses, and cables &amp; transformers can have two terminals.</p>
 </div>
 <div class="section" id="module-mgrid.convert">
-<span id="classes-conversion"></span><h2>Classes Conversion<a class="headerlink" href="#module-mgrid.convert" title="Permalink to this headline">¶</a></h2>
-<p>Convert multilayer graph and planar graph.</p>
+<span id="conversion-between-representations"></span><h2>Conversion between Representations<a class="headerlink" href="#module-mgrid.convert" title="Permalink to this headline">¶</a></h2>
+<p>Function to convert planar graph to supra-graph.</p>
 <dl class="py function">
 <dt id="mgrid.convert.planar2supra">
 <code class="sig-prename descclassname">mgrid.convert.</code><code class="sig-name descname">planar2supra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/convert.html#planar2supra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.convert.planar2supra" title="Permalink to this definition">¶</a></dt>

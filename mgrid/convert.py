@@ -1,4 +1,4 @@
-"""Convert multilayer graph and planar graph."""
+"""Function to convert planar graph to supra-graph."""
 from itertools import chain
 from typing import Tuple
 

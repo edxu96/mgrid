@@ -177,8 +177,16 @@
 <span class="sd">        directly.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        inter_nodes (DataFrame): all the inter-nodes, with two columns,</span>
-<span class="sd">            &quot;upper&quot; and &quot;lower&quot;.</span>
+<span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
+
+<span class="sd">            ======  =======  =====================  ==========</span>
+<span class="sd">            name    dtype    definition             is_index</span>
+<span class="sd">            ======  =======  =====================  ==========</span>
+<span class="sd">            node    object   name in planar graph   True</span>
+<span class="sd">            upper   int64    connected upper layer  False</span>
+<span class="sd">            lower   int64    connected lower layer  False</span>
+<span class="sd">            ======  =======  =====================  ==========</span>
+
 <span class="sd">        layers (Set[int]): integer indices of all the layers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

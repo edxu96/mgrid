@@ -49,10 +49,11 @@ class SupraGrid(nx.DiGraph):
             ======  =======  ============================  ==========
             name    dtype    definition                    is_index
             ======  =======  ============================  ==========
+            node    object   name in planar graph          True
             upper   int64    integer index of upper layer  False
             lower   int64    integer index of lower layer  False
-            source  object   source bus in supra graph     False
-            target  object   target bus in supra graph     False
+            source  object   source node in supra graph    False
+            target  object   target node in supra graph    False
             ======  =======  ============================  ==========
 
         nodelist (DataFrame): sorted nodelist containing layer

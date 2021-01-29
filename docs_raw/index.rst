@@ -15,7 +15,7 @@ layers represents transformers connecting two voltage levels.
 
 There are two kinds of edges in multilayer network. Any intra-edge can
 only exist in a single layer, and correspond to cables. Inter-edges
-connect layers, and correspond to transformers.
+connect layers, and correspond to transformers in terms of power grids.
 
 There are more features when modelling power grid as multilayer network:
 
@@ -31,15 +31,35 @@ There are more features when modelling power grid as multilayer network:
 - Terminals of any inter-edges are unique. Put another way, there is no
   pair of inter-edges sharing a terminal.
 
-Classes
--------
+There are at least eight operations:
 
-- :class:`mgrid.planar.PlanarGrid`
-- :class:`mgrid.multilayer.SupraGrid`
-- :class:`mgrid.multilayer.MultilayerGrid`
+- Model a power grid as ``PlanarGrid`` using data on cables.
+- Specify some planar nodes to be inter-nodes.
+- Convert ``PlanarGrid`` to ``SupraGrid``.
+- Get subgraph in one layer with some inter-nodes.
+- Get all the nodes in one layer in ``SupraGrid``.
+- Get subgraph in one layer in ``SupraGrid``.
+- Select inter-nodes in ``PlanarGrid`` (inter-edges in ``SupraGrid``).
+- Find layer of a node in ``PlanarGrid`` or ``SupraGrid``.
 
-Classes Conversion
-------------------
+Three Representation Methods
+----------------------------
+
+======================================== =============== ===============
+Python class                             intra-edge      inter-edge
+======================================== =============== ===============
+:class:`mgrid.planar.PlanarGrid`         in planar graph contracted
+:class:`mgrid.multilayer.SupraGrid`      in planar graph in planar graph
+:class:`mgrid.multilayer.MultilayerGrid` in layer        between layers
+======================================== =============== ===============
+
+Usually, datasets are stored with respect to ``PlanarGrid``, then all
+the edges and nodes can have geographical information. When modelling,
+it should be converted to ``SupraGrid``. As a result, all the nodes can
+be seen as buses, and cables & transformers can have two terminals.
+
+Conversion between Representations
+----------------------------------
 
 .. automodule:: mgrid.convert
    :members:

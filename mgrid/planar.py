@@ -21,8 +21,16 @@ class PlanarGrid(nx.DiGraph):
         directly.
 
     Attributes:
-        inter_nodes (DataFrame): all the inter-nodes, with two columns,
-            "upper" and "lower".
+        inter_nodes (DataFrame): information on inter-nodes.
+
+            ======  =======  =====================  ==========
+            name    dtype    definition             is_index
+            ======  =======  =====================  ==========
+            node    object   name in planar graph   True
+            upper   int64    connected upper layer  False
+            lower   int64    connected lower layer  False
+            ======  =======  =====================  ==========
+
         layers (Set[int]): integer indices of all the layers.
     """
 
@@ -185,7 +193,11 @@ class PlanarGrid(nx.DiGraph):
         return (upper, lower)
 
     def add_inter_node(self, name: str, upper: Optional[bool] = True):
-        """Turn a planar node to an inter-node with an adjacent layer.
+        """Specify a planar node as an inter-node with an adjacent layer.
+
+        Sometimes, one terminal of an inter-edge is an isolated node in some
+        layer, then it will not be recognised as an inter-node. It must be
+        specified manually.
 
         Warning:
             Upper layer has a smaller integer index.
@@ -207,7 +219,9 @@ class PlanarGrid(nx.DiGraph):
 
                 if upper not in self.layers:
                     self.layers.add(upper)
-                    LOGGER.info(f"New top layer {upper} resulted from {name}.")
+                    LOGGER.info(
+                        f"New top layer {upper} resulted from node {name}."
+                    )
             else:
                 upper = layer
                 lower = layer + 1

@@ -2,6 +2,7 @@
 from collections import namedtuple
 
 import pandas as pd
+from pandas.core.frame import DataFrame
 from tabulate import tabulate
 
 Column = namedtuple(
@@ -26,6 +27,7 @@ INTRA = pd.DataFrame(
 )
 INTER = pd.DataFrame(
     [
+        Index("node", "object", "name in planar graph"),
         Column("upper", "int64", "integer index of upper layer"),
         Column("lower", "int64", "integer index of lower layer"),
         Column("source", "object", "source node in supra graph"),
@@ -40,8 +42,17 @@ NODE = pd.DataFrame(
 )
 
 
+def print_columns(df: DataFrame):
+    """Print info on index and columns as a RST table.
+
+    Args:
+        df: info on names and data types of index and columns.
+    """
+    print(tabulate(df, headers="keys", tablefmt="rst", showindex=False))
+
+
 def test_print_columns():
     """Print columns of dataframes."""
-    print(tabulate(INTRA, headers="keys", tablefmt="rst", showindex=False))
-    print(tabulate(INTER, headers="keys", tablefmt="rst", showindex=False))
-    print(tabulate(NODE, headers="keys", tablefmt="rst", showindex=False))
+    print_columns(INTER)
+    print_columns(INTRA)
+    print_columns(NODE)
