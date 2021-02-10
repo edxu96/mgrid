@@ -23,6 +23,7 @@ Sphinx = "^3.4.3"
 sphinx-autodoc-typehints = "^1.11.1"
 sphinx-rtd-theme = "^0.5.1"
 tabulate = "^0.8.7"
+docutils = "^0.16"
 
 [tool.black]
 line-length = 79
