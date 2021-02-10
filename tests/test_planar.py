@@ -5,20 +5,6 @@ from pandas.core.frame import DataFrame
 import pytest as pt
 
 from mgrid.planar import COLUMNS, PlanarGrid
-from .test_supra import Column, Index, print_columns
-
-INTER = pd.DataFrame(
-    [
-        Index("node", "object", "name in planar graph"),
-        Column("upper", "int64", "connected upper layer"),
-        Column("lower", "int64", "connected lower layer"),
-    ]
-)
-
-
-def test_print_columns():
-    """Print columns of dataframes."""
-    print_columns(INTER)
 
 
 @pt.fixture(scope="module")

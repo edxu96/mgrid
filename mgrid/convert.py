@@ -1,4 +1,5 @@
 """Function to convert planar graph to supra-graph."""
+from copy import deepcopy
 from itertools import chain
 from typing import Tuple
 
@@ -30,7 +31,7 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
         node_dict[layer] = set(g.layer_graph(layer).nodes) - inter_nodes
 
     # Initiate dataframe for inter-edges.
-    inter_edges = g.inter_nodes
+    inter_edges = deepcopy(g.inter_nodes)
     inter_edges["source"] = "default_"
     inter_edges["target"] = "default_"
 
@@ -104,5 +105,6 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
     res = SupraGrid(dg)
     res.intra_edges = intra_edges
     res.inter_edges = inter_edges
+    res.inter_edges.index.name = "node"
     res.nodelist = nodelist
     return res

@@ -23,15 +23,15 @@ class PlanarGrid(nx.DiGraph):
     Attributes:
         inter_nodes (DataFrame): information on inter-nodes.
 
-            ======  =======  =====================  ==========
-            name    dtype    definition             is_index
-            ======  =======  =====================  ==========
-            node    object   name in planar graph   True
-            upper   int64    connected upper layer  False
-            lower   int64    connected lower layer  False
-            ======  =======  =====================  ==========
+            .. csv-table::
+                :header: name, dtype, definition
+
+                node, object, name in planar graph
+                upper, int64, connected upper layer
+                lower, int64, connected lower layer
 
         layers (Set[int]): integer indices of all the layers.
+
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):

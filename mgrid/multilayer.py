@@ -34,37 +34,34 @@ class SupraGrid(nx.DiGraph):
         intra_edges (DataFrame): correspondence between intra-edges in
             planar graph and in multilayer graph.
 
-            ===============  =======  ======================  ==========
-            name             dtype    definition              is_index
-            ===============  =======  ======================  ==========
-            source_original  object   source in planar graph  True
-            target_original  object   target in planar graph  True
-            source           object   current source bus      False
-            target           object   current target bus      False
-            ===============  =======  ======================  ==========
+            .. csv-table::
+                :header: name, dtype, definition
+
+                source_original (index), object, target in planar graph
+                target_original (index), object, target in planar graph
+                source, object, current source bus
+                target, object, current target bus
 
         inter_edges (DataFrame): correspondence between inter-nodes in
             planar graph and inter-edges in multilayer graph.
 
-            ======  =======  ============================  ==========
-            name    dtype    definition                    is_index
-            ======  =======  ============================  ==========
-            node    object   name in planar graph          True
-            upper   int64    integer index of upper layer  False
-            lower   int64    integer index of lower layer  False
-            source  object   source node in supra graph    False
-            target  object   target node in supra graph    False
-            ======  =======  ============================  ==========
+            .. csv-table::
+                :header: name, dtype, definition
+
+                node (index), object, name in planar graph
+                upper, int64, integer index of upper layer
+                lower, int64, integer index of lower layer
+                source, object, source node in supra graph
+                target, object, target node in supra graph
 
         nodelist (DataFrame): sorted nodelist containing layer
             information.
 
-            ======  =======  ======================  ==========
-            name    dtype    definition              is_index
-            ======  =======  ======================  ==========
-            name    object   node name               True
-            layer   int64    integer index of layer  False
-            ======  =======  ======================  ==========
+            .. csv-table::
+                :header: name, dtype, definition
+
+                name (index), object, node name
+                layer, int64, integer index of layer
 
     """
 

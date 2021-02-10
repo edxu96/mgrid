@@ -190,37 +190,34 @@
 <span class="sd">        intra_edges (DataFrame): correspondence between intra-edges in</span>
 <span class="sd">            planar graph and in multilayer graph.</span>
 
-<span class="sd">            ===============  =======  ======================  ==========</span>
-<span class="sd">            name             dtype    definition              is_index</span>
-<span class="sd">            ===============  =======  ======================  ==========</span>
-<span class="sd">            source_original  object   source in planar graph  True</span>
-<span class="sd">            target_original  object   target in planar graph  True</span>
-<span class="sd">            source           object   current source bus      False</span>
-<span class="sd">            target           object   current target bus      False</span>
-<span class="sd">            ===============  =======  ======================  ==========</span>
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                source_original (index), object, target in planar graph</span>
+<span class="sd">                target_original (index), object, target in planar graph</span>
+<span class="sd">                source, object, current source bus</span>
+<span class="sd">                target, object, current target bus</span>
 
 <span class="sd">        inter_edges (DataFrame): correspondence between inter-nodes in</span>
 <span class="sd">            planar graph and inter-edges in multilayer graph.</span>
 
-<span class="sd">            ======  =======  ============================  ==========</span>
-<span class="sd">            name    dtype    definition                    is_index</span>
-<span class="sd">            ======  =======  ============================  ==========</span>
-<span class="sd">            node    object   name in planar graph          True</span>
-<span class="sd">            upper   int64    integer index of upper layer  False</span>
-<span class="sd">            lower   int64    integer index of lower layer  False</span>
-<span class="sd">            source  object   source node in supra graph    False</span>
-<span class="sd">            target  object   target node in supra graph    False</span>
-<span class="sd">            ======  =======  ============================  ==========</span>
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                node (index), object, name in planar graph</span>
+<span class="sd">                upper, int64, integer index of upper layer</span>
+<span class="sd">                lower, int64, integer index of lower layer</span>
+<span class="sd">                source, object, source node in supra graph</span>
+<span class="sd">                target, object, target node in supra graph</span>
 
 <span class="sd">        nodelist (DataFrame): sorted nodelist containing layer</span>
 <span class="sd">            information.</span>
 
-<span class="sd">            ======  =======  ======================  ==========</span>
-<span class="sd">            name    dtype    definition              is_index</span>
-<span class="sd">            ======  =======  ======================  ==========</span>
-<span class="sd">            name    object   node name               True</span>
-<span class="sd">            layer   int64    integer index of layer  False</span>
-<span class="sd">            ======  =======  ======================  ==========</span>
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), object, node name</span>
+<span class="sd">                layer, int64, integer index of layer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
