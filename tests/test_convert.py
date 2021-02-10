@@ -47,9 +47,20 @@ def test_case_grid(case_grid: PlanarGrid):
     inter_edges = res.inter_edges
     assert res.inter_edges.shape == (35, 4)
     assert all(col in inter_edges for col in _columns_inter_edges)
-    assert inter_edges.index.name is None
+    assert inter_edges.index.name == "node"
 
     intra_edges = res.intra_edges
     assert intra_edges.shape == (208, 3)
     assert all(col in intra_edges for col in _columns_intra_edges)
     assert intra_edges.index.names == ["source_original", "target_original"]
+
+
+def test_case_large(case_large: PlanarGrid):
+    """Check the case with 8 planar edges and 2 inter-edges.
+
+    Args:
+        case_large: a test case with 8 planar edges and 2 inter-edges.
+    """
+    res = planar2supra(case_large)
+    assert res.number_of_edges() == 8 + 2
+    assert res.number_of_nodes() == 7 + 2

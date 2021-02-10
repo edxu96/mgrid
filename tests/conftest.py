@@ -17,6 +17,22 @@ LAYERS = {
 
 
 @pt.fixture(scope="package")
+def case_large() -> PlanarGrid:
+    """Init a case with 8 planar edges and 2 inter-edges.
+
+    Returns:
+        A test case with 8 planar edges and 2 inter-edges.
+    """
+    df = pd.read_csv("./tests/planar_large.csv")
+    res = PlanarGrid.from_edgelist(df, "source", "target")
+    res.add_inter_node("n3", upper=False)
+
+    assert res.number_of_edges() == 8
+    assert res.number_of_nodes() == 7
+    return res
+
+
+@pt.fixture(scope="package")
 def case_grid() -> PlanarGrid:
     """Init a case with 207 edges and **voltage** attributes.
 
