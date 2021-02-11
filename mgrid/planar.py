@@ -144,9 +144,28 @@ class PlanarGraph(nx.DiGraph):
         return res
 
     @property
-    def planar_nodes(self) -> DataFrame:
-        """Gather all the planar nodes in a dataframe."""
-        pass
+    def intra_nodes(self) -> DataFrame:
+        """Gather all the intra-nodes in a dataframe.
+
+        Returns:
+            A dataframe for intra-nodes.
+
+            .. csv-table::
+                :header: name, dtype, definition
+
+                name (index), object, node name
+                layer, int64, to which layer the node belongs
+
+        """
+        inter_nodes = set(self.inter_nodes.index)
+        intra_nodes = [node for node in self.nodes if node not in inter_nodes]
+        res = pd.DataFrame(
+            [self.find_layer(node)[0] for node in intra_nodes],
+            columns=["layer"],
+            index=intra_nodes,
+        )
+        res.index.name = "name"
+        return res
 
     def layer_edges(self, layer: int) -> Set[tuple]:
         """Gather all the edges and edge attributes in one layer.

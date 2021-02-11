@@ -86,10 +86,14 @@ def test_planar_grid(data_grid: Tuple[DataFrame, DataFrame]):
     planar.add_inter_node("EVO_2100520", TransformerStd("test"), upper=False)
     assert planar.find_layer("EVO_2100520") == (1, 2)
 
+    # Check if inter-nodes are specified correctly.
     inter_nodes = data_grid[1].loc[
         data_grid[1]["layer"].isin([0.5, 1.5]), COL_TRANS
     ]
     assert set(planar.inter_nodes.index) == set(inter_nodes["name"])
+
+    assert planar.intra_nodes.shape == (174, 1)
+    assert planar.intra_nodes.index.name == "name"
 
     # Check dataframe for conversion elements.
     assert list(planar.conversion.columns) == ["node", "element", "layer"]
