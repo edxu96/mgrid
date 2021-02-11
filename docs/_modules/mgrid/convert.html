@@ -87,6 +87,12 @@
 
 
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.power_flow.element.html">power_flow.element</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">bibliography</a></li>
 </ul>
 
@@ -169,7 +175,7 @@
 <span class="n">COLUMNS_DI_ORIGINAL</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source_original&quot;</span><span class="p">,</span> <span class="s2">&quot;target_original&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../index.html#mgrid.convert.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">PlanarGrid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
+<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../mgrid.convert.html#mgrid.convert.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">PlanarGrid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Convert a planar graph to corresponding supra-graph.</span>
 
 <span class="sd">    Args:</span>
@@ -261,7 +267,7 @@
     <span class="n">res</span> <span class="o">=</span> <span class="n">SupraGrid</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
     <span class="n">res</span><span class="o">.</span><span class="n">intra_edges</span> <span class="o">=</span> <span class="n">intra_edges</span>
     <span class="n">res</span><span class="o">.</span><span class="n">inter_edges</span> <span class="o">=</span> <span class="n">inter_edges</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">inter_edges</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;node&#39;</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">inter_edges</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;node&quot;</span>
     <span class="n">res</span><span class="o">.</span><span class="n">nodelist</span> <span class="o">=</span> <span class="n">nodelist</span>
     <span class="k">return</span> <span class="n">res</span></div>
 </pre></div>

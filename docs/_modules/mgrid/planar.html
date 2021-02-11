@@ -87,6 +87,12 @@
 
 
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgrid.power_flow.element.html">power_flow.element</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">bibliography</a></li>
 </ul>
 
@@ -154,27 +160,32 @@
            <div itemprop="articleBody">
 
   <h1>Source code for mgrid.planar</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A class for planar graph corresponding to a multilayer network.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;A class for planar graph corresponding to a multilayer network.</span>
+
+<span class="sd">All the nodes and edges in a planar graph can have geographical</span>
+<span class="sd">attributes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 
 <span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">mgrid.power_flow.element</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Ejection</span><span class="p">,</span>
+    <span class="n">ExternalGrid</span><span class="p">,</span>
+    <span class="n">Transformer</span><span class="p">,</span>
+    <span class="n">TransformerStd</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">]</span>
 <span class="n">COLUMNS_DI</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="PlanarGrid"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid">[docs]</a><span class="k">class</span> <span class="nc">PlanarGrid</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Model multilayer graph in plane by contracting inter-edges.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        There are two kinds of nodes, inter-nodes and planar nodes. If</span>
-<span class="sd">        an inter-node is isolated in some layer, it cannot be recognised</span>
-<span class="sd">        directly.</span>
+<div class="viewcode-block" id="PlanarGraph"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph">[docs]</a><span class="k">class</span> <span class="nc">PlanarGraph</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multilayer network in form of planar graph.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
@@ -182,7 +193,7 @@
 <span class="sd">            .. csv-table::</span>
 <span class="sd">                :header: name, dtype, definition</span>
 
-<span class="sd">                node, object, name in planar graph</span>
+<span class="sd">                name (index), object, name in planar graph</span>
 <span class="sd">                upper, int64, connected upper layer</span>
 <span class="sd">                lower, int64, connected lower layer</span>
 
@@ -190,15 +201,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PlanarGrid.__init__"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarGraph.__init__"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Init an empty directed graph or from existing directed graph.</span>
-
-<span class="sd">        Note:</span>
-<span class="sd">            - All the edges left are intra-edges, so they must be</span>
-<span class="sd">              associated with some layer.</span>
-<span class="sd">            - It is essential to have the option for empty graph, or</span>
-<span class="sd">              some built-in ``networkx`` function will not work. Don&#39;t</span>
-<span class="sd">              know why.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dg: an existing directed graph. Default to be None.</span>
@@ -220,11 +224,67 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_find_inter_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Find all the inter-nodes.</span>
+<div class="viewcode-block" id="PlanarGraph.from_edgelist"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.from_edgelist">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_edgelist</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init a planar graph from an edgelist dataframe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df: an edgelist with at least three columns.</span>
+
+<span class="sd">                .. csv-table::</span>
+<span class="sd">                    :header: name, dtype, definition</span>
+
+<span class="sd">                    layer, int, to which layer an intra-edge belongs</span>
+<span class="sd">                    element (optional), object, model for intra-edge</span>
+
+<span class="sd">            source: column name indicating sources of edges.</span>
+<span class="sd">            target: column name indicating targets of edges.</span>
+<span class="sd">            element: column name indicating models for delivery element.</span>
+
+<span class="sd">        # noqa: DAR101</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Dataframe with two columns, &quot;upper&quot; and &quot;lower&quot;.</span>
+<span class="sd">            A ``PlanarGraph`` when the dataframe have essential columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">target</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">):</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> not found in dataframe.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span><span class="p">:</span>
+                <span class="n">edge_attr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">edge_attr</span> <span class="o">=</span> <span class="s2">&quot;layer&quot;</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_edgelist</span><span class="p">(</span>
+                <span class="n">df</span><span class="p">,</span>
+                <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                <span class="n">edge_attr</span><span class="o">=</span><span class="n">edge_attr</span><span class="p">,</span>
+                <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="k">def</span> <span class="nf">_find_inter_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find as many inter-nodes as possible.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dataframe for detected inter-nodes.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), name of the node</span>
+<span class="sd">                upper, int64, upper layer of the inter-edge</span>
+<span class="sd">                lower, int64, lower layer of the inter-edge</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -242,45 +302,15 @@
                 <span class="p">)</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">COLUMNS</span><span class="p">)</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;node&quot;</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
         <span class="k">return</span> <span class="n">res</span>
-
-<div class="viewcode-block" id="PlanarGrid.from_edgelist"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.from_edgelist">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_edgelist</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Init a planar graph from an edgelist dataframe.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            df: an edgelist with at least three columns.</span>
-<span class="sd">            source: column name indicating sources of edges.</span>
-<span class="sd">            target: column name indicating targets of edges.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A ``PlanarGrid`` when the dataframe have essential columns.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">target</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">):</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2"> not found in dataframe.&quot;</span>
-            <span class="p">)</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_edgelist</span><span class="p">(</span>
-                <span class="n">df</span><span class="p">,</span>
-                <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-                <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
-                <span class="n">edge_attr</span><span class="o">=</span><span class="s2">&quot;layer&quot;</span><span class="p">,</span>
-                <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(),</span>
-            <span class="p">)</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">planar_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Gather all the planar nodes in a dataframe.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="PlanarGrid.layer_edges"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.layer_edges">[docs]</a>    <span class="k">def</span> <span class="nf">layer_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<div class="viewcode-block" id="PlanarGraph.layer_edges"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.layer_edges">[docs]</a>    <span class="k">def</span> <span class="nf">layer_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gather all the edges and edge attributes in one layer.</span>
 
 <span class="sd">        Args:</span>
@@ -296,7 +326,7 @@
             <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="PlanarGrid.layer_graph"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.layer_graph">[docs]</a>    <span class="k">def</span> <span class="nf">layer_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<div class="viewcode-block" id="PlanarGraph.layer_graph"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.layer_graph">[docs]</a>    <span class="k">def</span> <span class="nf">layer_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Build a directed graph for one layer.</span>
 
 <span class="sd">        Note:</span>
@@ -316,7 +346,7 @@
             <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="PlanarGrid.find_layer"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.find_layer">[docs]</a>    <span class="k">def</span> <span class="nf">find_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<div class="viewcode-block" id="PlanarGraph.find_layer"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.find_layer">[docs]</a>    <span class="k">def</span> <span class="nf">find_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Find layer(s) of a given node.</span>
 
 <span class="sd">        Note:</span>
@@ -348,7 +378,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PlanarGrid.add_inter_node"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="PlanarGraph.add_inter_node"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGraph.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Specify a planar node as an inter-node with an adjacent layer.</span>
 
 <span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in some</span>
@@ -392,9 +422,138 @@
                 <span class="p">{</span><span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="n">upper</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="n">lower</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;New inter-node </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> for layer </span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PlanarGrid"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid">[docs]</a><span class="k">class</span> <span class="nc">PlanarGrid</span><span class="p">(</span><span class="n">PlanarGraph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model multilayer graph in plane by contracting inter-edges.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        There are two kinds of nodes, inter-nodes and planar nodes. If</span>
+<span class="sd">        an inter-node is isolated in some layer, it cannot be recognised</span>
+<span class="sd">        directly.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), object, name in planar graph</span>
+<span class="sd">                upper, int64, connected upper layer</span>
+<span class="sd">                lower, int64, connected lower layer</span>
+<span class="sd">                element, object, transformer model</span>
+
+<span class="sd">        layers (Set[int]): integer indices of all the layers.</span>
+<span class="sd">        conversion (DataFrame): information on conversion elements.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), object, name of conversion elements.</span>
+<span class="sd">                node, object, nodes to which elements are attached.</span>
+<span class="sd">                element, object, element models.</span>
+<span class="sd">                layer, int64, layers to which elements belong.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PlanarGrid.__init__"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init an empty directed graph or from existing directed graph.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            - All the edges are intra-edges, so they must be associated</span>
+<span class="sd">              with some layer.</span>
+<span class="sd">            - It is essential to have the option for empty graph, or</span>
+<span class="sd">              some built-in ``networkx`` function will not work. Don&#39;t</span>
+<span class="sd">              know why.</span>
+<span class="sd">            - Most inter-nodes can be detected. However, when one</span>
+<span class="sd">              terminal of some inter-edge is isolated in that layer, the</span>
+<span class="sd">              corresponding inter-node cannot be detected.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dg: an existing directed graph. Default to be None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dg</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PlanarGrid.add_inter_node"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">TransformerStd</span><span class="p">],</span>
+        <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Specify a planar node as an inter-node with an adjacent layer.</span>
+
+<span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in some</span>
+<span class="sd">        layer, then it will not be recognised as an inter-node. It must be</span>
+<span class="sd">        specified manually.</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            Upper layer has a smaller integer index.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: name of the inter-node.</span>
+<span class="sd">            element: the transformer model.</span>
+<span class="sd">            upper: whether the other terminal of the corresponding</span>
+<span class="sd">                inter-edge is on upper layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_inter_node</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span></div>
+
+<div class="viewcode-block" id="PlanarGrid.add_conversion"><a class="viewcode-back" href="../../mgrid.planar.html#mgrid.planar.PlanarGrid.add_conversion">[docs]</a>    <span class="k">def</span> <span class="nf">add_conversion</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ejection</span><span class="p">,</span> <span class="n">ExternalGrid</span><span class="p">],</span>
+        <span class="n">layer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a conversion element to the grid.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Any conversion element is associated with a layer. If it is</span>
+<span class="sd">            attached to a intra-node, then it inherent the node&#39;s layer.</span>
+<span class="sd">            If to a inter-node, ``layer`` should be specified.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: name of the conversion element.</span>
+<span class="sd">            node: name of the node to which the element is attached.</span>
+<span class="sd">            element: model for the element.</span>
+<span class="sd">            layer: layer to which the element belongs. If ``node`` is an</span>
+<span class="sd">                intra-node, it is not necessary to specify it. When</span>
+<span class="sd">                ``node`` is an inter-node and it is not specified, a</span>
+<span class="sd">                warning will be echoed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">upper</span><span class="p">,</span> <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_layer</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">layer</span> <span class="ow">and</span> <span class="n">upper</span> <span class="o">==</span> <span class="n">lower</span><span class="p">:</span>
+                <span class="n">layer</span> <span class="o">=</span> <span class="n">upper</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">layer</span> <span class="ow">and</span> <span class="n">upper</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Layer of conversion element &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is not specified.&#39;</span>
+                <span class="p">)</span>
+
+            <span class="n">_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="n">element</span><span class="p">,</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="p">},</span>
+                <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conversion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_new</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;New conversion element &quot;</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&quot; called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;attached to node &quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">.&quot;&#39;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There is no node called &quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

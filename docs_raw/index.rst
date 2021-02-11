@@ -48,7 +48,7 @@ Three Representation Methods
 ======================================== =============== ===============
 Python class                             intra-edge      inter-edge
 ======================================== =============== ===============
-:class:`mgrid.planar.PlanarGrid`         in planar graph contracted
+:class:`mgrid.planar.PlanarGraph`        in planar graph contracted
 :class:`mgrid.multilayer.SupraGrid`      in planar graph in planar graph
 :class:`mgrid.multilayer.MultilayerGrid` in layer        between layers
 ======================================== =============== ===============
@@ -58,13 +58,16 @@ the edges and nodes can have geographical information. When modelling,
 it should be converted to ``SupraGrid``. As a result, all the nodes can
 be seen as buses, and cables & transformers can have two terminals.
 
-Conversion between Representations
-----------------------------------
+API
+---
 
-.. automodule:: mgrid.convert
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. toctree::
+   :maxdepth: 1
+
+   mgrid.planar
+   mgrid.multilayer
+   mgrid.convert
+   mgrid.power_flow.element
 
 Bibliography
 ------------

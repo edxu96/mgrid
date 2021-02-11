@@ -87,6 +87,12 @@
 
 
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.element.html">power_flow.element</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
 </ul>
 
@@ -159,13 +165,20 @@
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
  | <a href="#A"><strong>A</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#X"><strong>X</strong></a>
 
 </div>
 <h2 id="_">_</h2>
@@ -176,6 +189,8 @@
       <ul>
         <li><a href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid.__init__">(mgrid.multilayer.SupraGrid method)</a>
 </li>
+        <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.__init__">(mgrid.planar.PlanarGraph method)</a>
+</li>
         <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.__init__">(mgrid.planar.PlanarGrid method)</a>
 </li>
       </ul></li>
@@ -185,7 +200,45 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.add_inter_node">add_inter_node() (mgrid.planar.PlanarGrid method)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.add_conversion">add_conversion() (mgrid.planar.PlanarGrid method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.add_inter_node">add_inter_node() (mgrid.planar.PlanarGraph method)</a>
+
+      <ul>
+        <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.add_inter_node">(mgrid.planar.PlanarGrid method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Cable.c_nf_per_km">c_nf_per_km (mgrid.power_flow.element.Cable attribute)</a>
+</li>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Cable">Cable (class in mgrid.power_flow.element)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.CableEssential">CableEssential (class in mgrid.power_flow.element)</a>
+</li>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.CableStd">CableStd (class in mgrid.power_flow.element)</a>
+</li>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.conversion">conversion (mgrid.planar.PlanarGrid attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Ejection">Ejection (class in mgrid.power_flow.element)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.ExternalGrid">ExternalGrid (class in mgrid.power_flow.element)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -193,11 +246,11 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.find_layer">find_layer() (mgrid.planar.PlanarGrid method)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.find_layer">find_layer() (mgrid.planar.PlanarGraph method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.from_edgelist">from_edgelist() (mgrid.planar.PlanarGrid class method)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.from_edgelist">from_edgelist() (mgrid.planar.PlanarGraph class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -207,10 +260,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid.inter_edges">inter_edges (mgrid.multilayer.SupraGrid attribute)</a>
 </li>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.inter_nodes">inter_nodes (mgrid.planar.PlanarGraph attribute)</a>
+
+      <ul>
+        <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.inter_nodes">(mgrid.planar.PlanarGrid attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.inter_nodes">inter_nodes (mgrid.planar.PlanarGrid attribute)</a>
-</li>
       <li><a href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid.intra_edges">intra_edges (mgrid.multilayer.SupraGrid attribute)</a>
 </li>
   </ul></td>
@@ -219,13 +276,19 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.layer_edges">layer_edges() (mgrid.planar.PlanarGrid method)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.layer_edges">layer_edges() (mgrid.planar.PlanarGraph method)</a>
+</li>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.layer_graph">layer_graph() (mgrid.planar.PlanarGraph method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.layer_graph">layer_graph() (mgrid.planar.PlanarGrid method)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.layers">layers (mgrid.planar.PlanarGraph attribute)</a>
+
+      <ul>
+        <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.layers">(mgrid.planar.PlanarGrid attribute)</a>
 </li>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.layers">layers (mgrid.planar.PlanarGrid attribute)</a>
+      </ul></li>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.CableEssential.length_km">length_km (mgrid.power_flow.element.CableEssential attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -233,11 +296,13 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Cable.max_i_ka">max_i_ka (mgrid.power_flow.element.Cable attribute)</a>
+</li>
       <li>
     mgrid.convert
 
       <ul>
-        <li><a href="index.html#module-mgrid.convert">module</a>
+        <li><a href="mgrid.convert.html#module-mgrid.convert">module</a>
 </li>
       </ul></li>
       <li>
@@ -257,14 +322,23 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    mgrid.power_flow.element
+
+      <ul>
+        <li><a href="mgrid.power_flow.element.html#module-mgrid.power_flow.element">module</a>
+</li>
+      </ul></li>
+      <li>
     module
 
       <ul>
-        <li><a href="index.html#module-mgrid.convert">mgrid.convert</a>
+        <li><a href="mgrid.convert.html#module-mgrid.convert">mgrid.convert</a>
 </li>
         <li><a href="mgrid.multilayer.html#module-mgrid.multilayer">mgrid.multilayer</a>
 </li>
         <li><a href="mgrid.planar.html#module-mgrid.planar">mgrid.planar</a>
+</li>
+        <li><a href="mgrid.power_flow.element.html#module-mgrid.power_flow.element">mgrid.power_flow.element</a>
 </li>
       </ul></li>
       <li><a href="mgrid.multilayer.html#mgrid.multilayer.MultilayerGrid">MultilayerGrid (class in mgrid.multilayer)</a>
@@ -283,13 +357,33 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#mgrid.convert.planar2supra">planar2supra() (in module mgrid.convert)</a>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Ejection.p_mw">p_mw (mgrid.power_flow.element.Ejection attribute)</a>
+</li>
+      <li><a href="mgrid.convert.html#mgrid.convert.planar2supra">planar2supra() (in module mgrid.convert)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid.planar_nodes">planar_nodes() (mgrid.planar.PlanarGrid property)</a>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph.planar_nodes">planar_nodes() (mgrid.planar.PlanarGraph property)</a>
+</li>
+      <li><a href="mgrid.planar.html#mgrid.planar.PlanarGraph">PlanarGraph (class in mgrid.planar)</a>
 </li>
       <li><a href="mgrid.planar.html#mgrid.planar.PlanarGrid">PlanarGrid (class in mgrid.planar)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Ejection.q_mvar">q_mvar (mgrid.power_flow.element.Ejection attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Cable.r_ohm_per_km">r_ohm_per_km (mgrid.power_flow.element.Cable attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -297,7 +391,43 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.CableStd.std_type">std_type (mgrid.power_flow.element.CableStd attribute)</a>
+
+      <ul>
+        <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.TransformerStd.std_type">(mgrid.power_flow.element.TransformerStd attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid">SupraGrid (class in mgrid.multilayer)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Transformer">Transformer (class in mgrid.power_flow.element)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.TransformerStd">TransformerStd (class in mgrid.power_flow.element)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.ExternalGrid.vm_pu">vm_pu (mgrid.power_flow.element.ExternalGrid attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mgrid.power_flow.element.html#mgrid.power_flow.element.Cable.x_ohm_per_km">x_ohm_per_km (mgrid.power_flow.element.Cable attribute)</a>
 </li>
   </ul></td>
 </tr></table>

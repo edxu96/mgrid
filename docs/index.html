@@ -38,7 +38,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="bibliography" href="bibliography.html" />
+    <link rel="next" title="planar" href="mgrid.planar.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,6 +88,12 @@
 
 
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.element.html">power_flow.element</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
 </ul>
 
@@ -206,7 +212,7 @@ pair of inter-edges sharing a terminal.</p></li>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGrid" title="mgrid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.planar.PlanarGrid</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGraph" title="mgrid.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.planar.PlanarGraph</span></code></a></p></td>
 <td><p>in planar graph</p></td>
 <td><p>contracted</p></td>
 </tr>
@@ -225,26 +231,16 @@ the edges and nodes can have geographical information. When modelling,
 it should be converted to <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>. As a result, all the nodes can
 be seen as buses, and cables &amp; transformers can have two terminals.</p>
 </div>
-<div class="section" id="module-mgrid.convert">
-<span id="conversion-between-representations"></span><h2>Conversion between Representations<a class="headerlink" href="#module-mgrid.convert" title="Permalink to this headline">¶</a></h2>
-<p>Function to convert planar graph to supra-graph.</p>
-<dl class="py function">
-<dt id="mgrid.convert.planar2supra">
-<code class="sig-prename descclassname">mgrid.convert.</code><code class="sig-name descname">planar2supra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/convert.html#planar2supra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.convert.planar2supra" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a planar graph to corresponding supra-graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>g</strong> (<a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGrid" title="mgrid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarGrid</span></code></a>) – a planar graph to be converted.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Resulted supra-graph.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.element.html">power_flow.element</a></li>
+</ul>
+</div>
 </div>
 <div class="section" id="bibliography">
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
@@ -262,7 +258,7 @@ be seen as buses, and cables &amp; transformers can have two terminals.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="bibliography.html" class="btn btn-neutral float-right" title="bibliography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mgrid.planar.html" class="btn btn-neutral float-right" title="planar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
