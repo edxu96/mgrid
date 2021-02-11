@@ -7,7 +7,7 @@ from pandas.core.frame import DataFrame
 import pytest as pt
 
 from mgrid.planar import COLUMNS, PlanarGraph, PlanarGrid
-from mgrid.power_flow.element import Cable, TransformerStd
+from mgrid.power_flow.element import Cable, Ejection, TransformerStd
 
 COLUMNS_CABLE = ["from_node", "to_node", "layer"]
 COL_TRANS = ["name", "type", "layer"]
@@ -81,12 +81,17 @@ def test_planar_grid(data_grid: Tuple[DataFrame, DataFrame]):
     assert planar.layers == {1, 2}
     assert list(planar.inter_nodes.columns) == COLUMNS + ["element"]
 
+    # Check if inter-nodes can be specified.
     planar.add_inter_node("EVO_6777175", TransformerStd("test"))
     planar.add_inter_node("EVO_2100520", TransformerStd("test"), upper=False)
-
-    print(nx.to_pandas_edgelist(planar))
+    assert planar.find_layer("EVO_2100520") == (1, 2)
 
     inter_nodes = data_grid[1].loc[
         data_grid[1]["layer"].isin([0.5, 1.5]), COL_TRANS
     ]
     assert set(planar.inter_nodes.index) == set(inter_nodes["name"])
+
+    # Check dataframe for conversion elements.
+    assert list(planar.conversion.columns) == ["node", "element", "layer"]
+    assert planar.conversion.index.name == "name"
+    planar.add_conversion("test", "EVO_2100520", Ejection(0, 0))
