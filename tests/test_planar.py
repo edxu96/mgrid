@@ -7,7 +7,7 @@ from pandas.core.frame import DataFrame
 import pytest as pt
 
 from mgrid.planar import COLUMNS, PlanarGraph, PlanarGrid
-from mgrid.power_flow.element import Cable, Ejection, TransformerStd
+from mgrid.power_flow.element import Cable, TransformerStd
 
 COLUMNS_CABLE = ["from_node", "to_node", "layer"]
 COL_TRANS = ["name", "type", "layer"]
@@ -55,11 +55,16 @@ def test_methods(simple: PlanarGraph):
     assert isinstance(graph_0, nx.DiGraph)
 
 
-def test_planar_grid(data_grid: Tuple[DataFrame, DataFrame]):
+@pt.fixture(scope="package")
+def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     """Check if a planar grid can be initiated correctly.
 
     Args:
         data_grid: two dataframes for cables and nodes for a power grid.
+
+    Returns:
+        Initiated planar grid.
+
     """
 
     def pass_cable_parameters(row):
@@ -98,4 +103,5 @@ def test_planar_grid(data_grid: Tuple[DataFrame, DataFrame]):
     # Check dataframe for conversion elements.
     assert list(planar.conversion.columns) == ["node", "element", "layer"]
     assert planar.conversion.index.name == "name"
-    planar.add_conversion("test", "EVO_2100520", Ejection(0, 0))
+
+    return planar

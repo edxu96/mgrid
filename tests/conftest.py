@@ -6,7 +6,7 @@ from pandas.core.frame import DataFrame
 import pytest as pt
 
 from mgrid.planar import PlanarGraph
-from .test_planar import simple  # noqa: F401
+from .test_planar import grid, simple  # noqa: F401
 
 # Dictionary to map entries in column "voltage" to layers.
 VOLTAGES = {"04kv": 2, "10kv": 1, "60kv": 0}

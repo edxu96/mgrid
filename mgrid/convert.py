@@ -1,20 +1,21 @@
 """Function to convert planar graph to supra-graph."""
 from copy import deepcopy
 from itertools import chain
-from typing import Tuple
+from statistics import mean
+from typing import Tuple, Union
 
 import networkx as nx
 import pandas as pd
 
 from mgrid.log import LOGGER
 from mgrid.multilayer import SupraGrid
-from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGrid
+from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph, PlanarGrid
 
 COLUMNS_DI_ORIGINAL = ["source_original", "target_original"]
 
 
-def planar2supra(g: PlanarGrid) -> SupraGrid:
-    """Convert a planar graph to corresponding supra-graph.
+def _planar2supra(g: PlanarGrid) -> SupraGrid:
+    """Convert a planar grid to corresponding supra-grid.
 
     Args:
         g: a planar graph to be converted.
@@ -86,7 +87,7 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
 
         source = init_node4inter(0)
         target = init_node4inter(1)
-        dg.add_edge(source, target)
+        dg.add_edge(source, target, layer=mean([row["upper"], row["lower"]]))
 
         dg.remove_node(node)
 
@@ -108,3 +109,23 @@ def planar2supra(g: PlanarGrid) -> SupraGrid:
     res.inter_edges.index.name = "node"
     res.nodelist = nodelist
     return res
+
+
+def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
+    """Convert a planar grid to corresponding supra-grid.
+
+    Args:
+        g: a planar graph or grid to be converted.
+
+    Returns:
+        Resulted supra-graph for the grid.
+    """
+    supra = _planar2supra(g)
+
+    if isinstance(g, PlanarGrid):
+        for node, row in g.inter_nodes.iterrows():
+            source = supra.inter_edges.loc[node, "source"]
+            target = supra.inter_edges.loc[node, "target"]
+            supra.edges[source, target]["element"] = row["element"]
+
+    return supra
