@@ -128,4 +128,7 @@ def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
             target = supra.inter_edges.loc[node, "target"]
             supra.edges[source, target]["element"] = row["element"]
 
+        supra.conversions = deepcopy(g.conversions)
+        supra.types = deepcopy(g.types)
+
     return supra

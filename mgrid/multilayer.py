@@ -86,3 +86,6 @@ class SupraGrid(nx.DiGraph):
         self.intra_edges = None
         self.inter_edges = None
         self.nodelist = None
+
+        self.conversions = None
+        self.types = None
