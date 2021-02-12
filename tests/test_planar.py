@@ -70,6 +70,7 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     def pass_cable_parameters(row):
         return Cable(
             length_km=row["len_km"],
+            name=row["name"],
             r_ohm_per_km=row["r_ohm_per_km"],
             x_ohm_per_km=row["x_ohm_per_km"],
             c_nf_per_km=row["c_nf_per_km"],
@@ -77,7 +78,9 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
         )
 
     cables = data_grid[0].loc[:, COLUMNS_CABLE].copy()
-    cables["element"] = data_grid[0].apply(pass_cable_parameters, axis=1)
+    cables["element"] = (
+        data_grid[0].reset_index().apply(pass_cable_parameters, axis=1)
+    )
 
     planar = PlanarGrid.from_edgelist(
         cables, "from_node", "to_node", "element"
@@ -87,8 +90,10 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     assert list(planar.inter_nodes.columns) == COLUMNS + ["element"]
 
     # Check if inter-nodes can be specified.
-    planar.add_inter_node("EVO_6777175", TransformerStd("test"))
-    planar.add_inter_node("EVO_2100520", TransformerStd("test"), upper=False)
+    planar.add_inter_node("EVO_6777175", TransformerStd("test", "EVO_6777175"))
+    planar.add_inter_node(
+        "EVO_2100520", TransformerStd("test", "EVO_2100520"), upper=False
+    )
     assert planar.find_layer("EVO_2100520") == (1, 2)
 
     # Check if inter-nodes are specified correctly.
