@@ -338,10 +338,15 @@ class PlanarGrid(PlanarGraph):
             super().__init__(dg)
 
         self.inter_nodes["element"] = None
+
+        # Init the dataframe for conversion elements.
         self.conversion = pd.DataFrame(
             {"name": [], "node": [], "element": [], "layer": []}
         )
         self.conversion.set_index("name", inplace=True)
+
+        # Init the dictionary for element types.
+        self.types = {}
 
     def add_inter_node(
         self,
