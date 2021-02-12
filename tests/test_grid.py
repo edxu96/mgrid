@@ -1,4 +1,5 @@
 """A real-world test case. Data has not been disclosed, yet."""
+from copy import deepcopy
 from typing import Tuple
 
 import networkx as nx
@@ -9,9 +10,12 @@ import pytest as pt
 from mgrid.convert import planar2supra
 from mgrid.planar import COLUMNS, PlanarGraph, PlanarGrid
 from mgrid.power_flow.element import Cable, TransformerStd
+from mgrid.power_flow.pandapower import supra2pandapower
+from mgrid.power_flow.type import TransformerType
 
 # Dictionary to map entries in column "voltage" to layers.
 VOLTAGES = {"04kv": 2, "10kv": 1, "60kv": 0}
+VOLTAGES_INV = {2: 0.4, 1: 10, 0: 60}
 LAYERS = {
     "CABINET04": 2,
     "STAT1004": 1.5,
@@ -84,12 +88,13 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
             x_ohm_per_km=row["x_ohm_per_km"],
             c_nf_per_km=row["c_nf_per_km"],
             max_i_ka=row["max_i_ka"],
+            parallel=1,
         )
 
-    cables = data_grid[0].loc[:, COLUMNS_CABLE].copy()
-    cables["element"] = (
-        data_grid[0].reset_index().apply(pass_cable_parameters, axis=1)
-    )
+    cables_raw = data_grid[0].copy(deep=True)
+    cables_raw.reset_index(inplace=True)
+    cables = cables_raw.loc[:, COLUMNS_CABLE].copy()
+    cables["element"] = cables_raw.apply(pass_cable_parameters, axis=1)
 
     planar = PlanarGrid.from_edgelist(
         cables, "from_node", "to_node", "element"
@@ -98,17 +103,43 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     assert planar.layers == {1, 2}
     assert list(planar.inter_nodes.columns) == COLUMNS + ["element"]
 
-    # Check if inter-nodes can be specified.
-    planar.add_inter_node("EVO_6777175", TransformerStd("test", "EVO_6777175"))
-    planar.add_inter_node(
-        "EVO_2100520", TransformerStd("test", "EVO_2100520"), upper=False
+    # Add transformer types.
+    planar.types["STAT6010"] = TransformerType(
+        s_mva=8000 / 1e3,
+        v_high_kv=60,
+        v_low_kv=10,
+        vk_percent=10,
+        vkr_percent=0.6,
+        pfe_kw=12,
+        i0_percent=0.15001,
     )
-    assert planar.find_layer("EVO_2100520") == (1, 2)
+    planar.types["STAT1004"] = TransformerType(
+        s_mva=250 / 1e3,
+        v_high_kv=10,
+        v_low_kv=0.4,
+        vk_percent=4,
+        vkr_percent=1.2,
+        pfe_kw=0.82,
+        i0_percent=0.32801,
+    )
 
-    # Check if inter-nodes are specified correctly.
+    # Add the only 60-10 kV transformer.
+    planar.add_inter_node(
+        "EVO_6777175", TransformerStd("STAT6010", "EVO_6777175", parallel=1)
+    )
+
+    # Add all the 10-0.4 kV transformer.
     inter_nodes = data_grid[1].loc[
         data_grid[1]["layer"].isin([0.5, 1.5]), COL_TRANS
     ]
+    for _, row in inter_nodes.iterrows():
+        if not row["type"] == "STAT6010":
+            planar.add_inter_node(
+                row["name"],
+                TransformerStd("STAT1004", row["name"], parallel=1),
+            )
+
+    # Check if inter-nodes are specified correctly.
     assert set(planar.inter_nodes.index) == set(inter_nodes["name"])
 
     assert planar.intra_nodes.shape == (174, 1)
@@ -187,4 +218,8 @@ def test_planar_grid(grid: PlanarGrid):
         grid: initiated planar grid.
     """
     res = planar2supra(grid)
-    print(nx.to_pandas_edgelist(res))
+    buses = deepcopy(res.nodelist)
+    buses["voltage"] = buses["layer"].map(VOLTAGES_INV)
+
+    net = supra2pandapower(res, buses)
+    print(net)

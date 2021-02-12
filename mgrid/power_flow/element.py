@@ -20,6 +20,7 @@ class CableEssential:
 
     length_km: float  #: cable length in kilometer
     name: str  #: name
+    parallel: int  #: number of same cables in parallel
 
 
 @dataclass
@@ -32,7 +33,7 @@ class Cable(CableEssential):
     max_i_ka: float  #: maximum thermal current in kilo-ampere
 
     def update_pandapower(
-        self, net: pandapowerNet, source: str, target: str, parallel: int,
+        self, net: pandapowerNet, source: str, target: str,
     ):
         """Update a pandapower model by adding the cable itself.
 
@@ -42,7 +43,6 @@ class Cable(CableEssential):
                 ``networkx`` edge.
             target: another bus of the cable, corresponding to ``source`` in
                 ``networkx`` edge.
-            parallel: number of same cables in parallel.
         """
         from_bus = pp.get_element_index(net, "bus", source)
         to_bus = pp.get_element_index(net, "bus", target)
@@ -56,7 +56,7 @@ class Cable(CableEssential):
             x_ohm_per_km=self.x_ohm_per_km,
             c_nf_per_km=self.c_nf_per_km,
             max_i_ka=self.max_i_ka,
-            parallel=parallel,
+            parallel=self.parallel,
         )
 
 
@@ -73,9 +73,10 @@ class TransformerStd:
 
     std_type: str  #: a standard transformer type
     name: str  #: name of the inter-node
+    parallel: int  #: number of same transformers in parallel.
 
     def update_pandapower(
-        self, net: pandapowerNet, source: str, target: str, parallel: int,
+        self, net: pandapowerNet, source: str, target: str,
     ):
         """Update a pandapower model by adding the transformer itself.
 
@@ -85,7 +86,6 @@ class TransformerStd:
                 ``networkx`` edge.
             target: another bus of the transformer, corresponding to
                 ``source`` in ``networkx`` edge.
-            parallel: number of same cables in parallel.
         """
         hv_bus = pp.get_element_index(net, "bus", source)
         lv_bus = pp.get_element_index(net, "bus", target)
@@ -95,7 +95,7 @@ class TransformerStd:
             hv_bus=hv_bus,
             lv_bus=lv_bus,
             std_type=self.std_type,
-            parallel=parallel,
+            parallel=self.parallel,
         )
 
 
@@ -126,13 +126,13 @@ class ExternalGrid:
     vm_pu: float  #: voltage magnitude in per unit
 
     def update_pandapower(
-        self, net: pandapowerNet, bus: str, name: str,
+        self, net: pandapowerNet, name: str, bus: str,
     ):
         """Update a pandapower model by adding the transformer itself.
 
         Args:
             net: a pandapower network model.
-            bus: the bus to which the external grid is attached.
             name: name of the external grid.
+            bus: the bus to which the external grid is attached.
         """
         net.add("Generator", name=name, bus=bus, control="Slack")

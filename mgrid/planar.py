@@ -369,7 +369,9 @@ class PlanarGrid(PlanarGraph):
             upper: whether the other terminal of the corresponding
                 inter-edge is on upper layer.
         """
-        super().add_inter_node(name, upper)
+        if name not in self.inter_nodes.index:
+            super().add_inter_node(name, upper)
+
         self.inter_nodes.loc[name, "element"] = element
 
     def add_conversion(
