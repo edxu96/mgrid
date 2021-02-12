@@ -126,14 +126,13 @@ class ExternalGrid:
     vm_pu: float  #: voltage magnitude in per unit
 
     def update_pandapower(
-        self, net: pandapowerNet, bus: str,
+        self, net: pandapowerNet, bus: str, name: str,
     ):
         """Update a pandapower model by adding the transformer itself.
 
         Args:
             net: a pandapower network model.
             bus: the bus to which the external grid is attached.
+            name: name of the external grid.
         """
-        net.add(
-            "Generator", name="ExternalGrid_60kV", bus=bus, control="Slack"
-        )
+        net.add("Generator", name=name, bus=bus, control="Slack")
