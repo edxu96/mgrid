@@ -1,4 +1,4 @@
-"""Define data-classes for elements.
+"""Default data-classes for delivery elements.
 
 .. note::
     Whether the element is paralleled should be specified as an edge
@@ -6,7 +6,6 @@
 
 .. warning::
     Inherited attributes are not shown again.
-
 """
 from dataclasses import dataclass
 
@@ -104,35 +103,3 @@ class Transformer:
     """Define transformer from parameters."""
 
     pass
-
-
-@dataclass
-class Ejection:
-    """Essential parameters for load or static generators."""
-
-    p_mw: float  #: ejected real power in mega-watt
-    q_mvar: float  #: ejected reactive power in mega-watt
-
-
-@dataclass
-class ExternalGrid:
-    """Define a slack bus and a corresponding external grid.
-
-    Note:
-        It's assumed that there is only one slack bus and one external
-        grid.
-    """
-
-    vm_pu: float  #: voltage magnitude in per unit
-
-    def update_pandapower(
-        self, net: pandapowerNet, name: str, bus: str,
-    ):
-        """Update a pandapower model by adding the transformer itself.
-
-        Args:
-            net: a pandapower network model.
-            name: name of the external grid.
-            bus: the bus to which the external grid is attached.
-        """
-        net.add("Generator", name=name, bus=bus, control="Slack")

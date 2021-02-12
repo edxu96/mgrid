@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>mgrid.power_flow.pandapower &mdash; mgrid v0.2.5 documentation</title>
+
+
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+
+
+  <div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+    <a href="https://github.com/edxu96/mgrid/tree/main/docs_raw">documentation source</a> |
+    <a href="https://github.com/edxu96/mgrid">repository</a>
+
+
+
+            <a href="../../../index.html" class="icon icon-home"> mgrid
+
+
+
+          </a>
+
+
+
+
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+
+        </div>
+
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+
+
+
+
+
+
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.power_flow.html">Power Flow</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">bibliography</a></li>
+</ul>
+
+
+
+        </div>
+
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+
+      <nav class="wy-nav-top" aria-label="top navigation">
+
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mgrid</a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+
+      <li>mgrid.power_flow.pandapower</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+
+      </li>
+
+  </ul>
+
+
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mgrid.power_flow.pandapower</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Build pandapower model.</span>
+
+<span class="sd">Three functions to add buses, delivery elements, and conversion elements.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandapower</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
+<span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">mgrid.multilayer</span> <span class="kn">import</span> <span class="n">SupraGrid</span>
+
+
+<span class="k">def</span> <span class="nf">_complete_edge_attr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check if all edges in the graph have the given attribute.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        g: a networkx graph</span>
+<span class="sd">        attr: name of an edge attribute.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: true if all nodes in the graph have the given attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">num_edges</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">dict_edge_attr</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">get_edge_attributes</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_edge_attr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_edges</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="n">num_edges</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_edge_attr</span><span class="p">)</span><span class="si">}</span><span class="s2"> edges &quot;</span>
+            <span class="sa">f</span><span class="s1">&#39;without the attribute &quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot;.&#39;</span>
+        <span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<div class="viewcode-block" id="supra2pandapower"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.pandapower.supra2pandapower">[docs]</a><span class="k">def</span> <span class="nf">supra2pandapower</span><span class="p">(</span><span class="n">supra</span><span class="p">:</span> <span class="n">SupraGrid</span><span class="p">,</span> <span class="n">buses</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandapowerNet</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Build ``pandapower`` model based on supra format.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        supra: a supra-grid.</span>
+<span class="sd">        buses: with a &quot;voltage&quot; column.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A ``pandapower`` model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if all the edges have the &quot;element&quot; attribute.</span>
+    <span class="n">_complete_edge_attr</span><span class="p">(</span><span class="n">supra</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Init an empty pandapower model.</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">create_empty_network</span><span class="p">()</span>
+
+    <span class="c1"># Add all the element types.</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">std_type</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">std_type</span><span class="o">.</span><span class="n">update_pandapower</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="c1"># Add all the buses.</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">buses</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_bus</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">vn_kv</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;voltage&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Add all the delivery elements.</span>
+    <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">():</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update_pandapower</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1"># Add all the conversion elements (if any).</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update_pandapower</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;bus&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">net</span></div>
+</pre></div>
+
+           </div>
+
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Edward Xu.
+
+    </p>
+  </div>
+
+
+
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+
+
+
+
+
+</body>
+</html>

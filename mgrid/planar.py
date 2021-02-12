@@ -11,12 +11,8 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 
 from mgrid.log import LOGGER
-from mgrid.power_flow.element import (
-    Ejection,
-    ExternalGrid,
-    Transformer,
-    TransformerStd,
-)
+from mgrid.power_flow.conversion import Ejection, ExternalGrid
+from mgrid.power_flow.delivery import Transformer, TransformerStd
 
 COLUMNS = ["upper", "lower"]
 COLUMNS_DI = ["source", "target"]
@@ -85,10 +81,10 @@ class PlanarGraph(nx.DiGraph):
             target: column name indicating targets of edges.
             element: column name indicating models for delivery element.
 
-        # noqa: DAR101
-
         Returns:
             A ``PlanarGraph`` when the dataframe have essential columns.
+
+        .. # noqa: DAR101
         """
         if (source not in df) or (target not in df):
             LOGGER.critical(

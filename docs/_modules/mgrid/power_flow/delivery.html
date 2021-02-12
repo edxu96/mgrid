@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>mgrid.power_flow.delivery &mdash; mgrid v0.2.5 documentation</title>
+
+
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+
+
+  <div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+    <a href="https://github.com/edxu96/mgrid/tree/main/docs_raw">documentation source</a> |
+    <a href="https://github.com/edxu96/mgrid">repository</a>
+
+
+
+            <a href="../../../index.html" class="icon icon-home"> mgrid
+
+
+
+          </a>
+
+
+
+
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+
+        </div>
+
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+
+
+
+
+
+
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.planar.html">planar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.multilayer.html">multilayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.convert.html">convert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.power_flow.html">Power Flow</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">bibliography</a></li>
+</ul>
+
+
+
+        </div>
+
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+
+      <nav class="wy-nav-top" aria-label="top navigation">
+
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mgrid</a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+
+      <li>mgrid.power_flow.delivery</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+
+      </li>
+
+  </ul>
+
+
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mgrid.power_flow.delivery</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Default data-classes for delivery elements.</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    Whether the element is paralleled should be specified as an edge</span>
+<span class="sd">    attribute.</span>
+
+<span class="sd">.. warning::</span>
+<span class="sd">    Inherited attributes are not shown again.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">import</span> <span class="nn">pandapower</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
+
+
+<div class="viewcode-block" id="CableEssential"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.CableEssential">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CableEssential</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Essential cable parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">length_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: cable length in kilometer</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: name</span>
+    <span class="n">parallel</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1">#: number of same cables in parallel</span></div>
+
+
+<div class="viewcode-block" id="Cable"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.Cable">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Cable</span><span class="p">(</span><span class="n">CableEssential</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Define cable from parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">r_ohm_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: resistance in ohm per kilo-meter</span>
+    <span class="n">x_ohm_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: reactance in ohm per kilo-meter</span>
+    <span class="n">c_nf_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: capacitance in nano Farad per kilo-meter</span>
+    <span class="n">max_i_ka</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: maximum thermal current in kilo-ampere</span>
+
+<div class="viewcode-block" id="Cable.update_pandapower"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.Cable.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the cable itself.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a pandapower network model.</span>
+<span class="sd">            source: a bus of the cable, corresponding to ``source`` in</span>
+<span class="sd">                ``networkx`` edge.</span>
+<span class="sd">            target: another bus of the cable, corresponding to ``source`` in</span>
+<span class="sd">                ``networkx`` edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">from_bus</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="n">to_bus</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_line_from_parameters</span><span class="p">(</span>
+            <span class="n">net</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">from_bus</span><span class="o">=</span><span class="n">from_bus</span><span class="p">,</span>
+            <span class="n">to_bus</span><span class="o">=</span><span class="n">to_bus</span><span class="p">,</span>
+            <span class="n">length_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">length_km</span><span class="p">,</span>
+            <span class="n">r_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r_ohm_per_km</span><span class="p">,</span>
+            <span class="n">x_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_ohm_per_km</span><span class="p">,</span>
+            <span class="n">c_nf_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c_nf_per_km</span><span class="p">,</span>
+            <span class="n">max_i_ka</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_i_ka</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CableStd"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.CableStd">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CableStd</span><span class="p">(</span><span class="n">CableEssential</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Define cable from standard type.&quot;&quot;&quot;</span>
+
+    <span class="n">std_type</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: a standard cable type</span></div>
+
+
+<div class="viewcode-block" id="TransformerStd"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.TransformerStd">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TransformerStd</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Essential transformer parameters.&quot;&quot;&quot;</span>
+
+    <span class="n">std_type</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: a standard transformer type</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: name of the inter-node</span>
+    <span class="n">parallel</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1">#: number of same transformers in parallel.</span>
+
+<div class="viewcode-block" id="TransformerStd.update_pandapower"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.TransformerStd.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the transformer itself.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a pandapower network model.</span>
+<span class="sd">            source: a bus of the transformer, corresponding to ``source`` in</span>
+<span class="sd">                ``networkx`` edge.</span>
+<span class="sd">            target: another bus of the transformer, corresponding to</span>
+<span class="sd">                ``source`` in ``networkx`` edge.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hv_bus</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="n">lv_bus</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_transformer</span><span class="p">(</span>
+            <span class="n">net</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">hv_bus</span><span class="o">=</span><span class="n">hv_bus</span><span class="p">,</span>
+            <span class="n">lv_bus</span><span class="o">=</span><span class="n">lv_bus</span><span class="p">,</span>
+            <span class="n">std_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">std_type</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Transformer"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.delivery.Transformer">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Transformer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Define transformer from parameters.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Edward Xu.
+
+    </p>
+  </div>
+
+
+
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+
+
+
+
+
+</body>
+</html>

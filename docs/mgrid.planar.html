@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>planar &mdash; mgrid v0.2.4 documentation</title>
+  <title>planar &mdash; mgrid v0.2.5 documentation</title>
 
 
 
@@ -92,7 +92,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">planar</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.element.html">power_flow.element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.html">Power Flow</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
@@ -318,11 +318,46 @@ layer will be returned.</p></li>
 <li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – column name indicating models for delivery element.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">PlanarGraph</span></code> when the dataframe have essential columns.</p>
+</dd>
 </dl>
-<p># noqa: DAR101</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mgrid.planar.PlanarGraph.intra_nodes">
+<em class="property">property </em><code class="sig-name descname">intra_nodes</code><a class="headerlink" href="#mgrid.planar.PlanarGraph.intra_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gather all the intra-nodes in a dataframe.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">PlanarGraph</span></code> when the dataframe have essential columns.</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A dataframe for intra-nodes.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name (index)</p></td>
+<td><p>object</p></td>
+<td><p>node name</p></td>
+</tr>
+<tr class="row-odd"><td><p>layer</p></td>
+<td><p>int64</p></td>
+<td><p>to which layer the node belongs</p></td>
+</tr>
+</tbody>
+</table>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -361,17 +396,6 @@ layer will be returned.</p></li>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A directed graph representing a given layer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="mgrid.planar.PlanarGraph.planar_nodes">
-<em class="property">property </em><code class="sig-name descname">planar_nodes</code><a class="headerlink" href="#mgrid.planar.PlanarGraph.planar_nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gather all the planar nodes in a dataframe.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -523,7 +547,7 @@ If to a inter-node, <code class="docutils literal notranslate"><span class="pre"
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the conversion element.</p></li>
 <li><p><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the node to which the element is attached.</p></li>
-<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="mgrid.power_flow.element.html#mgrid.power_flow.element.Ejection" title="mgrid.power_flow.element.Ejection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ejection</span></code></a>, <a class="reference internal" href="mgrid.power_flow.element.html#mgrid.power_flow.element.ExternalGrid" title="mgrid.power_flow.element.ExternalGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalGrid</span></code></a>]) – model for the element.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="mgrid.power_flow.html#mgrid.power_flow.conversion.Ejection" title="mgrid.power_flow.conversion.Ejection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ejection</span></code></a>, <a class="reference internal" href="mgrid.power_flow.html#mgrid.power_flow.conversion.ExternalGrid" title="mgrid.power_flow.conversion.ExternalGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalGrid</span></code></a>]) – model for the element.</p></li>
 <li><p><strong>layer</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – layer to which the element belongs. If <code class="docutils literal notranslate"><span class="pre">node</span></code> is an
 intra-node, it is not necessary to specify it. When
 <code class="docutils literal notranslate"><span class="pre">node</span></code> is an inter-node and it is not specified, a
@@ -548,7 +572,7 @@ specified manually.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the inter-node.</p></li>
-<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="mgrid.power_flow.element.html#mgrid.power_flow.element.Transformer" title="mgrid.power_flow.element.Transformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></a>, <a class="reference internal" href="mgrid.power_flow.element.html#mgrid.power_flow.element.TransformerStd" title="mgrid.power_flow.element.TransformerStd"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerStd</span></code></a>]) – the transformer model.</p></li>
+<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="mgrid.power_flow.html#mgrid.power_flow.delivery.Transformer" title="mgrid.power_flow.delivery.Transformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></a>, <a class="reference internal" href="mgrid.power_flow.html#mgrid.power_flow.delivery.TransformerStd" title="mgrid.power_flow.delivery.TransformerStd"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerStd</span></code></a>]) – the transformer model.</p></li>
 <li><p><strong>upper</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – whether the other terminal of the corresponding
 inter-edge is on upper layer.</p></li>
 </ul>

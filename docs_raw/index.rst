@@ -67,7 +67,7 @@ API
    mgrid.planar
    mgrid.multilayer
    mgrid.convert
-   mgrid.power_flow.element
+   mgrid.power_flow
 
 Bibliography
 ------------

@@ -9,7 +9,7 @@ import pytest as pt
 
 from mgrid.convert import planar2supra
 from mgrid.planar import COLUMNS, PlanarGraph, PlanarGrid
-from mgrid.power_flow.element import Cable, TransformerStd
+from mgrid.power_flow.delivery import Cable, TransformerStd
 from mgrid.power_flow.pandapower import supra2pandapower
 from mgrid.power_flow.type import TransformerType
 
