@@ -115,8 +115,8 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     assert planar.intra_nodes.index.name == "name"
 
     # Check dataframe for conversion elements.
-    assert list(planar.conversion.columns) == ["node", "element", "layer"]
-    assert planar.conversion.index.name == "name"
+    assert list(planar.conversions.columns) == ["node", "element", "layer"]
+    assert planar.conversions.index.name == "name"
 
     return planar
 

@@ -340,10 +340,10 @@ class PlanarGrid(PlanarGraph):
         self.inter_nodes["element"] = None
 
         # Init the dataframe for conversion elements.
-        self.conversion = pd.DataFrame(
+        self.conversions = pd.DataFrame(
             {"name": [], "node": [], "element": [], "layer": []}
         )
-        self.conversion.set_index("name", inplace=True)
+        self.conversions.set_index("name", inplace=True)
 
         # Init the dictionary for element types.
         self.types = {}
@@ -409,7 +409,7 @@ class PlanarGrid(PlanarGraph):
                 {"node": node, "element": element, "layer": layer},
                 index=[name],
             )
-            self.conversion = self.conversion.append(_new)
+            self.conversions = self.conversions.append(_new)
             LOGGER.debug(
                 f'New conversion element "{element}" called "{name}" is '
                 f'attached to node "{node}."'
