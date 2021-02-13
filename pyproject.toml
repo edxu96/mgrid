@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mgrid"
-version = "0.2.5"
-description = "multilayer network for power grid with multiple voltage levels."
+version = "0.2.6"
+description = "power grid with multiple voltage levels as multilayer network"
 authors = ["Edward Xu <edxu96@outlook.com>"]
 
 [tool.poetry.dependencies]

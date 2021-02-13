@@ -1,5 +1,5 @@
-Multilayer Network for Power Grid
-=================================
+Power Grid as Multilayer Network
+================================
 
 |license| |black| |poetry| |action|
 

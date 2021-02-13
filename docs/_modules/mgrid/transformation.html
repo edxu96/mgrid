@@ -169,9 +169,9 @@
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span> <span class="nn">mgrid.grid</span> <span class="kn">import</span> <span class="n">PlanarGrid</span><span class="p">,</span> <span class="n">SupraGrid</span>
 <span class="kn">from</span> <span class="nn">mgrid.graph.planar</span> <span class="kn">import</span> <span class="n">COLUMNS</span><span class="p">,</span> <span class="n">COLUMNS_DI</span><span class="p">,</span> <span class="n">PlanarGraph</span>
+<span class="kn">from</span> <span class="nn">mgrid.grid</span> <span class="kn">import</span> <span class="n">PlanarGrid</span><span class="p">,</span> <span class="n">SupraGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 <span class="n">COLUMNS_DI_ORIGINAL</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source_original&quot;</span><span class="p">,</span> <span class="s2">&quot;target_original&quot;</span><span class="p">]</span>
 
@@ -257,7 +257,7 @@
     <span class="n">keys_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">node_dict</span><span class="p">)</span>
     <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="n">chain</span><span class="p">(</span>
+            <span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">chain</span><span class="p">(</span>
                 <span class="o">*</span><span class="p">[[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_sorted</span><span class="p">]</span>
             <span class="p">)</span>
         <span class="p">},</span>
@@ -269,7 +269,14 @@
     <span class="n">res</span><span class="o">.</span><span class="n">intra_edges</span> <span class="o">=</span> <span class="n">intra_edges</span>
     <span class="n">res</span><span class="o">.</span><span class="n">inter_edges</span> <span class="o">=</span> <span class="n">inter_edges</span>
     <span class="n">res</span><span class="o">.</span><span class="n">inter_edges</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;node&quot;</span>
+
+    <span class="n">res</span><span class="o">.</span><span class="n">df_layers</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">df_layers</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
     <span class="n">res</span><span class="o">.</span><span class="n">nodelist</span> <span class="o">=</span> <span class="n">nodelist</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">nodelist</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">nodelist</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">df_layers</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">nodelist</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;node&#39;</span>
     <span class="k">return</span> <span class="n">res</span>
 
 
@@ -280,7 +287,8 @@
 <span class="sd">        g: a planar graph or grid to be converted.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Resulted supra-graph for the grid.</span>
+<span class="sd">        Resulted supra graph (for the grid).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">supra</span> <span class="o">=</span> <span class="n">_planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
@@ -292,6 +300,10 @@
 
         <span class="n">supra</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">conversions</span><span class="p">)</span>
         <span class="n">supra</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
+
+        <span class="n">supra</span><span class="o">.</span><span class="n">nodelist</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">supra</span><span class="o">.</span><span class="n">nodelist</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="n">supra</span><span class="o">.</span><span class="n">df_layers</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">supra</span></div>
 </pre></div>

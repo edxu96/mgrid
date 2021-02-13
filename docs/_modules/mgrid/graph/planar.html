@@ -192,7 +192,13 @@
 <span class="sd">                lower, int64, connected lower layer</span>
 
 <span class="sd">        layers (Set[int]): integer indices of all the layers.</span>
+<span class="sd">        df_layers (DataFrame): information on layers.</span>
 
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                idx (index), int, integer indices of layers</span>
+<span class="sd">                name, object, layer names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PlanarGraph.__init__"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -214,7 +220,14 @@
         <span class="k">if</span> <span class="s2">&quot;layer&quot;</span> <span class="ow">in</span> <span class="n">edgelist</span><span class="p">:</span>
             <span class="n">max_layer</span> <span class="o">=</span> <span class="n">edgelist</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
             <span class="n">min_layer</span> <span class="o">=</span> <span class="n">edgelist</span><span class="p">[</span><span class="s2">&quot;layer&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">min_layer</span><span class="p">,</span> <span class="n">max_layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">layer_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_layer</span><span class="p">,</span> <span class="n">max_layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">layer_range</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;layer&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">layer_range</span><span class="p">]},</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">layer_range</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;idx&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
 
@@ -421,6 +434,10 @@
                     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;New top layer </span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2"> resulted from node </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
                     <span class="p">)</span>
+
+                    <span class="n">layer_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;layer&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">upper</span><span class="p">)]})</span>
+                    <span class="n">layer_new</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;idx&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span> <span class="o">=</span> <span class="n">layer_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">upper</span> <span class="o">=</span> <span class="n">layer</span>
                 <span class="n">lower</span> <span class="o">=</span> <span class="n">layer</span> <span class="o">+</span> <span class="mi">1</span>
@@ -430,6 +447,9 @@
                     <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;New bottom layer </span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2"> resulted from </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
                     <span class="p">)</span>
+
+                    <span class="n">layer_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;layer&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lower</span><span class="p">)]})</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_new</span><span class="p">)</span>
 
             <span class="n">df_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
                 <span class="p">{</span><span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="n">upper</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="n">lower</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>

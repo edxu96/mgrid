@@ -357,7 +357,7 @@ attribute.</p>
 
 <dl class="py class">
 <dt id="mgrid.power_flow.conversion.ExternalGrid">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">ExternalGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vm_pu</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#ExternalGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">ExternalGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vm_pu</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#ExternalGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Define a slack bus and a corresponding external grid.</p>
 <div class="admonition note">
@@ -382,8 +382,8 @@ grid.</p>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.conversion.ExternalGrid.vm_pu">
-<code class="sig-name descname">vm_pu</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid.vm_pu" title="Permalink to this definition">¶</a></dt>
-<dd><p>voltage magnitude in per unit</p>
+<code class="sig-name descname">vm_pu</code><em class="property">: float</em><em class="property"> = 1.0</em><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid.vm_pu" title="Permalink to this definition">¶</a></dt>
+<dd><p>voltage magnitude in per unit. Default to be 1.</p>
 </dd></dl>
 
 </dd></dl>
@@ -462,14 +462,11 @@ grid.</p>
 <p>Three functions to add buses, delivery elements, and conversion elements.</p>
 <dl class="py function">
 <dt id="mgrid.power_flow.pandapower.supra2pandapower">
-<code class="sig-prename descclassname">mgrid.power_flow.pandapower.</code><code class="sig-name descname">supra2pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">supra</span></em>, <em class="sig-param"><span class="n">buses</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">mgrid.power_flow.pandapower.</code><code class="sig-name descname">supra2pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">supra</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model based on supra format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>supra</strong> (<a class="reference internal" href="grid.html#mgrid.grid.supra.SupraGrid" title="mgrid.grid.supra.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a>) – a supra-grid.</p></li>
-<li><p><strong>buses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – with a “voltage” column.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>supra</strong> (<a class="reference internal" href="grid.html#mgrid.grid.supra.SupraGrid" title="mgrid.grid.supra.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a>) – a supra-grid.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandapowerNet</span></code></p>

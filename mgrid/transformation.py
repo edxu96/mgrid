@@ -94,11 +94,7 @@ def _planar2supra(g: PlanarGrid) -> SupraGrid:
     # Build nodelist using dictionary for nodes in different layers.
     keys_sorted = sorted(node_dict)
     nodelist = pd.DataFrame(
-        {
-            "layer": chain(
-                *[[key] * len(node_dict[key]) for key in keys_sorted]
-            )
-        },
+        {"idx": chain(*[[key] * len(node_dict[key]) for key in keys_sorted])},
         index=chain(*[node_dict[key] for key in keys_sorted]),
     )
 
@@ -107,7 +103,12 @@ def _planar2supra(g: PlanarGrid) -> SupraGrid:
     res.intra_edges = intra_edges
     res.inter_edges = inter_edges
     res.inter_edges.index.name = "node"
+
+    res.df_layers = g.df_layers.copy(deep=True)
+
     res.nodelist = nodelist
+    res.nodelist["name"] = res.nodelist["idx"].map(res.df_layers["name"])
+    res.nodelist.index.name = "node"
     return res
 
 
@@ -118,7 +119,8 @@ def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
         g: a planar graph or grid to be converted.
 
     Returns:
-        Resulted supra-graph for the grid.
+        Resulted supra graph (for the grid).
+
     """
     supra = _planar2supra(g)
 
@@ -130,5 +132,9 @@ def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
 
         supra.conversions = deepcopy(g.conversions)
         supra.types = deepcopy(g.types)
+
+        supra.nodelist["voltage"] = supra.nodelist["idx"].map(
+            supra.df_layers["voltage"]
+        )
 
     return supra

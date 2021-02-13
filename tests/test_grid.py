@@ -1,8 +1,6 @@
 """A real-world test case. Data has not been disclosed, yet."""
-from copy import deepcopy
 from typing import Tuple
 
-import networkx as nx
 import pandas as pd
 from pandas.core.frame import DataFrame
 import pytest as pt
@@ -150,6 +148,9 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     assert list(planar.conversions.columns) == ["node", "element", "layer"]
     assert planar.conversions.index.name == "name"
 
+    # Specify voltage levels manually.
+    planar.df_layers["voltage"] = [60, 10, 0.4]
+
     return planar
 
 
@@ -197,9 +198,8 @@ def test_graph(planar_graph: PlanarGraph):
     """
     res = planar2supra(planar_graph)
 
-    assert nx.is_frozen(res)
     assert res.number_of_edges() == 208 + 35
-    assert res.nodelist.shape == (244, 1)
+    assert res.nodelist.shape == (244, 2)
 
     inter_edges = res.inter_edges
     assert res.inter_edges.shape == (35, 4)
@@ -218,9 +218,12 @@ def test_planar_grid(grid: PlanarGrid):
     Args:
         grid: initiated planar grid.
     """
-    res = planar2supra(grid)
-    buses = deepcopy(res.nodelist)
-    buses["voltage"] = buses["layer"].map(VOLTAGES_INV)
+    print(grid.df_layers)
 
-    net = supra2pandapower(res, buses)
+    res = planar2supra(grid)
+
+    assert res.number_of_edges() == 208 + 35
+    assert res.nodelist.shape == (244, 3)
+
+    net = supra2pandapower(res)
     print(net)

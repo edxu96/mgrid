@@ -169,8 +169,8 @@
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
 <span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 
-<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 <span class="kn">from</span> <span class="nn">mgrid.grid</span> <span class="kn">import</span> <span class="n">SupraGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 
 <span class="k">def</span> <span class="nf">_complete_edge_attr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -195,12 +195,11 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<div class="viewcode-block" id="supra2pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.pandapower.supra2pandapower">[docs]</a><span class="k">def</span> <span class="nf">supra2pandapower</span><span class="p">(</span><span class="n">supra</span><span class="p">:</span> <span class="n">SupraGrid</span><span class="p">,</span> <span class="n">buses</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandapowerNet</span><span class="p">:</span>
+<div class="viewcode-block" id="supra2pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.pandapower.supra2pandapower">[docs]</a><span class="k">def</span> <span class="nf">supra2pandapower</span><span class="p">(</span><span class="n">supra</span><span class="p">:</span> <span class="n">SupraGrid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandapowerNet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Build ``pandapower`` model based on supra format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        supra: a supra-grid.</span>
-<span class="sd">        buses: with a &quot;voltage&quot; column.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A ``pandapower`` model.</span>
@@ -216,8 +215,8 @@
         <span class="n">std_type</span><span class="o">.</span><span class="n">update_pandapower</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># Add all the buses.</span>
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">buses</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">pp</span><span class="o">.</span><span class="n">create_bus</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">vn_kv</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;voltage&quot;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">nodelist</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_bus</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">vn_kv</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;voltage&quot;</span><span class="p">])</span>
 
     <span class="c1"># Add all the delivery elements.</span>
     <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">():</span>

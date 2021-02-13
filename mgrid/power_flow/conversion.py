@@ -30,7 +30,7 @@ class ExternalGrid:
         grid.
     """
 
-    vm_pu: float  #: voltage magnitude in per unit
+    vm_pu: float = 1.0  #: voltage magnitude in per unit. Default to be 1.
 
     def update_pandapower(
         self, net: pandapowerNet, name: str, bus: str,

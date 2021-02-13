@@ -10,10 +10,9 @@ class SupraGrid(SupraGraph):
     """Power grid modelled as supra-graph.
 
     Warning:
-        It is impossible to modify ``SupraGrid`` for now, and it is
-        frozen using ``networkx``.
+        Modification is impossible for now.
 
-    Attribute:
+    Attributes:
         conversions (DataFrame):
 
             .. csv-table::
@@ -22,6 +21,9 @@ class SupraGrid(SupraGraph):
                 name (index), object, name of conversion elements.
                 bus, object, buses to which elements are attached.
                 element, object, element models.
+
+        types (dict): standard element types, keyed by type names.
+
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):

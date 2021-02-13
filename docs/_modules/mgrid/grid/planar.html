@@ -164,6 +164,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">mgrid.graph.planar</span> <span class="kn">import</span> <span class="n">PlanarGraph</span>
@@ -202,6 +203,25 @@
 <span class="sd">                element, object, element models.</span>
 <span class="sd">                layer, int64, layers to which elements belong.</span>
 
+<span class="sd">        df_layers (DataFrame): information on layers.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                idx (index), int, integer indices of layers</span>
+<span class="sd">                name, object, layer names</span>
+<span class="sd">                voltage, float64, voltage levels</span>
+
+<span class="sd">        nodelist (DataFrame): sorted nodelist containing layer</span>
+<span class="sd">            information.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                node (index), object, node name</span>
+<span class="sd">                idx, int64, layer to which node belongs</span>
+<span class="sd">                name, object, layer name</span>
+<span class="sd">                voltage, float64, voltage levels</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PlanarGrid.__init__"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.planar.PlanarGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -225,7 +245,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;df_layers&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># Init the dataframe for conversion elements.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -306,7 +329,6 @@
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There is no node called &quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span></div></div>
-
 </pre></div>
 
            </div>

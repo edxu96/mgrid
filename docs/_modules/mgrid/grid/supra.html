@@ -163,18 +163,18 @@
 <span></span><span class="sd">&quot;&quot;&quot;Class for grid in supra-graph format.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">mgrid.graph.supra</span> <span class="kn">import</span> <span class="n">SupraGraph</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">from</span> <span class="nn">mgrid.graph.supra</span> <span class="kn">import</span> <span class="n">SupraGraph</span>
 
 
 <div class="viewcode-block" id="SupraGrid"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.supra.SupraGrid">[docs]</a><span class="k">class</span> <span class="nc">SupraGrid</span><span class="p">(</span><span class="n">SupraGraph</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Power grid modelled as supra-graph.</span>
 
 <span class="sd">    Warning:</span>
-<span class="sd">        It is impossible to modify ``SupraGrid`` for now, and it is</span>
-<span class="sd">        frozen using ``networkx``.</span>
+<span class="sd">        Modification is impossible for now.</span>
 
-<span class="sd">    Attribute:</span>
+<span class="sd">    Attributes:</span>
 <span class="sd">        conversions (DataFrame):</span>
 
 <span class="sd">            .. csv-table::</span>
@@ -183,6 +183,9 @@
 <span class="sd">                name (index), object, name of conversion elements.</span>
 <span class="sd">                bus, object, buses to which elements are attached.</span>
 <span class="sd">                element, object, element models.</span>
+
+<span class="sd">        types (dict): standard element types, keyed by type names.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SupraGrid.__init__"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.supra.SupraGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>

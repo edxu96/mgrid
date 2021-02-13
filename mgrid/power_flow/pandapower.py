@@ -5,7 +5,6 @@ Three functions to add buses, delivery elements, and conversion elements.
 import networkx as nx
 import pandapower as pp
 from pandapower.auxiliary import pandapowerNet
-from pandas.core.frame import DataFrame
 
 from mgrid.grid import SupraGrid
 from mgrid.log import LOGGER
@@ -33,12 +32,11 @@ def _complete_edge_attr(g, attr: str) -> bool:
     return res
 
 
-def supra2pandapower(supra: SupraGrid, buses: DataFrame) -> pandapowerNet:
+def supra2pandapower(supra: SupraGrid) -> pandapowerNet:
     """Build ``pandapower`` model based on supra format.
 
     Args:
         supra: a supra-grid.
-        buses: with a "voltage" column.
 
     Returns:
         A ``pandapower`` model.
@@ -54,8 +52,8 @@ def supra2pandapower(supra: SupraGrid, buses: DataFrame) -> pandapowerNet:
         std_type.update_pandapower(net, key)
 
     # Add all the buses.
-    for name, row in buses.iterrows():
-        pp.create_bus(net, name=name, vn_kv=row["voltage"])
+    for node, row in supra.nodelist.iterrows():
+        pp.create_bus(net, name=node, vn_kv=row["voltage"])
 
     # Add all the delivery elements.
     for source, target, data in supra.edges.data():

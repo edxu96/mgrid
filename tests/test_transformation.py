@@ -1,8 +1,6 @@
 """Test functions in ``convert.py``."""
 from itertools import chain
 
-import networkx as nx
-
 from mgrid.graph.planar import COLUMNS, COLUMNS_DI, PlanarGraph
 from mgrid.grid import PlanarGrid
 from mgrid.transformation import COLUMNS_DI_ORIGINAL, planar2supra
@@ -16,8 +14,6 @@ def test_planar2supra(simple: PlanarGraph):
             inter-edge.
     """
     res = planar2supra(simple)
-
-    assert nx.is_frozen(res)
 
     intra_edges = res.intra_edges
     assert list(intra_edges.index.names) == COLUMNS_DI_ORIGINAL

@@ -2,6 +2,7 @@
 from typing import Optional, Union
 
 import networkx as nx
+import numpy as np
 import pandas as pd
 
 from mgrid.graph.planar import PlanarGraph
@@ -40,6 +41,25 @@ class PlanarGrid(PlanarGraph):
                 element, object, element models.
                 layer, int64, layers to which elements belong.
 
+        df_layers (DataFrame): information on layers.
+
+            .. csv-table::
+                :header: name, dtype, definition
+
+                idx (index), int, integer indices of layers
+                name, object, layer names
+                voltage, float64, voltage levels
+
+        nodelist (DataFrame): sorted nodelist containing layer
+            information.
+
+            .. csv-table::
+                :header: name, dtype, definition
+
+                node (index), object, node name
+                idx, int64, layer to which node belongs
+                name, object, layer name
+                voltage, float64, voltage levels
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -63,7 +83,10 @@ class PlanarGrid(PlanarGraph):
         else:
             super().__init__(dg)
 
-        self.inter_nodes["element"] = None
+        self.inter_nodes["element"] = np.nan
+
+        if hasattr(self, "df_layers"):
+            self.df_layers["voltage"] = np.nan
 
         # Init the dataframe for conversion elements.
         self.conversions = pd.DataFrame(

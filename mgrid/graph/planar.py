@@ -30,7 +30,13 @@ class PlanarGraph(nx.DiGraph):
                 lower, int64, connected lower layer
 
         layers (Set[int]): integer indices of all the layers.
+        df_layers (DataFrame): information on layers.
 
+            .. csv-table::
+                :header: name, dtype, definition
+
+                idx (index), int, integer indices of layers
+                name, object, layer names
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -52,7 +58,14 @@ class PlanarGraph(nx.DiGraph):
         if "layer" in edgelist:
             max_layer = edgelist["layer"].max()
             min_layer = edgelist["layer"].min()
-            self.layers = set(range(min_layer, max_layer + 1))
+            layer_range = range(min_layer, max_layer + 1)
+            self.layers = set(layer_range)
+
+            self.df_layers = pd.DataFrame(
+                {"name": ["layer" + str(idx) for idx in layer_range]},
+                index=layer_range,
+            )
+            self.df_layers.index.name = "idx"
         else:
             self.layers = set()
 
@@ -259,6 +272,10 @@ class PlanarGraph(nx.DiGraph):
                     LOGGER.info(
                         f"New top layer {upper} resulted from node {name}."
                     )
+
+                    layer_new = pd.DataFrame({"name": ["layer" + str(upper)]})
+                    layer_new.index.name = "idx"
+                    self.df_layers = layer_new.append(self.df_layers)
             else:
                 upper = layer
                 lower = layer + 1
@@ -268,6 +285,9 @@ class PlanarGraph(nx.DiGraph):
                     LOGGER.info(
                         f"New bottom layer {lower} resulted from {name}."
                     )
+
+                    layer_new = pd.DataFrame({"name": ["layer" + str(lower)]})
+                    self.df_layers = self.df_layers.append(layer_new)
 
             df_new = pd.DataFrame(
                 {"upper": upper, "lower": lower}, index=[name]

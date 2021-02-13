@@ -8,8 +8,8 @@ class SupraGraph(nx.DiGraph):
     """Multilayer network as a supra graph.
 
     Supra-graph is way to represent a multilayer network in one graph.
-    Especially, intra-edges and inter-edges exist at the same time,
-    while there is no inter-edge in :class:`planar.PlanarGrid`.
+    Especially, intra-edges and inter-edges exist at the same time. See
+    [bianconi2018multilayer]_ for details.
 
     Note:
         Any terminal pair of inter-edges is replica nodes. In planar
@@ -52,8 +52,9 @@ class SupraGraph(nx.DiGraph):
             .. csv-table::
                 :header: name, dtype, definition
 
-                name (index), object, node name
-                layer, int64, integer index of layer
+                node (index), object, node name
+                idx, int64, layer to which node belongs
+                name, object, layer name
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -72,7 +73,7 @@ class SupraGraph(nx.DiGraph):
         else:
             super().__init__(dg)
 
-        nx.freeze(self)
+        # nx.freeze(self)
 
         self.intra_edges = None
         self.inter_edges = None

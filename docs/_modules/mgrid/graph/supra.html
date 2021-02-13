@@ -170,8 +170,8 @@
     <span class="sd">&quot;&quot;&quot;Multilayer network as a supra graph.</span>
 
 <span class="sd">    Supra-graph is way to represent a multilayer network in one graph.</span>
-<span class="sd">    Especially, intra-edges and inter-edges exist at the same time,</span>
-<span class="sd">    while there is no inter-edge in :class:`planar.PlanarGrid`.</span>
+<span class="sd">    Especially, intra-edges and inter-edges exist at the same time. See</span>
+<span class="sd">    [bianconi2018multilayer]_ for details.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        Any terminal pair of inter-edges is replica nodes. In planar</span>
@@ -214,8 +214,9 @@
 <span class="sd">            .. csv-table::</span>
 <span class="sd">                :header: name, dtype, definition</span>
 
-<span class="sd">                name (index), object, node name</span>
-<span class="sd">                layer, int64, integer index of layer</span>
+<span class="sd">                node (index), object, node name</span>
+<span class="sd">                idx, int64, layer to which node belongs</span>
+<span class="sd">                name, object, layer name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SupraGraph.__init__"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.supra.SupraGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -234,7 +235,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
 
-        <span class="n">nx</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># nx.freeze(self)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intra_edges</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inter_edges</span> <span class="o">=</span> <span class="kc">None</span>
