@@ -8,13 +8,4 @@ The multilayer network in this package has the following features:
   network, or network of networks for sure.
 
 """
-from mgrid.convert import planar2supra
-from mgrid.multilayer import SupraGrid
-from mgrid.planar import PlanarGrid
-
-__version__ = "0.2.5"
-__all__ = [
-    "planar2supra",
-    "SupraGrid",
-    "PlanarGrid",
-]
+__version__ = "0.2.6"

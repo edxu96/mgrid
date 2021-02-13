@@ -1,19 +1,11 @@
-"""Class for modelling power grid as multilayer graph."""
+"""Class for multilayer network in supra-graph format."""
 from typing import Optional
 
 import networkx as nx
 
 
-class MultilayerGrid:
-    """Power grid with multiple voltage levels as multilayer network."""
-
-    def __init__(self):
-        """Initiate an empty network."""
-        pass
-
-
-class SupraGrid(nx.DiGraph):
-    """Power grid with multiple voltage levels as supra-graph.
+class SupraGraph(nx.DiGraph):
+    """Multilayer network as a supra graph.
 
     Supra-graph is way to represent a multilayer network in one graph.
     Especially, intra-edges and inter-edges exist at the same time,
@@ -27,8 +19,8 @@ class SupraGrid(nx.DiGraph):
         nothing in another lay related to them.
 
     Warning:
-        It is impossible to modify ``MultilayerGrid`` for now, and it
-        is frozen using ``networkx``.
+        It is impossible to modify ``SupraGraph`` for now, and it is
+        frozen using ``networkx``.
 
     Attributes:
         intra_edges (DataFrame): correspondence between intra-edges in
@@ -62,7 +54,6 @@ class SupraGrid(nx.DiGraph):
 
                 name (index), object, node name
                 layer, int64, integer index of layer
-
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -86,6 +77,3 @@ class SupraGrid(nx.DiGraph):
         self.intra_edges = None
         self.inter_edges = None
         self.nodelist = None
-
-        self.conversions = None
-        self.types = None

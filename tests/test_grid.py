@@ -7,11 +7,12 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 import pytest as pt
 
-from mgrid.convert import planar2supra
-from mgrid.planar import COLUMNS, PlanarGraph, PlanarGrid
+from mgrid.graph.planar import COLUMNS, PlanarGraph
+from mgrid.grid import PlanarGrid
 from mgrid.power_flow.delivery import Cable, TransformerStd
 from mgrid.power_flow.pandapower import supra2pandapower
 from mgrid.power_flow.type import TransformerType
+from mgrid.transformation import planar2supra
 
 # Dictionary to map entries in column "voltage" to layers.
 VOLTAGES = {"04kv": 2, "10kv": 1, "60kv": 0}

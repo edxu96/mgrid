@@ -87,13 +87,13 @@
 
 
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -160,13 +160,13 @@
            <div itemprop="articleBody">
 
   <h1>Source code for mgrid.power_flow.conversion</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;&quot;Default data-classes for conversion elements.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Default data-classes for conversion elements.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
 
 
-<div class="viewcode-block" id="Ejection"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.conversion.Ejection">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="Ejection"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Ejection">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Ejection</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Essential parameters for load or static generators.&quot;&quot;&quot;</span>
 
@@ -180,10 +180,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Ejected reactive power in mega-watt.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_factor</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span></div>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_factor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
 
 
-<div class="viewcode-block" id="ExternalGrid"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.conversion.ExternalGrid">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="ExternalGrid"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.ExternalGrid">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ExternalGrid</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Define a slack bus and a corresponding external grid.</span>
 
@@ -194,7 +194,7 @@
 
     <span class="n">vm_pu</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: voltage magnitude in per unit</span>
 
-<div class="viewcode-block" id="ExternalGrid.update_pandapower"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.conversion.ExternalGrid.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+<div class="viewcode-block" id="ExternalGrid.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.ExternalGrid.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the transformer itself.</span>

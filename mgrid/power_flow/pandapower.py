@@ -7,8 +7,8 @@ import pandapower as pp
 from pandapower.auxiliary import pandapowerNet
 from pandas.core.frame import DataFrame
 
+from mgrid.grid import SupraGrid
 from mgrid.log import LOGGER
-from mgrid.multilayer import SupraGrid
 
 
 def _complete_edge_attr(g, attr: str) -> bool:

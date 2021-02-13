@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>mgrid.convert &mdash; mgrid v0.2.5 documentation</title>
+  <title>mgrid.transformation &mdash; mgrid v0.2.5 documentation</title>
 
 
 
@@ -87,13 +87,13 @@
 
 
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../transformation.html">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -144,7 +144,7 @@
 
           <li><a href="../index.html">Module code</a> &raquo;</li>
 
-      <li>mgrid.convert</li>
+      <li>mgrid.transformation</li>
 
 
       <li class="wy-breadcrumbs-aside">
@@ -159,8 +159,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <h1>Source code for mgrid.convert</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Function to convert planar graph to supra-graph.&quot;&quot;&quot;</span>
+  <h1>Source code for mgrid.transformation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Function to convert planar graph to supra graph.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span>
@@ -170,8 +170,8 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span> <span class="nn">mgrid.multilayer</span> <span class="kn">import</span> <span class="n">SupraGrid</span>
-<span class="kn">from</span> <span class="nn">mgrid.planar</span> <span class="kn">import</span> <span class="n">COLUMNS</span><span class="p">,</span> <span class="n">COLUMNS_DI</span><span class="p">,</span> <span class="n">PlanarGraph</span><span class="p">,</span> <span class="n">PlanarGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.grid</span> <span class="kn">import</span> <span class="n">PlanarGrid</span><span class="p">,</span> <span class="n">SupraGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.graph.planar</span> <span class="kn">import</span> <span class="n">COLUMNS</span><span class="p">,</span> <span class="n">COLUMNS_DI</span><span class="p">,</span> <span class="n">PlanarGraph</span>
 
 <span class="n">COLUMNS_DI_ORIGINAL</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source_original&quot;</span><span class="p">,</span> <span class="s2">&quot;target_original&quot;</span><span class="p">]</span>
 
@@ -273,7 +273,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../mgrid.convert.html#mgrid.convert.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PlanarGraph</span><span class="p">,</span> <span class="n">PlanarGrid</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
+<div class="viewcode-block" id="planar2supra"><a class="viewcode-back" href="../../transformation.html#mgrid.transformation.planar2supra">[docs]</a><span class="k">def</span> <span class="nf">planar2supra</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PlanarGraph</span><span class="p">,</span> <span class="n">PlanarGrid</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SupraGrid</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Convert a planar grid to corresponding supra-grid.</span>
 
 <span class="sd">    Args:</span>

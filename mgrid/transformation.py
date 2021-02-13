@@ -1,4 +1,4 @@
-"""Function to convert planar graph to supra-graph."""
+"""Function to convert planar graph to supra graph."""
 from copy import deepcopy
 from itertools import chain
 from statistics import mean
@@ -7,9 +7,9 @@ from typing import Tuple, Union
 import networkx as nx
 import pandas as pd
 
+from mgrid.graph.planar import COLUMNS, COLUMNS_DI, PlanarGraph
+from mgrid.grid import PlanarGrid, SupraGrid
 from mgrid.log import LOGGER
-from mgrid.multilayer import SupraGrid
-from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph, PlanarGrid
 
 COLUMNS_DI_ORIGINAL = ["source_original", "target_original"]
 

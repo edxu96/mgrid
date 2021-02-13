@@ -3,7 +3,7 @@ import networkx as nx
 import pandas as pd
 from pandas.core.frame import DataFrame
 
-from mgrid.planar import COLUMNS, PlanarGraph
+from mgrid.graph.planar import COLUMNS, PlanarGraph
 
 
 def test_from_edgelist():

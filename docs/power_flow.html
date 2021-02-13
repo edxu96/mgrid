@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Power Flow &mdash; mgrid v0.2.5 documentation</title>
+  <title>Power Flow Calculation &mdash; mgrid v0.2.5 documentation</title>
 
 
 
@@ -38,8 +38,8 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="bibliography" href="bibliography.html" />
-    <link rel="prev" title="convert" href="mgrid.convert.html" />
+    <link rel="next" title="Transformation" href="transformation.html" />
+    <link rel="prev" title="Power Grid" href="grid.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,19 +89,19 @@
 
 
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Power Flow</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.power_flow.pandapower">pandapower</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Power Flow Calculation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-mgrid.power_flow.delivery">Delivery Element</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-mgrid.power_flow.conversion">Conversion Element</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-mgrid.power_flow.type">Conversion Element Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.power_flow.pandapower">“pandapower” Package</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -150,13 +150,13 @@
 
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
 
-      <li>Power Flow</li>
+      <li>Power Flow Calculation</li>
 
 
       <li class="wy-breadcrumbs-aside">
 
 
-            <a href="_sources/mgrid.power_flow.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/power_flow.rst.txt" rel="nofollow"> View page source</a>
 
 
       </li>
@@ -169,33 +169,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <div class="section" id="power-flow">
-<h1>Power Flow<a class="headerlink" href="#power-flow" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-mgrid.power_flow.pandapower">
-<span id="pandapower"></span><h2>pandapower<a class="headerlink" href="#module-mgrid.power_flow.pandapower" title="Permalink to this headline">¶</a></h2>
-<p>Build pandapower model.</p>
-<p>Three functions to add buses, delivery elements, and conversion elements.</p>
-<dl class="py function">
-<dt id="mgrid.power_flow.pandapower.supra2pandapower">
-<code class="sig-prename descclassname">mgrid.power_flow.pandapower.</code><code class="sig-name descname">supra2pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">supra</span></em>, <em class="sig-param"><span class="n">buses</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model based on supra format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>supra</strong> (<a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a>) – a supra-grid.</p></li>
-<li><p><strong>buses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – with a “voltage” column.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandapowerNet</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
+  <div class="section" id="power-flow-calculation">
+<h1>Power Flow Calculation<a class="headerlink" href="#power-flow-calculation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-mgrid.power_flow.delivery">
 <span id="delivery-element"></span><h2>Delivery Element<a class="headerlink" href="#module-mgrid.power_flow.delivery" title="Permalink to this headline">¶</a></h2>
 <p>Default data-classes for delivery elements.</p>
@@ -346,7 +321,7 @@ attribute.</p>
 </div>
 <div class="section" id="module-mgrid.power_flow.conversion">
 <span id="conversion-element"></span><h2>Conversion Element<a class="headerlink" href="#module-mgrid.power_flow.conversion" title="Permalink to this headline">¶</a></h2>
-<p>“Default data-classes for conversion elements.</p>
+<p>Default data-classes for conversion elements.</p>
 <dl class="py class">
 <dt id="mgrid.power_flow.conversion.Ejection">
 <em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">Ejection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p_mw</span></em>, <em class="sig-param"><span class="n">power_factor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Ejection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection" title="Permalink to this definition">¶</a></dt>
@@ -481,6 +456,31 @@ grid.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-mgrid.power_flow.pandapower">
+<span id="pandapower-package"></span><h2>“pandapower” Package<a class="headerlink" href="#module-mgrid.power_flow.pandapower" title="Permalink to this headline">¶</a></h2>
+<p>Build pandapower model.</p>
+<p>Three functions to add buses, delivery elements, and conversion elements.</p>
+<dl class="py function">
+<dt id="mgrid.power_flow.pandapower.supra2pandapower">
+<code class="sig-prename descclassname">mgrid.power_flow.pandapower.</code><code class="sig-name descname">supra2pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">supra</span></em>, <em class="sig-param"><span class="n">buses</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model based on supra format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>supra</strong> (<a class="reference internal" href="grid.html#mgrid.grid.supra.SupraGrid" title="mgrid.grid.supra.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a>) – a supra-grid.</p></li>
+<li><p><strong>buses</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – with a “voltage” column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandapowerNet</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -489,8 +489,8 @@ grid.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="bibliography.html" class="btn btn-neutral float-right" title="bibliography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="mgrid.convert.html" class="btn btn-neutral float-left" title="convert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="transformation.html" class="btn btn-neutral float-right" title="Transformation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="grid.html" class="btn btn-neutral float-left" title="Power Grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

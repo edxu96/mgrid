@@ -3,8 +3,9 @@ from itertools import chain
 
 import networkx as nx
 
-from mgrid.convert import COLUMNS_DI_ORIGINAL, planar2supra
-from mgrid.planar import COLUMNS, COLUMNS_DI, PlanarGraph, PlanarGrid
+from mgrid.graph.planar import COLUMNS, COLUMNS_DI, PlanarGraph
+from mgrid.grid import PlanarGrid
+from mgrid.transformation import COLUMNS_DI_ORIGINAL, planar2supra
 
 
 def test_planar2supra(simple: PlanarGraph):

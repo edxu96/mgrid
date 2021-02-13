@@ -3,7 +3,7 @@ import networkx as nx
 import pandas as pd
 import pytest as pt
 
-from mgrid.planar import COLUMNS, PlanarGraph
+from mgrid.graph.planar import COLUMNS, PlanarGraph
 
 
 @pt.fixture(scope="module")

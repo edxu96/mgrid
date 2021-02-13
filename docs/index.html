@@ -38,7 +38,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="planar" href="mgrid.planar.html" />
+    <link rel="next" title="Graph Theoretic Model" href="graph.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,13 +88,13 @@
 
 
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -212,17 +212,15 @@ pair of inter-edges sharing a terminal.</p></li>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGraph" title="mgrid.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.planar.PlanarGraph</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graph.html#mgrid.graph.planar.PlanarGraph" title="mgrid.graph.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.graph.planar.PlanarGraph</span></code></a></p></td>
 <td><p>in planar graph</p></td>
 <td><p>contracted</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.SupraGrid</span></code></a></p></td>
-<td><p>in planar graph</p></td>
-<td><p>in planar graph</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.MultilayerGrid" title="mgrid.multilayer.MultilayerGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.multilayer.MultilayerGrid</span></code></a></p></td>
-<td><p>in layer</p></td>
-<td><p>between layers</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graph.html#mgrid.graph.supra.SupraGraph" title="mgrid.graph.supra.SupraGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.graph.supra.SupraGraph</span></code></a></p></td>
+<td><p>in planar graph
+in layer</p></td>
+<td><p>in planar graph
+between layers</p></td>
 </tr>
 </tbody>
 </table>
@@ -235,10 +233,24 @@ be seen as buses, and cables &amp; transformers can have two terminals.</p>
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graph.html#module-mgrid.graph.planar">Planar Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph.html#module-mgrid.graph.supra">Supra Graph</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grid.html#module-mgrid.grid.planar">as Planar Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grid.html#module-mgrid.grid.supra">as Supra Graph</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="power_flow.html#module-mgrid.power_flow.delivery">Delivery Element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_flow.html#module-mgrid.power_flow.conversion">Conversion Element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_flow.html#module-mgrid.power_flow.type">Conversion Element Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_flow.html#module-mgrid.power_flow.pandapower">“pandapower” Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
 </ul>
 </div>
 </div>
@@ -246,7 +258,7 @@ be seen as buses, and cables &amp; transformers can have two terminals.</p>
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
 </div>
 </div>
@@ -258,7 +270,7 @@ be seen as buses, and cables &amp; transformers can have two terminals.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mgrid.planar.html" class="btn btn-neutral float-right" title="planar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="graph.html" class="btn btn-neutral float-right" title="Graph Theoretic Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

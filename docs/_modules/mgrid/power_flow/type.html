@@ -87,13 +87,13 @@
 
 
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.convert.html">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -167,7 +167,7 @@
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
 
 
-<div class="viewcode-block" id="TransformerType"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.type.TransformerType">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="TransformerType"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.type.TransformerType">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TransformerType</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;One-phase equivalent transformer type.&quot;&quot;&quot;</span>
 
@@ -180,7 +180,7 @@
     <span class="n">pfe_kw</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: iron losses in kilo-watt</span>
     <span class="n">i0_percent</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: open loop losses in percent</span>
 
-<div class="viewcode-block" id="TransformerType.update_pandapower"><a class="viewcode-back" href="../../../mgrid.power_flow.html#mgrid.power_flow.type.TransformerType.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="TransformerType.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.type.TransformerType.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding this transformer type.</span>
 
 <span class="sd">        Args:</span>

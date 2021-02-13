@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>convert &mdash; mgrid v0.2.5 documentation</title>
+  <title>Transformation &mdash; mgrid v0.2.5 documentation</title>
 
 
 
@@ -38,8 +38,8 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Power Flow" href="mgrid.power_flow.html" />
-    <link rel="prev" title="multilayer" href="mgrid.multilayer.html" />
+    <link rel="next" title="Bibliography" href="bibliography.html" />
+    <link rel="prev" title="Power Flow Calculation" href="power_flow.html" />
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,13 +89,13 @@
 
 
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mgrid.planar.html">planar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.multilayer.html">multilayer</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">convert</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgrid.power_flow.html">Power Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transformation</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
 
 
@@ -144,13 +144,13 @@
 
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
 
-      <li>convert</li>
+      <li>Transformation</li>
 
 
       <li class="wy-breadcrumbs-aside">
 
 
-            <a href="_sources/mgrid.convert.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/transformation.rst.txt" rel="nofollow"> View page source</a>
 
 
       </li>
@@ -163,19 +163,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <div class="section" id="module-mgrid.convert">
-<span id="convert"></span><h1>convert<a class="headerlink" href="#module-mgrid.convert" title="Permalink to this headline">¶</a></h1>
-<p>Function to convert planar graph to supra-graph.</p>
+  <div class="section" id="module-mgrid.transformation">
+<span id="transformation"></span><h1>Transformation<a class="headerlink" href="#module-mgrid.transformation" title="Permalink to this headline">¶</a></h1>
+<p>Function to convert planar graph to supra graph.</p>
 <dl class="py function">
-<dt id="mgrid.convert.planar2supra">
-<code class="sig-prename descclassname">mgrid.convert.</code><code class="sig-name descname">planar2supra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/convert.html#planar2supra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.convert.planar2supra" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.transformation.planar2supra">
+<code class="sig-prename descclassname">mgrid.transformation.</code><code class="sig-name descname">planar2supra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/transformation.html#planar2supra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.transformation.planar2supra" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a planar grid to corresponding supra-grid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>g</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGraph" title="mgrid.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarGraph</span></code></a>, <a class="reference internal" href="mgrid.planar.html#mgrid.planar.PlanarGrid" title="mgrid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarGrid</span></code></a>]) – a planar graph or grid to be converted.</p>
+<dd class="field-odd"><p><strong>g</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="graph.html#mgrid.graph.planar.PlanarGraph" title="mgrid.graph.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarGraph</span></code></a>, <a class="reference internal" href="grid.html#mgrid.grid.planar.PlanarGrid" title="mgrid.grid.planar.PlanarGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlanarGrid</span></code></a>]) – a planar graph or grid to be converted.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="mgrid.multilayer.html#mgrid.multilayer.SupraGrid" title="mgrid.multilayer.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="grid.html#mgrid.grid.supra.SupraGrid" title="mgrid.grid.supra.SupraGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupraGrid</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Resulted supra-graph for the grid.</p>
@@ -191,8 +191,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mgrid.power_flow.html" class="btn btn-neutral float-right" title="Power Flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="mgrid.multilayer.html" class="btn btn-neutral float-left" title="multilayer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bibliography.html" class="btn btn-neutral float-right" title="Bibliography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="power_flow.html" class="btn btn-neutral float-left" title="Power Flow Calculation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

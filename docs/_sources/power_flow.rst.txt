@@ -1,13 +1,5 @@
-Power Flow
-==========
-
-pandapower
-----------
-
-.. automodule:: mgrid.power_flow.pandapower
-   :members:
-   :undoc-members:
-   :show-inheritance:
+Power Flow Calculation
+======================
 
 Delivery Element
 ----------------
@@ -33,3 +25,10 @@ Conversion Element Type
    :undoc-members:
    :show-inheritance:
 
+"pandapower" Package
+--------------------
+
+.. automodule:: mgrid.power_flow.pandapower
+   :members:
+   :undoc-members:
+   :show-inheritance:

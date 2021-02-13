@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>mgrid.grid.planar &mdash; mgrid v0.2.5 documentation</title>
+
+
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+
+
+  <div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+    <a href="https://github.com/edxu96/mgrid/tree/main/docs_raw">documentation source</a> |
+    <a href="https://github.com/edxu96/mgrid">repository</a>
+
+
+
+            <a href="../../../index.html" class="icon icon-home"> mgrid
+
+
+
+          </a>
+
+
+
+
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+
+        </div>
+
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+
+
+
+
+
+
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+</ul>
+
+
+
+        </div>
+
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+
+      <nav class="wy-nav-top" aria-label="top navigation">
+
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mgrid</a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+
+      <li>mgrid.grid.planar</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+
+      </li>
+
+  </ul>
+
+
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mgrid.grid.planar</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Class for grid in planar graph format.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">mgrid.graph.planar</span> <span class="kn">import</span> <span class="n">PlanarGraph</span>
+<span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">mgrid.power_flow.conversion</span> <span class="kn">import</span> <span class="n">Ejection</span><span class="p">,</span> <span class="n">ExternalGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.power_flow.delivery</span> <span class="kn">import</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">TransformerStd</span>
+
+
+<div class="viewcode-block" id="PlanarGrid"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.planar.PlanarGrid">[docs]</a><span class="k">class</span> <span class="nc">PlanarGrid</span><span class="p">(</span><span class="n">PlanarGraph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model multilayer graph in plane by contracting inter-edges.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        There are two kinds of nodes, inter-nodes and planar nodes. If</span>
+<span class="sd">        an inter-node is isolated in some layer, it cannot be recognised</span>
+<span class="sd">        directly.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), object, name in planar graph</span>
+<span class="sd">                upper, int64, connected upper layer</span>
+<span class="sd">                lower, int64, connected lower layer</span>
+<span class="sd">                element, object, transformer model</span>
+
+<span class="sd">        layers (Set[int]): integer indices of all the layers.</span>
+<span class="sd">        conversion (DataFrame): information on conversion elements.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                name (index), object, name of conversion elements.</span>
+<span class="sd">                node, object, nodes to which elements are attached.</span>
+<span class="sd">                element, object, element models.</span>
+<span class="sd">                layer, int64, layers to which elements belong.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PlanarGrid.__init__"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.planar.PlanarGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init an empty directed graph or from existing directed graph.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            - All the edges are intra-edges, so they must be associated</span>
+<span class="sd">              with some layer.</span>
+<span class="sd">            - It is essential to have the option for empty graph, or</span>
+<span class="sd">              some built-in ``networkx`` function will not work. Don&#39;t</span>
+<span class="sd">              know why.</span>
+<span class="sd">            - Most inter-nodes can be detected. However, when one</span>
+<span class="sd">              terminal of some inter-edge is isolated in that layer, the</span>
+<span class="sd">              corresponding inter-node cannot be detected.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dg: an existing directed graph. Default to be None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dg</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Init the dataframe for conversion elements.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Init the dictionary for element types.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="PlanarGrid.add_inter_node"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.planar.PlanarGrid.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">TransformerStd</span><span class="p">],</span>
+        <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Specify a planar node as an inter-node with an adjacent layer.</span>
+
+<span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in some</span>
+<span class="sd">        layer, then it will not be recognised as an inter-node. It must be</span>
+<span class="sd">        specified manually.</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            Upper layer has a smaller integer index.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: name of the inter-node.</span>
+<span class="sd">            element: the transformer model.</span>
+<span class="sd">            upper: whether the other terminal of the corresponding</span>
+<span class="sd">                inter-edge is on upper layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_inter_node</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span></div>
+
+<div class="viewcode-block" id="PlanarGrid.add_conversion"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.planar.PlanarGrid.add_conversion">[docs]</a>    <span class="k">def</span> <span class="nf">add_conversion</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ejection</span><span class="p">,</span> <span class="n">ExternalGrid</span><span class="p">],</span>
+        <span class="n">layer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a conversion element to the grid.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Any conversion element is associated with a layer. If it is</span>
+<span class="sd">            attached to a intra-node, then it inherent the node&#39;s layer.</span>
+<span class="sd">            If to a inter-node, ``layer`` should be specified.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: name of the conversion element.</span>
+<span class="sd">            node: name of the node to which the element is attached.</span>
+<span class="sd">            element: model for the element.</span>
+<span class="sd">            layer: layer to which the element belongs. If ``node`` is an</span>
+<span class="sd">                intra-node, it is not necessary to specify it. When</span>
+<span class="sd">                ``node`` is an inter-node and it is not specified, a</span>
+<span class="sd">                warning will be echoed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">upper</span><span class="p">,</span> <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_layer</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">layer</span> <span class="ow">and</span> <span class="n">upper</span> <span class="o">==</span> <span class="n">lower</span><span class="p">:</span>
+                <span class="n">layer</span> <span class="o">=</span> <span class="n">upper</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">layer</span> <span class="ow">and</span> <span class="n">upper</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Layer of conversion element &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is not specified.&#39;</span>
+                <span class="p">)</span>
+
+            <span class="n">_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="n">element</span><span class="p">,</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="p">},</span>
+                <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_new</span><span class="p">)</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;New conversion element &quot;</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&quot; called &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;attached to node &quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">.&quot;&#39;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;There is no node called &quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+           </div>
+
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Edward Xu.
+
+    </p>
+  </div>
+
+
+
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+
+
+
+
+
+</body>
+</html>

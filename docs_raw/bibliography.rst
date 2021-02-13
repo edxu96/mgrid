@@ -1,4 +1,4 @@
-bibliography
+Bibliography
 ============
 
 .. [david2009random]

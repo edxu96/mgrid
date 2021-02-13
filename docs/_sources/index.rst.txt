@@ -48,9 +48,9 @@ Three Representation Methods
 ======================================== =============== ===============
 Python class                             intra-edge      inter-edge
 ======================================== =============== ===============
-:class:`mgrid.planar.PlanarGraph`        in planar graph contracted
-:class:`mgrid.multilayer.SupraGrid`      in planar graph in planar graph
-:class:`mgrid.multilayer.MultilayerGrid` in layer        between layers
+:class:`mgrid.graph.planar.PlanarGraph`  in planar graph contracted
+:class:`mgrid.graph.supra.SupraGraph`    in planar graph in planar graph
+                                         in layer        between layers
 ======================================== =============== ===============
 
 Usually, datasets are stored with respect to ``PlanarGrid``, then all
@@ -62,12 +62,12 @@ API
 ---
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   mgrid.planar
-   mgrid.multilayer
-   mgrid.convert
-   mgrid.power_flow
+   graph
+   grid
+   power_flow
+   transformation
 
 Bibliography
 ------------
