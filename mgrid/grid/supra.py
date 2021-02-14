@@ -1,4 +1,16 @@
-"""Class for grid in supra-graph format."""
+"""Class for power grid as multilayer network in supra-graph format.
+
+Any node in a supra graph is a **bus**, which is an imaginary concept to
+enforce Kirchhoff's law. It can a conjunction of two cables or an entire
+nation. There is no power loss within any bus. When aggregating some
+area (like an entire country) as a bus, the loss within that area can be
+represented by a conversion element. However, it is impossible to derive
+the loss correctly.
+
+Usually, in the literature, three types of buses, PQ, PV, and slack, are
+considered, but it is not necessary. Those features are resulted from
+attached conversion elements. There is only one type of node here.
+"""
 from typing import Optional
 
 import networkx as nx
