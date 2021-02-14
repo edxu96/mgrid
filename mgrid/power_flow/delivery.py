@@ -1,5 +1,10 @@
 """Default data-classes for delivery elements.
 
+Any **delivery element** has two terminals and moves electricity from
+one bus to another. Cables and transformers fit into this category. Any
+edge in supra graph corresponds to one and only one delivery element,
+and vice versa.
+
 .. note::
     Whether the element is paralleled should be specified as an edge
     attribute.
@@ -8,6 +13,7 @@
     Inherited attributes are not shown again.
 """
 from dataclasses import dataclass
+from typing import List
 
 import pandapower as pp
 from pandapower.auxiliary import pandapowerNet
@@ -20,6 +26,13 @@ class CableEssential:
     length_km: float  #: cable length in kilometer
     name: str  #: name
     parallel: int  #: number of same cables in parallel
+
+
+@dataclass
+class Cable3Phase(CableEssential):
+    """Define three phase cable from parameters."""
+
+    channels: List[str]  #: phase(s) of the cable
 
 
 @dataclass

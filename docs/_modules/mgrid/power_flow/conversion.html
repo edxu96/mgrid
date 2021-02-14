@@ -160,7 +160,22 @@
            <div itemprop="articleBody">
 
   <h1>Source code for mgrid.power_flow.conversion</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Default data-classes for conversion elements.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Prototypical classes for conversion elements in power flow analysis.</span>
+
+<span class="sd">A **conversion element** is an electrical device converting electricity</span>
+<span class="sd">to or from other form. For example, a microware oven relies on</span>
+<span class="sd">electricity to emit wave. Such devices have only one terminal and must</span>
+<span class="sd">be attached to a bus. Generally, based on if the neutral wire is</span>
+<span class="sd">involved, there are two kinds of connection: wye or delta. Wye</span>
+<span class="sd">connection is the focus for now. A bus can have multiple or zero</span>
+<span class="sd">conversion element attached.</span>
+
+<span class="sd">For any conversion element, a unique name and a node to which it</span>
+<span class="sd">attaches must be specified in supra graph. Furthermore, in planar graph,</span>
+<span class="sd">the layer of the element must be specified, because it might be attached</span>
+<span class="sd">to an inter-node, which spans two layers. See</span>
+<span class="sd">:mod:`mgrid.grid.planar` for more details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>

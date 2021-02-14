@@ -1,4 +1,19 @@
-"""Default data-classes for conversion elements."""
+"""Prototypical classes for conversion elements in power flow analysis.
+
+A **conversion element** is an electrical device converting electricity
+to or from other form. For example, a microware oven relies on
+electricity to emit wave. Such devices have only one terminal and must
+be attached to a bus. Generally, based on if the neutral wire is
+involved, there are two kinds of connection: wye or delta. Wye
+connection is the focus for now. A bus can have multiple or zero
+conversion element attached.
+
+For any conversion element, a unique name and a node to which it
+attaches must be specified in supra graph. Furthermore, in planar graph,
+the layer of the element must be specified, because it might be attached
+to an inter-node, which spans two layers. See
+:mod:`mgrid.grid.planar` for more details.
+"""
 from dataclasses import dataclass
 
 from pandapower.auxiliary import pandapowerNet

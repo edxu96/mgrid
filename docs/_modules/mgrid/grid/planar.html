@@ -177,9 +177,8 @@
     <span class="sd">&quot;&quot;&quot;Model multilayer graph in plane by contracting inter-edges.</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">        There are two kinds of nodes, inter-nodes and planar nodes. If</span>
-<span class="sd">        an inter-node is isolated in some layer, it cannot be recognised</span>
-<span class="sd">        directly.</span>
+<span class="sd">        Voltage levels of layers must be specified by updating</span>
+<span class="sd">        ``df_layers`` manually.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
@@ -247,8 +246,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="p">[</span><span class="s2">&quot;element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;df_layers&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="p">[</span><span class="s1">&#39;voltage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;df_layers&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df_layers</span><span class="p">[</span><span class="s2">&quot;voltage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># Init the dataframe for conversion elements.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>

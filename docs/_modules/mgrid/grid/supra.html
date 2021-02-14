@@ -160,7 +160,19 @@
            <div itemprop="articleBody">
 
   <h1>Source code for mgrid.grid.supra</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Class for grid in supra-graph format.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Class for power grid as multilayer network in supra-graph format.</span>
+
+<span class="sd">Any node in a supra graph is a **bus**, which is an imaginary concept to</span>
+<span class="sd">enforce Kirchhoff&#39;s law. It can a conjunction of two cables or an entire</span>
+<span class="sd">nation. There is no power loss within any bus. When aggregating some</span>
+<span class="sd">area (like an entire country) as a bus, the loss within that area can be</span>
+<span class="sd">represented by a conversion element. However, it is impossible to derive</span>
+<span class="sd">the loss correctly.</span>
+
+<span class="sd">Usually, in the literature, three types of buses, PQ, PV, and slack, are</span>
+<span class="sd">considered, but it is not necessary. Those features are resulted from</span>
+<span class="sd">attached conversion elements. There is only one type of node here.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>

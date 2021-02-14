@@ -174,6 +174,10 @@
 <div class="section" id="module-mgrid.power_flow.delivery">
 <span id="delivery-element"></span><h2>Delivery Element<a class="headerlink" href="#module-mgrid.power_flow.delivery" title="Permalink to this headline">¶</a></h2>
 <p>Default data-classes for delivery elements.</p>
+<p>Any <strong>delivery element</strong> has two terminals and moves electricity from
+one bus to another. Cables and transformers fit into this category. Any
+edge in supra graph corresponds to one and only one delivery element,
+and vice versa.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Whether the element is paralleled should be specified as an edge
@@ -227,6 +231,19 @@ attribute.</p>
 <dt id="mgrid.power_flow.delivery.Cable.x_ohm_per_km">
 <code class="sig-name descname">x_ohm_per_km</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.x_ohm_per_km" title="Permalink to this definition">¶</a></dt>
 <dd><p>reactance in ohm per kilo-meter</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="mgrid.power_flow.delivery.Cable3Phase">
+<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">Cable3Phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_km</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em>, <em class="sig-param"><span class="n">channels</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable3Phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable3Phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mgrid.power_flow.delivery.CableEssential" title="mgrid.power_flow.delivery.CableEssential"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.power_flow.delivery.CableEssential</span></code></a></p>
+<p>Define three phase cable from parameters.</p>
+<dl class="py attribute">
+<dt id="mgrid.power_flow.delivery.Cable3Phase.channels">
+<code class="sig-name descname">channels</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable3Phase.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>phase(s) of the cable</p>
 </dd></dl>
 
 </dd></dl>
@@ -321,7 +338,19 @@ attribute.</p>
 </div>
 <div class="section" id="module-mgrid.power_flow.conversion">
 <span id="conversion-element"></span><h2>Conversion Element<a class="headerlink" href="#module-mgrid.power_flow.conversion" title="Permalink to this headline">¶</a></h2>
-<p>Default data-classes for conversion elements.</p>
+<p>Prototypical classes for conversion elements in power flow analysis.</p>
+<p>A <strong>conversion element</strong> is an electrical device converting electricity
+to or from other form. For example, a microware oven relies on
+electricity to emit wave. Such devices have only one terminal and must
+be attached to a bus. Generally, based on if the neutral wire is
+involved, there are two kinds of connection: wye or delta. Wye
+connection is the focus for now. A bus can have multiple or zero
+conversion element attached.</p>
+<p>For any conversion element, a unique name and a node to which it
+attaches must be specified in supra graph. Furthermore, in planar graph,
+the layer of the element must be specified, because it might be attached
+to an inter-node, which spans two layers. See
+<a class="reference internal" href="grid.html#module-mgrid.grid.planar" title="mgrid.grid.planar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mgrid.grid.planar</span></code></a> for more details.</p>
 <dl class="py class">
 <dt id="mgrid.power_flow.conversion.Ejection">
 <em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">Ejection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p_mw</span></em>, <em class="sig-param"><span class="n">power_factor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Ejection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection" title="Permalink to this definition">¶</a></dt>

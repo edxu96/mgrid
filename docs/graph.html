@@ -179,6 +179,13 @@ attributes.</p>
 <em class="property">class </em><code class="sig-prename descclassname">mgrid.graph.planar.</code><code class="sig-name descname">PlanarGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dg</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.classes.digraph.DiGraph</span></code></p>
 <p>Multilayer network in form of planar graph.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are two kinds of nodes, inter-nodes and planar nodes. If
+an inter-node is isolated in some layer, it cannot be recognised
+directly. Use method <code class="docutils literal notranslate"><span class="pre">add_inter_node</span></code> to specify those
+inter-nodes.</p>
+</div>
 <dl class="py attribute">
 <dt id="mgrid.graph.planar.PlanarGraph.inter_nodes">
 <code class="sig-name descname">inter_nodes</code><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.inter_nodes" title="Permalink to this definition">¶</a></dt>
@@ -445,7 +452,7 @@ layer will be returned.</p></li>
 </div>
 <div class="section" id="module-mgrid.graph.supra">
 <span id="supra-graph"></span><h2>Supra Graph<a class="headerlink" href="#module-mgrid.graph.supra" title="Permalink to this headline">¶</a></h2>
-<p>Class for multilayer network in supra-graph format.</p>
+<p>Class for multilayer network in supra graph format.</p>
 <dl class="py class">
 <dt id="mgrid.graph.supra.SupraGraph">
 <em class="property">class </em><code class="sig-prename descclassname">mgrid.graph.supra.</code><code class="sig-name descname">SupraGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dg</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/supra.html#SupraGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.graph.supra.SupraGraph" title="Permalink to this definition">¶</a></dt>
