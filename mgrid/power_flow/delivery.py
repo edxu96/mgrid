@@ -15,6 +15,7 @@ and vice versa.
 from dataclasses import dataclass
 from typing import List
 
+import numpy as np
 import pandapower as pp
 from pandapower.auxiliary import pandapowerNet
 
@@ -29,19 +30,30 @@ class CableEssential:
 
 
 @dataclass
-class Cable3Phase(CableEssential):
-    """Define three phase cable from parameters."""
+class CablePhase(CableEssential):
+    """Define cable phase-by-phase from parameters."""
 
-    channels: List[str]  #: phase(s) of the cable
+    phases: List[str]  #: phase(s) of the cable
+    r_ohm_mat: np.ndarray  #: resistance matrix in ohm per kilo-meter
+    x_ohm_mat: np.ndarray  #: reactance matrix in ohm per kilo-meter
+
+    @property
+    def z_ohm_mat(self) -> np.ndarray:
+        """Calculate impedance matrix based on resistance and reactance.
+
+        Returns:
+            Impedance matrix of the cable.
+        """
+        return self.r_ohm_mat + 1j * self.x_ohm_mat
 
 
 @dataclass
 class Cable(CableEssential):
     """Define cable from parameters."""
 
-    r_ohm_per_km: float  #: resistance in ohm per kilo-meter
-    x_ohm_per_km: float  #: reactance in ohm per kilo-meter
-    c_nf_per_km: float  #: capacitance in nano Farad per kilo-meter
+    r_ohm: float  #: resistance in ohm per kilo-meter
+    x_ohm: float  #: reactance in ohm per kilo-meter
+    c_nf: float  #: capacitance in nano Farad per kilo-meter
     max_i_ka: float  #: maximum thermal current in kilo-ampere
 
     def update_pandapower(
@@ -64,9 +76,9 @@ class Cable(CableEssential):
             from_bus=from_bus,
             to_bus=to_bus,
             length_km=self.length_km,
-            r_ohm_per_km=self.r_ohm_per_km,
-            x_ohm_per_km=self.x_ohm_per_km,
-            c_nf_per_km=self.c_nf_per_km,
+            r_ohm_per_km=self.r_ohm,
+            x_ohm_per_km=self.x_ohm,
+            c_nf_per_km=self.c_nf,
             max_i_ka=self.max_i_ka,
             parallel=self.parallel,
         )

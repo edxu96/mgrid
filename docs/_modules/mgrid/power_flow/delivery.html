@@ -177,6 +177,7 @@
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandapower</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
 
@@ -190,20 +191,31 @@
     <span class="n">parallel</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1">#: number of same cables in parallel</span></div>
 
 
-<div class="viewcode-block" id="Cable3Phase"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.delivery.Cable3Phase">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Cable3Phase</span><span class="p">(</span><span class="n">CableEssential</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Define three phase cable from parameters.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CablePhase"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.delivery.CablePhase">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CablePhase</span><span class="p">(</span><span class="n">CableEssential</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Define cable phase-by-phase from parameters.&quot;&quot;&quot;</span>
 
-    <span class="n">channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1">#: phase(s) of the cable</span></div>
+    <span class="n">phases</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1">#: phase(s) of the cable</span>
+    <span class="n">r_ohm_mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1">#: resistance matrix in ohm per kilo-meter</span>
+    <span class="n">x_ohm_mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>  <span class="c1">#: reactance matrix in ohm per kilo-meter</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z_ohm_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculate impedance matrix based on resistance and reactance.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Impedance matrix of the cable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_ohm_mat</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_ohm_mat</span></div>
 
 
 <div class="viewcode-block" id="Cable"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.delivery.Cable">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Cable</span><span class="p">(</span><span class="n">CableEssential</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Define cable from parameters.&quot;&quot;&quot;</span>
 
-    <span class="n">r_ohm_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: resistance in ohm per kilo-meter</span>
-    <span class="n">x_ohm_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: reactance in ohm per kilo-meter</span>
-    <span class="n">c_nf_per_km</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: capacitance in nano Farad per kilo-meter</span>
+    <span class="n">r_ohm</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: resistance in ohm per kilo-meter</span>
+    <span class="n">x_ohm</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: reactance in ohm per kilo-meter</span>
+    <span class="n">c_nf</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: capacitance in nano Farad per kilo-meter</span>
     <span class="n">max_i_ka</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: maximum thermal current in kilo-ampere</span>
 
 <div class="viewcode-block" id="Cable.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.delivery.Cable.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
@@ -226,9 +238,9 @@
             <span class="n">from_bus</span><span class="o">=</span><span class="n">from_bus</span><span class="p">,</span>
             <span class="n">to_bus</span><span class="o">=</span><span class="n">to_bus</span><span class="p">,</span>
             <span class="n">length_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">length_km</span><span class="p">,</span>
-            <span class="n">r_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r_ohm_per_km</span><span class="p">,</span>
-            <span class="n">x_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_ohm_per_km</span><span class="p">,</span>
-            <span class="n">c_nf_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c_nf_per_km</span><span class="p">,</span>
+            <span class="n">r_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r_ohm</span><span class="p">,</span>
+            <span class="n">x_ohm_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_ohm</span><span class="p">,</span>
+            <span class="n">c_nf_per_km</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">c_nf</span><span class="p">,</span>
             <span class="n">max_i_ka</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_i_ka</span><span class="p">,</span>
             <span class="n">parallel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">,</span>
         <span class="p">)</span></div></div>

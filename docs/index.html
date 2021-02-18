@@ -165,20 +165,24 @@
   <div class="section" id="power-grid-as-multilayer-network">
 <h1>Power Grid as Multilayer Network<a class="headerlink" href="#power-grid-as-multilayer-network" title="Permalink to this headline">¶</a></h1>
 <p><img alt="license" src="https://img.shields.io/github/license/edxu96/mgrid" /> <img alt="black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /> <img alt="poetry" src="https://img.shields.io/badge/PyPM-poetry-5975aa" /> <img alt="action" src="https://github.com/edxu96/mgrid/workflows/mgrid/badge.svg?branch=main" /></p>
-<p>A power grid with multiple voltage levels can be modelled using a
-multilayer network. A graph in each layer represents all the cables in
-the same voltage level. A directed bipartite for a pair of adjacent
-layers represents transformers connecting two voltage levels.</p>
-<p>There are two kinds of edges in multilayer network. Any intra-edge can
-only exist in a single layer, and correspond to cables. Inter-edges
-connect layers, and correspond to transformers in terms of power grids.</p>
-<p>There are more features when modelling power grid as multilayer network:</p>
+<p><code class="docutils literal notranslate"><span class="pre">mgrid</span></code> is a pure Python package to model power grids as multilayer
+networks. All the electric devices at one voltage level compose one
+layer. A directed bipartite for a pair of adjacent layers represents
+transformers connecting two voltage levels. Moreover, <code class="docutils literal notranslate"><span class="pre">mgrid</span></code> provides
+an interface for power system analysis.</p>
+<div class="section" id="multilayer-network">
+<h2>Multilayer Network<a class="headerlink" href="#multilayer-network" title="Permalink to this headline">¶</a></h2>
+<p>There are two kinds of edges in a multilayer network. Any intra-edge can
+only exist in a single layer and correspond to cables. Inter-edges
+connect layers, and correspond to transformers.</p>
+<p>There are some features worth mentioning when modelling power grids as
+multilayer networks:</p>
 <ul class="simple">
 <li><p>At least one inter-edge connecting upper layer for a component</p></li>
 <li><p>No pair of planar nodes share the same name. That is, there is no
 replica of planar nodes, the setting of which is quite different from
 prototypical multilayer networks.</p></li>
-<li><p>Inter-edges exist between adjacent layers, and direct towards lower
+<li><p>Inter-edges exist between adjacent layers and direct towards lower
 layers.</p></li>
 <li><p>There is geographical information associated with intra-edges, but not
 with inter-edges.</p></li>
@@ -197,6 +201,47 @@ pair of inter-edges sharing a terminal.</p></li>
 <li><p>Select inter-nodes in <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> (inter-edges in <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>).</p></li>
 <li><p>Find layer of a node in <code class="docutils literal notranslate"><span class="pre">PlanarGrid</span></code> or <code class="docutils literal notranslate"><span class="pre">SupraGrid</span></code>.</p></li>
 </ul>
+</div>
+<div class="section" id="interface-for-power-system-analysis">
+<h2>Interface for Power System Analysis<a class="headerlink" href="#interface-for-power-system-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Electric devices can be modelled using built-in classes or customised
+classes, then instance using supported Python packages for power system
+analysis can be returned. Current, supported tools are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pandapower</span></code>: combines the data analysis library pandas and the
+power flow solver PYPOWER to create an easy to use network calculation
+program aimed at automation of analysis and optimization in power
+systems.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PyPSA</span></code>: a free software toolbox for simulating and optimising
+modern power systems that include features such as conventional
+generators with unit commitment, variable wind and solar generation,
+storage units, coupling to other energy sectors, and mixed alternating
+and direct current networks.</p></li>
+</ul>
+<p>and supported studies are:</p>
+<ul class="simple">
+<li><p>Power flow based on one-line-equivalent models for
+three-phase-four-wire power grids.</p></li>
+<li><p>Power flow for unbalanced three-phase-four-wire power grids.</p></li>
+</ul>
+<p>In terms of:</p>
+<ul class="simple">
+<li><p>Power flow for unbalanced power grids with laterals (cables with less
+than three phases).</p></li>
+</ul>
+<p>Following tool is to be supported:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">OpenDSS</span></code>: <code class="docutils literal notranslate"><span class="pre">OpenDSSDirect.py</span></code> is a cross-platform Python package
+implements a “direct” library interface to <code class="docutils literal notranslate"><span class="pre">OpenDSS</span></code> using
+<code class="docutils literal notranslate"><span class="pre">dss_python</span></code>. <code class="docutils literal notranslate"><span class="pre">OpenDSS</span></code> is an open-source distribution system
+simulator. See <code class="docutils literal notranslate"><span class="pre">OpenDSSDirect.jl</span></code> for a similar package in Julia.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pf_impedance</span></code>: <code class="docutils literal notranslate"><span class="pre">pf_impedance</span></code> is a Python package to model
+(un)balanced power grids using impedance matrices of cables and
+transformers. Generally speaking, a bus impedance matrix is to be
+built for the whole power grid, then used to calculated power flow for
+given snapshot(s).</p></li>
+</ul>
+</div>
 <div class="section" id="three-representation-methods">
 <h2>Three Representation Methods<a class="headerlink" href="#three-representation-methods" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">

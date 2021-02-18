@@ -178,38 +178,114 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
+<span class="kn">import</span> <span class="nn">pandapower</span> <span class="k">as</span> <span class="nn">pp</span>
 <span class="kn">from</span> <span class="nn">pandapower.auxiliary</span> <span class="kn">import</span> <span class="n">pandapowerNet</span>
 
 
 <div class="viewcode-block" id="Ejection"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Ejection">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Ejection</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Essential parameters for load or static generators.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Essential parameters for load or static generators.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        - The power factor of such ejection model is usually</span>
+<span class="sd">          time-invariant.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">p_mw</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: ejected real power in mega-watt</span>
     <span class="n">power_factor</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: power factory</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">q_mw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">q_mvar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculate ejected reactive power in mega-watt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Ejected reactive power in mega-watt.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_factor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span></div>
+        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_factor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+<div class="viewcode-block" id="Ejection.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Ejection.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the ejection itself.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            When the value of ``p_mw`` is negative, a generator without</span>
+<span class="sd">            voltage control ability is added.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a pandapower network model.</span>
+<span class="sd">            name: name of the external grid.</span>
+<span class="sd">            bus: the bus to which the external grid is attached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bus_idx</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">bus</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pp</span><span class="o">.</span><span class="n">create_load</span><span class="p">(</span>
+                <span class="n">net</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">bus</span><span class="o">=</span><span class="n">bus_idx</span><span class="p">,</span>
+                <span class="n">p_mw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span><span class="p">,</span>
+                <span class="n">q_mvar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q_mvar</span><span class="p">,</span>
+                <span class="n">const_i_percent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">const_z_percent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">in_service</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pp</span><span class="o">.</span><span class="n">create_sgen</span><span class="p">(</span>
+                <span class="n">net</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">bus</span><span class="o">=</span><span class="n">bus_idx</span><span class="p">,</span>
+                <span class="n">p_mw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span><span class="p">,</span>
+                <span class="n">q_mvar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q_mvar</span><span class="p">,</span>
+            <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ExternalGrid"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.ExternalGrid">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ExternalGrid</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Define a slack bus and a corresponding external grid.</span>
+<div class="viewcode-block" id="Capacitor"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Capacitor">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Capacitor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Define a shunt element representing a capacitor bank.</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">        It&#39;s assumed that there is only one slack bus and one external</span>
-<span class="sd">        grid.</span>
+<span class="sd">        Capacitor can be seen as a source of reactive power. The value</span>
+<span class="sd">        may change with respect to voltage.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">q_mvar</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: reactive power of the capacitor bank at nominal voltage</span>
+    <span class="n">loss_factor</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: loss factor tan(delta) of the capacitor bank</span>
+
+<div class="viewcode-block" id="Capacitor.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Capacitor.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the capacitor itself.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a pandapower network model.</span>
+<span class="sd">            name: name of the external grid.</span>
+<span class="sd">            bus: the bus to which the external grid is attached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bus_idx</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">bus</span><span class="p">)</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_shunt_as_capacitor</span><span class="p">(</span>
+            <span class="n">net</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus_idx</span><span class="p">,</span>
+            <span class="n">q_mvar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q_mvar</span><span class="p">,</span>
+            <span class="n">loss_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_factor</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Slack"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Slack">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Slack</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Specify one slack bus and its voltage magnitude.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        - The external grid or a voltage-controlled conversion element</span>
+<span class="sd">          is usually attached to this bus. It is not necessary to model</span>
+<span class="sd">          it.</span>
+<span class="sd">        - Distributed slack buses should be specified using</span>
+<span class="sd">          :class:`SlackMulti`, and is supported by ``PyPSA``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">vm_pu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1">#: voltage magnitude in per unit. Default to be 1.</span>
 
-<div class="viewcode-block" id="ExternalGrid.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.ExternalGrid.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
+<div class="viewcode-block" id="Slack.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Slack.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the transformer itself.</span>
@@ -220,6 +296,20 @@
 <span class="sd">            bus: the bus to which the external grid is attached.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">net</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Generator&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="s2">&quot;Slack&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SlackMulti"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.SlackMulti">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SlackMulti</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Specify some bus(es) and/or voltage-controlled element as slack.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        See `Power Flow, PyPSA`_ for details.</span>
+
+<span class="sd">    .. _Power Flow, PyPSA:</span>
+<span class="sd">        https://pypsa.readthedocs.io/en/latest/power_flow.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
 </pre></div>
 
            </div>

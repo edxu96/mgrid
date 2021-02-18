@@ -3,9 +3,8 @@
 [![GitHub license](https://img.shields.io/github/license/edxu96/mgrid)](./LICENSE) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org) ![mgrid](https://github.com/edxu96/mgrid/workflows/mgrid/badge.svg?branch=main)
 
 `mgrid` is a pure Python package to model power grids as multilayer
-networks. The number of voltage levels equals the number of layers. A
-graph in each layer represents all the cables at the same voltage level.
-A directed bipartite for a pair of adjacent layers represents
+networks. All the electric devices at one voltage level compose one
+layer. A directed bipartite for a pair of adjacent layers represents
 transformers connecting two voltage levels. Moreover, `mgrid` provides
 an interface for power system analysis.
 
@@ -49,12 +48,27 @@ analysis can be returned. Current, supported tools are:
 
 and supported studies are:
 
-- Power flow calculation based on one-line-equivalent models for
+- Power flow based on one-line-equivalent models for
   three-phase-four-wire power grids.
-- Power flow calculation for unbalanced three-phase-four-wire power
-  grids.
-- Power flow calculation for unbalanced power grids with laterals
-  (cables with less than three phases).
+- Power flow for unbalanced three-phase-four-wire power grids.
+
+In terms of:
+
+- Power flow for unbalanced power grids with laterals (cables with less
+  than three phases).
+
+Following tool is to be supported:
+
+- [`OpenDSS`](https://dss-extensions.org/OpenDSSDirect.py/):
+  `OpenDSSDirect.py` is a cross-platform Python package implements a
+  "direct" library interface to `OpenDSS` using `dss_python`. `OpenDSS`
+  is an open-source distribution system simulator. See
+  `OpenDSSDirect.jl` for a similar package in Julia.
+- [`pf_impedance`](https://edxu96.github.io/pf_impedance/):
+  `pf_impedance` is a Python package to model (un)balanced power grids
+  using impedance matrices of cables and transformers. Generally
+  speaking, a bus impedance matrix is to be built for the whole power
+  grid, then used to calculated power flow for given snapshot(s).
 
 ---
 

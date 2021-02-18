@@ -189,30 +189,30 @@ attribute.</p>
 </div>
 <dl class="py class">
 <dt id="mgrid.power_flow.delivery.Cable">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">Cable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_km</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em>, <em class="sig-param"><span class="n">r_ohm_per_km</span></em>, <em class="sig-param"><span class="n">x_ohm_per_km</span></em>, <em class="sig-param"><span class="n">c_nf_per_km</span></em>, <em class="sig-param"><span class="n">max_i_ka</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">Cable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length_km</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_ohm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_ohm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_nf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_i_ka</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mgrid.power_flow.delivery.CableEssential" title="mgrid.power_flow.delivery.CableEssential"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.power_flow.delivery.CableEssential</span></code></a></p>
 <p>Define cable from parameters.</p>
 <dl class="py attribute">
-<dt id="mgrid.power_flow.delivery.Cable.c_nf_per_km">
-<code class="sig-name descname">c_nf_per_km</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.c_nf_per_km" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.delivery.Cable.c_nf">
+<code class="sig-name descname"><span class="pre">c_nf</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.c_nf" title="Permalink to this definition">¶</a></dt>
 <dd><p>capacitance in nano Farad per kilo-meter</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.Cable.max_i_ka">
-<code class="sig-name descname">max_i_ka</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.max_i_ka" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">max_i_ka</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.max_i_ka" title="Permalink to this definition">¶</a></dt>
 <dd><p>maximum thermal current in kilo-ampere</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.power_flow.delivery.Cable.r_ohm_per_km">
-<code class="sig-name descname">r_ohm_per_km</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.r_ohm_per_km" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.delivery.Cable.r_ohm">
+<code class="sig-name descname"><span class="pre">r_ohm</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.r_ohm" title="Permalink to this definition">¶</a></dt>
 <dd><p>resistance in ohm per kilo-meter</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="mgrid.power_flow.delivery.Cable.update_pandapower">
-<code class="sig-name descname">update_pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable.update_pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.update_pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a pandapower model by adding the cable itself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -228,59 +228,85 @@ attribute.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.power_flow.delivery.Cable.x_ohm_per_km">
-<code class="sig-name descname">x_ohm_per_km</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.x_ohm_per_km" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.delivery.Cable.x_ohm">
+<code class="sig-name descname"><span class="pre">x_ohm</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable.x_ohm" title="Permalink to this definition">¶</a></dt>
 <dd><p>reactance in ohm per kilo-meter</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="mgrid.power_flow.delivery.Cable3Phase">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">Cable3Phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_km</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em>, <em class="sig-param"><span class="n">channels</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Cable3Phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Cable3Phase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mgrid.power_flow.delivery.CableEssential" title="mgrid.power_flow.delivery.CableEssential"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.power_flow.delivery.CableEssential</span></code></a></p>
-<p>Define three phase cable from parameters.</p>
-<dl class="py attribute">
-<dt id="mgrid.power_flow.delivery.Cable3Phase.channels">
-<code class="sig-name descname">channels</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.Cable3Phase.channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>phase(s) of the cable</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="mgrid.power_flow.delivery.CableEssential">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">CableEssential</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_km</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#CableEssential"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">CableEssential</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length_km</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#CableEssential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Essential cable parameters.</p>
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.CableEssential.length_km">
-<code class="sig-name descname">length_km</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.length_km" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">length_km</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.length_km" title="Permalink to this definition">¶</a></dt>
 <dd><p>cable length in kilometer</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.CableEssential.name">
-<code class="sig-name descname">name</code><em class="property">: str</em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>name</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.CableEssential.parallel">
-<code class="sig-name descname">parallel</code><em class="property">: int</em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.parallel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">parallel</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CableEssential.parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>number of same cables in parallel</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
+<dt id="mgrid.power_flow.delivery.CablePhase">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">CablePhase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length_km</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_ohm_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_ohm_mat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#CablePhase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.CablePhase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mgrid.power_flow.delivery.CableEssential" title="mgrid.power_flow.delivery.CableEssential"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.power_flow.delivery.CableEssential</span></code></a></p>
+<p>Define cable phase-by-phase from parameters.</p>
+<dl class="py attribute">
+<dt id="mgrid.power_flow.delivery.CablePhase.phases">
+<code class="sig-name descname"><span class="pre">phases</span></code><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CablePhase.phases" title="Permalink to this definition">¶</a></dt>
+<dd><p>phase(s) of the cable</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mgrid.power_flow.delivery.CablePhase.r_ohm_mat">
+<code class="sig-name descname"><span class="pre">r_ohm_mat</span></code><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CablePhase.r_ohm_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>resistance matrix in ohm per kilo-meter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mgrid.power_flow.delivery.CablePhase.x_ohm_mat">
+<code class="sig-name descname"><span class="pre">x_ohm_mat</span></code><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CablePhase.x_ohm_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>reactance matrix in ohm per kilo-meter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mgrid.power_flow.delivery.CablePhase.z_ohm_mat">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">z_ohm_mat</span></code><a class="headerlink" href="#mgrid.power_flow.delivery.CablePhase.z_ohm_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate impedance matrix based on resistance and reactance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Impedance matrix of the cable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="mgrid.power_flow.delivery.CableStd">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">CableStd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length_km</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em>, <em class="sig-param"><span class="n">std_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#CableStd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.CableStd" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">CableStd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length_km</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#CableStd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.CableStd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mgrid.power_flow.delivery.CableEssential" title="mgrid.power_flow.delivery.CableEssential"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.power_flow.delivery.CableEssential</span></code></a></p>
 <p>Define cable from standard type.</p>
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.CableStd.std_type">
-<code class="sig-name descname">std_type</code><em class="property">: str</em><a class="headerlink" href="#mgrid.power_flow.delivery.CableStd.std_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">std_type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.CableStd.std_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>a standard cable type</p>
 </dd></dl>
 
@@ -288,37 +314,37 @@ attribute.</p>
 
 <dl class="py class">
 <dt id="mgrid.power_flow.delivery.Transformer">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">Transformer</code><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Transformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Transformer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">Transformer</span></code><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#Transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.Transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Define transformer from parameters.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="mgrid.power_flow.delivery.TransformerStd">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.delivery.</code><code class="sig-name descname">TransformerStd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">std_type</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">parallel</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#TransformerStd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.delivery.</span></code><code class="sig-name descname"><span class="pre">TransformerStd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">std_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#TransformerStd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Essential transformer parameters.</p>
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.TransformerStd.name">
-<code class="sig-name descname">name</code><em class="property">: str</em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">name</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>name of the inter-node</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.TransformerStd.parallel">
-<code class="sig-name descname">parallel</code><em class="property">: int</em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.parallel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">parallel</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>number of same transformers in parallel.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.delivery.TransformerStd.std_type">
-<code class="sig-name descname">std_type</code><em class="property">: str</em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.std_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">std_type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.std_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>a standard transformer type</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="mgrid.power_flow.delivery.TransformerStd.update_pandapower">
-<code class="sig-name descname">update_pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#TransformerStd.update_pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/delivery.html#TransformerStd.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.delivery.TransformerStd.update_pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a pandapower model by adding the transformer itself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,25 +378,71 @@ the layer of the element must be specified, because it might be attached
 to an inter-node, which spans two layers. See
 <a class="reference internal" href="grid.html#module-mgrid.grid.planar" title="mgrid.grid.planar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mgrid.grid.planar</span></code></a> for more details.</p>
 <dl class="py class">
+<dt id="mgrid.power_flow.conversion.Capacitor">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.conversion.</span></code><code class="sig-name descname"><span class="pre">Capacitor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q_mvar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_factor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Capacitor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Capacitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define a shunt element representing a capacitor bank.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Capacitor can be seen as a source of reactive power. The value
+may change with respect to voltage.</p>
+</div>
+<dl class="py attribute">
+<dt id="mgrid.power_flow.conversion.Capacitor.loss_factor">
+<code class="sig-name descname"><span class="pre">loss_factor</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.conversion.Capacitor.loss_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>loss factor tan(delta) of the capacitor bank</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mgrid.power_flow.conversion.Capacitor.q_mvar">
+<code class="sig-name descname"><span class="pre">q_mvar</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.conversion.Capacitor.q_mvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>reactive power of the capacitor bank at nominal voltage</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mgrid.power_flow.conversion.Capacitor.update_pandapower">
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Capacitor.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Capacitor.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a pandapower model by adding the capacitor itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandapowerNet</span></code>) – a pandapower network model.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the external grid.</p></li>
+<li><p><strong>bus</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the bus to which the external grid is attached.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="mgrid.power_flow.conversion.Ejection">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">Ejection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p_mw</span></em>, <em class="sig-param"><span class="n">power_factor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Ejection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.conversion.</span></code><code class="sig-name descname"><span class="pre">Ejection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_mw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_factor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Ejection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Essential parameters for load or static generators.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The power factor of such ejection model is usually
+time-invariant.</p></li>
+</ul>
+</div>
 <dl class="py attribute">
 <dt id="mgrid.power_flow.conversion.Ejection.p_mw">
-<code class="sig-name descname">p_mw</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.p_mw" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">p_mw</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.p_mw" title="Permalink to this definition">¶</a></dt>
 <dd><p>ejected real power in mega-watt</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.conversion.Ejection.power_factor">
-<code class="sig-name descname">power_factor</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.power_factor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">power_factor</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.power_factor" title="Permalink to this definition">¶</a></dt>
 <dd><p>power factory</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.power_flow.conversion.Ejection.q_mw">
-<em class="property">property </em><code class="sig-name descname">q_mw</code><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.q_mw" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.conversion.Ejection.q_mvar">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">q_mvar</span></code><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.q_mvar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate ejected reactive power in mega-watt.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -382,21 +454,46 @@ to an inter-node, which spans two layers. See
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="mgrid.power_flow.conversion.Ejection.update_pandapower">
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Ejection.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Ejection.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a pandapower model by adding the ejection itself.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the value of <code class="docutils literal notranslate"><span class="pre">p_mw</span></code> is negative, a generator without
+voltage control ability is added.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pandapowerNet</span></code>) – a pandapower network model.</p></li>
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the external grid.</p></li>
+<li><p><strong>bus</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the bus to which the external grid is attached.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
-<dt id="mgrid.power_flow.conversion.ExternalGrid">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.conversion.</code><code class="sig-name descname">ExternalGrid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vm_pu</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#ExternalGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.conversion.Slack">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.conversion.</span></code><code class="sig-name descname"><span class="pre">Slack</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vm_pu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Slack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Slack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Define a slack bus and a corresponding external grid.</p>
+<p>Specify one slack bus and its voltage magnitude.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It’s assumed that there is only one slack bus and one external
-grid.</p>
+<ul class="simple">
+<li><p>The external grid or a voltage-controlled conversion element
+is usually attached to this bus. It is not necessary to model
+it.</p></li>
+<li><p>Distributed slack buses should be specified using
+<a class="reference internal" href="#mgrid.power_flow.conversion.SlackMulti" title="mgrid.power_flow.conversion.SlackMulti"><code class="xref py py-class docutils literal notranslate"><span class="pre">SlackMulti</span></code></a>, and is supported by <code class="docutils literal notranslate"><span class="pre">PyPSA</span></code>.</p></li>
+</ul>
 </div>
 <dl class="py method">
-<dt id="mgrid.power_flow.conversion.ExternalGrid.update_pandapower">
-<code class="sig-name descname">update_pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">bus</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#ExternalGrid.update_pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.conversion.Slack.update_pandapower">
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bus</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#Slack.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.Slack.update_pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a pandapower model by adding the transformer itself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -410,11 +507,22 @@ grid.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.power_flow.conversion.ExternalGrid.vm_pu">
-<code class="sig-name descname">vm_pu</code><em class="property">: float</em><em class="property"> = 1.0</em><a class="headerlink" href="#mgrid.power_flow.conversion.ExternalGrid.vm_pu" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.power_flow.conversion.Slack.vm_pu">
+<code class="sig-name descname"><span class="pre">vm_pu</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><em class="property"> <span class="pre">=</span> <span class="pre">1.0</span></em><a class="headerlink" href="#mgrid.power_flow.conversion.Slack.vm_pu" title="Permalink to this definition">¶</a></dt>
 <dd><p>voltage magnitude in per unit. Default to be 1.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt id="mgrid.power_flow.conversion.SlackMulti">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.conversion.</span></code><code class="sig-name descname"><span class="pre">SlackMulti</span></code><a class="reference internal" href="_modules/mgrid/power_flow/conversion.html#SlackMulti"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.conversion.SlackMulti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Specify some bus(es) and/or voltage-controlled element as slack.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://pypsa.readthedocs.io/en/latest/power_flow.html">Power Flow, PyPSA</a> for details.</p>
+</div>
 </dd></dl>
 
 </div>
@@ -423,30 +531,30 @@ grid.</p>
 <p>Define data-classes for element types.</p>
 <dl class="py class">
 <dt id="mgrid.power_flow.type.TransformerType">
-<em class="property">class </em><code class="sig-prename descclassname">mgrid.power_flow.type.</code><code class="sig-name descname">TransformerType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s_mva</span></em>, <em class="sig-param"><span class="n">v_high_kv</span></em>, <em class="sig-param"><span class="n">v_low_kv</span></em>, <em class="sig-param"><span class="n">vk_percent</span></em>, <em class="sig-param"><span class="n">vkr_percent</span></em>, <em class="sig-param"><span class="n">pfe_kw</span></em>, <em class="sig-param"><span class="n">i0_percent</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/type.html#TransformerType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.type.TransformerType" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.type.</span></code><code class="sig-name descname"><span class="pre">TransformerType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_mva</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_high_kv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_low_kv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vk_percent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vkr_percent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pfe_kw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i0_percent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/type.html#TransformerType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.type.TransformerType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>One-phase equivalent transformer type.</p>
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.i0_percent">
-<code class="sig-name descname">i0_percent</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.i0_percent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">i0_percent</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.i0_percent" title="Permalink to this definition">¶</a></dt>
 <dd><p>open loop losses in percent</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.pfe_kw">
-<code class="sig-name descname">pfe_kw</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.pfe_kw" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">pfe_kw</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.pfe_kw" title="Permalink to this definition">¶</a></dt>
 <dd><p>iron losses in kilo-watt</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.s_mva">
-<code class="sig-name descname">s_mva</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.s_mva" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">s_mva</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.s_mva" title="Permalink to this definition">¶</a></dt>
 <dd><p>nominal apparent power in mega-voltampere</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="mgrid.power_flow.type.TransformerType.update_pandapower">
-<code class="sig-name descname">update_pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">net</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/type.html#TransformerType.update_pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.update_pandapower" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/type.html#TransformerType.update_pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.update_pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a pandapower model by adding this transformer type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -460,25 +568,25 @@ grid.</p>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.v_high_kv">
-<code class="sig-name descname">v_high_kv</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.v_high_kv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">v_high_kv</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.v_high_kv" title="Permalink to this definition">¶</a></dt>
 <dd><p>nominal high voltage in kilo-volt</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.v_low_kv">
-<code class="sig-name descname">v_low_kv</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.v_low_kv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">v_low_kv</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.v_low_kv" title="Permalink to this definition">¶</a></dt>
 <dd><p>nominal low voltage in kilo-volt</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.vk_percent">
-<code class="sig-name descname">vk_percent</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.vk_percent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">vk_percent</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.vk_percent" title="Permalink to this definition">¶</a></dt>
 <dd><p>real part of relative short-circuit voltage in percent</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="mgrid.power_flow.type.TransformerType.vkr_percent">
-<code class="sig-name descname">vkr_percent</code><em class="property">: float</em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.vkr_percent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">vkr_percent</span></code><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#mgrid.power_flow.type.TransformerType.vkr_percent" title="Permalink to this definition">¶</a></dt>
 <dd><p>relative short-circuit voltage in percent</p>
 </dd></dl>
 
@@ -491,7 +599,7 @@ grid.</p>
 <p>Three functions to add buses, delivery elements, and conversion elements.</p>
 <dl class="py function">
 <dt id="mgrid.power_flow.pandapower.supra2pandapower">
-<code class="sig-prename descclassname">mgrid.power_flow.pandapower.</code><code class="sig-name descname">supra2pandapower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">supra</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">mgrid.power_flow.pandapower.</span></code><code class="sig-name descname"><span class="pre">supra2pandapower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">supra</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/power_flow/pandapower.html#supra2pandapower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.power_flow.pandapower.supra2pandapower" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build <code class="docutils literal notranslate"><span class="pre">pandapower</span></code> model based on supra format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

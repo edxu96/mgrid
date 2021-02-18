@@ -169,7 +169,7 @@
 
 <span class="kn">from</span> <span class="nn">mgrid.graph.planar</span> <span class="kn">import</span> <span class="n">PlanarGraph</span>
 <span class="kn">from</span> <span class="nn">mgrid.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
-<span class="kn">from</span> <span class="nn">mgrid.power_flow.conversion</span> <span class="kn">import</span> <span class="n">Ejection</span><span class="p">,</span> <span class="n">ExternalGrid</span>
+<span class="kn">from</span> <span class="nn">mgrid.power_flow.conversion</span> <span class="kn">import</span> <span class="n">Ejection</span><span class="p">,</span> <span class="n">Slack</span>
 <span class="kn">from</span> <span class="nn">mgrid.power_flow.delivery</span> <span class="kn">import</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">TransformerStd</span>
 
 
@@ -288,7 +288,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ejection</span><span class="p">,</span> <span class="n">ExternalGrid</span><span class="p">],</span>
+        <span class="n">element</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Ejection</span><span class="p">,</span> <span class="n">Slack</span><span class="p">],</span>
         <span class="n">layer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a conversion element to the grid.</span>
