@@ -9,12 +9,7 @@ python = "^3.7.1"
 networkx = "^2.5"
 pandas = "^1.2.0"
 loguru = "^0.5.3"
-darglint = "^1.5.8"
-black = "^20.8b1"
-flake8 = "^3.8.4"
-pre-commit = "^2.9.3"
-numpy = "1.18.0"
-Sphinx = "^3.4.3"
+numpy = "1.20.1"
 pandapower = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
@@ -25,6 +20,9 @@ sphinx-autodoc-typehints = "^1.11.1"
 sphinx-rtd-theme = "^0.5.1"
 tabulate = "^0.8.7"
 docutils = "^0.16"
+darglint = "^1.5.8"
+black = "^20.8b1"
+pre-commit = "^2.9.3"
 
 [tool.black]
 line-length = 79
