@@ -1,7 +1,11 @@
-"""A class for planar graph corresponding to a multilayer network.
+"""A class for geographic graph corresponding to a multilayer network.
 
-All the nodes and edges in a planar graph can have geographical
-attributes.
+Geographic graph is a unique concept in this project. Due to the fact
+that there is no duplicated intra-nodes in different layers, all the
+intra-edges can be included in one simple graph (without parallel edge).
+Furthermore, inter-nodes represent transformers in power systems, so
+they are geographical points. That is, all the nodes and edges in a
+planar graph have geographical attributes.
 """
 from itertools import chain
 from typing import Optional, Set, Tuple
@@ -16,8 +20,13 @@ COLUMNS = ["upper", "lower"]
 COLUMNS_DI = ["source", "target"]
 
 
-class PlanarGraph(nx.DiGraph):
-    """Multilayer network in form of planar graph.
+class GeoGraph(nx.DiGraph):
+    """Multilayer network as a planar graph.
+
+    Note:
+        ``DiGraph`` from ``networkx`` is inherited, in order to modify
+        terminals of edges directly. The order of edge terminals
+        returned by ``Graph`` class is not consistent.
 
     Attributes:
         inter_nodes (DataFrame): information on inter-nodes.
@@ -129,7 +138,6 @@ class PlanarGraph(nx.DiGraph):
                 name (index), name of the node
                 upper, int64, upper layer of the inter-edge
                 lower, int64, lower layer of the inter-edge
-
         """
         res_dict = {}
         for node in self.nodes:
@@ -155,14 +163,13 @@ class PlanarGraph(nx.DiGraph):
         """Gather all the intra-nodes in a dataframe.
 
         Returns:
-            A dataframe for intra-nodes.
+            Information on intra-nodes.
 
             .. csv-table::
                 :header: name, dtype, definition
 
                 name (index), object, node name
                 layer, int64, to which layer the node belongs
-
         """
         inter_nodes = set(self.inter_nodes.index)
         intra_nodes = [node for node in self.nodes if node not in inter_nodes]
@@ -243,11 +250,11 @@ class PlanarGraph(nx.DiGraph):
         return (upper, lower)
 
     def add_inter_node(self, name: str, upper: Optional[bool] = True):
-        """Specify a planar node as an inter-node with an adjacent layer.
+        """Specify a planar node as inter-node with an adjacent layer.
 
-        Sometimes, one terminal of an inter-edge is an isolated node in some
-        layer, then it will not be recognised as an inter-node. It must be
-        specified manually.
+        Sometimes, one terminal of an inter-edge is an isolated node in
+        some layer, then it will not be recognised as an inter-node. It
+        must be specified manually.
 
         Warning:
             Upper layer has a smaller integer index.

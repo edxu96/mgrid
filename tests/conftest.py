@@ -3,11 +3,11 @@ import networkx as nx
 import pandas as pd
 import pytest as pt
 
-from mgrid.graph.planar import COLUMNS, PlanarGraph
+from mgrid.graph.geographic import COLUMNS, GeoGraph
 
 
 @pt.fixture(scope="module")
-def simple() -> PlanarGraph:
+def simple() -> GeoGraph:
     """Init a planar graph from a directed graph.
 
     Returns:
@@ -17,7 +17,7 @@ def simple() -> PlanarGraph:
     dg.add_edge("a", "b", layer=0)
     dg.add_edge("a", "c", layer=1)
 
-    res = PlanarGraph(dg)
+    res = GeoGraph(dg)
     assert list(res.inter_nodes.columns) == COLUMNS
     assert res.inter_nodes.index.name == "name"
     assert res.layers == {0, 1}
@@ -26,14 +26,14 @@ def simple() -> PlanarGraph:
 
 
 @pt.fixture(scope="package")
-def case_large() -> PlanarGraph:
+def case_large() -> GeoGraph:
     """Init a case with 8 planar edges and 2 inter-edges.
 
     Returns:
         A test case with 8 planar edges and 2 inter-edges.
     """
     df = pd.read_csv("./tests/planar_large.csv")
-    res = PlanarGraph.from_edgelist(df, "source", "target")
+    res = GeoGraph.from_edgelist(df, "source", "target")
     res.add_inter_node("n3", upper=False)
 
     assert res.number_of_edges() == 8

@@ -3,7 +3,7 @@ import networkx as nx
 import pandas as pd
 from pandas.core.frame import DataFrame
 
-from mgrid.graph.planar import COLUMNS, PlanarGraph
+from mgrid.graph.geographic import COLUMNS, GeoGraph
 
 
 def test_from_edgelist():
@@ -12,11 +12,11 @@ def test_from_edgelist():
         {"source": ["a", "a"], "target": ["b", "c"], "layer": [0, -1]}
     )
 
-    res = PlanarGraph.from_edgelist(df, source="source", target="target")
+    res = GeoGraph.from_edgelist(df, source="source", target="target")
     assert list(res.inter_nodes.columns) == COLUMNS
 
 
-def test_methods(simple: PlanarGraph):
+def test_methods(simple: GeoGraph):
     """Check methods, properties, and attributes.
 
     Args:

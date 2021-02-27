@@ -7,14 +7,14 @@ from typing import Tuple, Union
 import networkx as nx
 import pandas as pd
 
-from mgrid.graph.planar import COLUMNS, COLUMNS_DI, PlanarGraph
-from mgrid.grid import PlanarGrid, SupraGrid
+from mgrid.graph.geographic import COLUMNS, COLUMNS_DI, GeoGraph
+from mgrid.grid import GeoGrid, SupraGrid
 from mgrid.log import LOGGER
 
 COLUMNS_DI_ORIGINAL = ["source_original", "target_original"]
 
 
-def _planar2supra(g: PlanarGrid) -> SupraGrid:
+def _planar2supra(g: GeoGrid) -> SupraGrid:
     """Convert a planar grid to corresponding supra-grid.
 
     Args:
@@ -112,7 +112,7 @@ def _planar2supra(g: PlanarGrid) -> SupraGrid:
     return res
 
 
-def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
+def planar2supra(g: Union[GeoGraph, GeoGrid]) -> SupraGrid:
     """Convert a planar grid to corresponding supra-grid.
 
     Args:
@@ -124,7 +124,7 @@ def planar2supra(g: Union[PlanarGraph, PlanarGrid]) -> SupraGrid:
     """
     supra = _planar2supra(g)
 
-    if isinstance(g, PlanarGrid):
+    if isinstance(g, GeoGrid):
         for node, row in g.inter_nodes.iterrows():
             source = supra.inter_edges.loc[node, "source"]
             target = supra.inter_edges.loc[node, "target"]

@@ -5,13 +5,13 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from mgrid.graph.planar import PlanarGraph
+from mgrid.graph.geographic import GeoGraph
 from mgrid.log import LOGGER
-from mgrid.power_flow.conversion import Ejection, ExternalGrid
+from mgrid.power_flow.conversion import Ejection
 from mgrid.power_flow.delivery import Transformer, TransformerStd
 
 
-class PlanarGrid(PlanarGraph):
+class GeoGrid(GeoGraph):
     """Model multilayer graph in plane by contracting inter-edges.
 
     Note:
@@ -127,7 +127,7 @@ class PlanarGrid(PlanarGraph):
         self,
         name: str,
         node: str,
-        element: Union[Ejection, ExternalGrid],
+        element: Ejection,
         layer: Optional[str] = None,
     ):
         """Add a conversion element to the grid.

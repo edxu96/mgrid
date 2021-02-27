@@ -5,8 +5,8 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 import pytest as pt
 
-from mgrid.graph.planar import COLUMNS, PlanarGraph
-from mgrid.grid import PlanarGrid
+from mgrid.graph.geographic import COLUMNS, GeoGraph
+from mgrid.grid import GeoGrid
 from mgrid.power_flow.delivery import Cable, TransformerStd
 from mgrid.power_flow.pandapower import supra2pandapower
 from mgrid.power_flow.type import TransformerType
@@ -68,7 +68,7 @@ def data_grid() -> Tuple[DataFrame, DataFrame]:
 
 
 @pt.fixture(scope="package")
-def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
+def grid(data_grid: Tuple[DataFrame, DataFrame]) -> GeoGrid:
     """Check if a planar grid can be initiated correctly.
 
     Args:
@@ -83,9 +83,9 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
         return Cable(
             length_km=row["len_km"],
             name=row["name"],
-            r_ohm_per_km=row["r_ohm_per_km"],
-            x_ohm_per_km=row["x_ohm_per_km"],
-            c_nf_per_km=row["c_nf_per_km"],
+            r_ohm=row["r_ohm_per_km"],
+            x_ohm=row["x_ohm_per_km"],
+            c_nf=row["c_nf_per_km"],
             max_i_ka=row["max_i_ka"],
             parallel=1,
         )
@@ -95,7 +95,7 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
     cables = cables_raw.loc[:, COLUMNS_CABLE].copy()
     cables["element"] = cables_raw.apply(pass_cable_parameters, axis=1)
 
-    planar = PlanarGrid.from_edgelist(
+    planar = GeoGrid.from_edgelist(
         cables, "from_node", "to_node", "element"
     )
 
@@ -155,7 +155,7 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> PlanarGrid:
 
 
 @pt.fixture(scope="package")
-def planar_graph(data_grid: DataFrame) -> PlanarGraph:
+def planar_graph(data_grid: DataFrame) -> GeoGraph:
     """Init a case with 207 edges and **voltage** attributes.
 
     Note:
@@ -173,7 +173,7 @@ def planar_graph(data_grid: DataFrame) -> PlanarGraph:
     Returns:
         A case with 208 intra-edges and 34 inter-edges.
     """
-    res = PlanarGraph.from_edgelist(data_grid[0], "from_node", "to_node")
+    res = GeoGraph.from_edgelist(data_grid[0], "from_node", "to_node")
     assert res.number_of_edges() == 208
 
     assert res.layers == {1, 2}
@@ -190,7 +190,7 @@ def planar_graph(data_grid: DataFrame) -> PlanarGraph:
     return res
 
 
-def test_graph(planar_graph: PlanarGraph):
+def test_graph(planar_graph: GeoGraph):
     """Check the case with 208 intra-edges and 34 inter-edges.
 
     Args:
@@ -212,8 +212,8 @@ def test_graph(planar_graph: PlanarGraph):
     assert intra_edges.index.names == ["source_original", "target_original"]
 
 
-def test_planar_grid(grid: PlanarGrid):
-    """Check if ``PlanarGrid`` can be converted correctly.
+def test_planar_grid(grid: GeoGrid):
+    """Check if ``GeoGrid`` can be converted correctly.
 
     Args:
         grid: initiated planar grid.

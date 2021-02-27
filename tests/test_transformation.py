@@ -1,12 +1,12 @@
 """Test functions in ``convert.py``."""
 from itertools import chain
 
-from mgrid.graph.planar import COLUMNS, COLUMNS_DI, PlanarGraph
-from mgrid.grid import PlanarGrid
+from mgrid.graph.geographic import COLUMNS, COLUMNS_DI, GeoGraph
+from mgrid.grid import GeoGrid
 from mgrid.transformation import COLUMNS_DI_ORIGINAL, planar2supra
 
 
-def test_planar2supra(simple: PlanarGraph):
+def test_planar2supra(simple: GeoGraph):
     """Check if a planar graph can be converted to supra-graph.
 
     Args:
@@ -26,7 +26,7 @@ def test_planar2supra(simple: PlanarGraph):
     assert inter_edges.index.name == "node"
 
 
-def test_case_large(case_large: PlanarGrid):
+def test_case_large(case_large: GeoGrid):
     """Check the case with 8 planar edges and 2 inter-edges.
 
     Args:
