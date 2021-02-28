@@ -89,6 +89,12 @@ def _planar2supra(g: GeoGrid) -> SupraGrid:
         target = init_node4inter(1)
         dg.add_edge(source, target, layer=mean([row["upper"], row["lower"]]))
 
+        # Store layer and origin of inter-edge terminals as node attributes
+        dg.nodes[source]["layer"] = row["upper"]
+        dg.nodes[source]["origin"] = node
+        dg.nodes[target]["layer"] = row["lower"]
+        dg.nodes[target]["origin"] = node
+
         dg.remove_node(node)
 
     # Build nodelist using dictionary for nodes in different layers.
@@ -107,7 +113,7 @@ def _planar2supra(g: GeoGrid) -> SupraGrid:
     res.df_layers = g.df_layers.copy(deep=True)
 
     res.nodelist = nodelist
-    res.nodelist["name"] = res.nodelist["idx"].map(res.df_layers["name"])
+    res.nodelist["layer_name"] = res.nodelist["idx"].map(res.df_layers["name"])
     res.nodelist.index.name = "node"
     return res
 
@@ -130,7 +136,20 @@ def planar2supra(g: Union[GeoGraph, GeoGrid]) -> SupraGrid:
             target = supra.inter_edges.loc[node, "target"]
             supra.edges[source, target]["element"] = row["element"]
 
-        supra.conversions = deepcopy(g.conversions)
+        # Get conversion elements.
+        conversions = deepcopy(g.conversions)
+        conversions.reset_index(inplace=True)
+        conversions = pd.merge(
+            conversions,
+            supra.nodes_new,
+            how="left",
+            left_on=["node", "layer"],
+            right_index=True,
+        )
+        conversions.set_index("name", inplace=True)
+        conversions.drop(columns=["node", "layer"], inplace=True)
+        supra.conversions = conversions
+
         supra.types = deepcopy(g.types)
 
         supra.nodelist["voltage"] = supra.nodelist["idx"].map(

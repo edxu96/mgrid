@@ -30,9 +30,9 @@ class SupraGrid(SupraGraph):
             .. csv-table::
                 :header: name, dtype, definition
 
-                name (index), object, name of conversion elements.
-                bus, object, buses to which elements are attached.
-                element, object, element models.
+                name (index), object, name of the element.
+                bus, object, buses to which the element is attached
+                element, object, model
 
         types (dict): standard element types, keyed by type names.
 

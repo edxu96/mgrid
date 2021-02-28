@@ -15,9 +15,10 @@ class GeoGrid(GeoGraph):
     """Model multilayer graph in plane by contracting inter-edges.
 
     Note:
-        There are two kinds of nodes, inter-nodes and planar nodes. If
-        an inter-node is isolated in some layer, it cannot be recognised
-        directly.
+        - There are two kinds of nodes, inter-nodes and planar nodes. If
+          an inter-node is isolated in some layer, it cannot be
+          recognised directly.
+        - It is assumed that every conversion element has a unique name.
 
     Attributes:
         inter_nodes (DataFrame): information on inter-nodes.
@@ -31,7 +32,7 @@ class GeoGrid(GeoGraph):
                 element, object, transformer model
 
         layers (Set[int]): integer indices of all the layers.
-        conversion (DataFrame): information on conversion elements.
+        conversions (DataFrame): information on conversion elements.
 
             .. csv-table::
                 :header: name, dtype, definition
@@ -160,6 +161,7 @@ class GeoGrid(GeoGraph):
                 {"node": node, "element": element, "layer": layer},
                 index=[name],
             )
+            _new.index.name = "name"
             self.conversions = self.conversions.append(_new)
             LOGGER.debug(
                 f'New conversion element "{element}" called "{name}" is '

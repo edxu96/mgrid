@@ -7,6 +7,7 @@ import pytest as pt
 
 from mgrid.graph.geographic import COLUMNS, GeoGraph
 from mgrid.grid import GeoGrid
+from mgrid.power_flow.conversion import Slack
 from mgrid.power_flow.delivery import Cable, TransformerStd
 from mgrid.power_flow.pandapower import supra2pandapower
 from mgrid.power_flow.type import TransformerType
@@ -95,9 +96,7 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> GeoGrid:
     cables = cables_raw.loc[:, COLUMNS_CABLE].copy()
     cables["element"] = cables_raw.apply(pass_cable_parameters, axis=1)
 
-    planar = GeoGrid.from_edgelist(
-        cables, "from_node", "to_node", "element"
-    )
+    planar = GeoGrid.from_edgelist(cables, "from_node", "to_node", "element")
 
     assert planar.layers == {1, 2}
     assert list(planar.inter_nodes.columns) == COLUMNS + ["element"]
@@ -147,6 +146,9 @@ def grid(data_grid: Tuple[DataFrame, DataFrame]) -> GeoGrid:
     # Check dataframe for conversion elements.
     assert list(planar.conversions.columns) == ["node", "element", "layer"]
     assert planar.conversions.index.name == "name"
+
+    # Add conversion elements.
+    planar.add_conversion("slack", "EVO_6777175", Slack(), 0)
 
     # Specify voltage levels manually.
     planar.df_layers["voltage"] = [60, 10, 0.4]
@@ -221,6 +223,8 @@ def test_planar_grid(grid: GeoGrid):
     print(grid.df_layers)
 
     res = planar2supra(grid)
+
+    print(res.conversions)
 
     assert res.number_of_edges() == 208 + 35
     assert res.nodelist.shape == (244, 3)

@@ -2,6 +2,8 @@
 from typing import Optional
 
 import networkx as nx
+import pandas as pd
+from pandas.core.frame import DataFrame
 
 
 class SupraGraph(nx.DiGraph):
@@ -54,7 +56,8 @@ class SupraGraph(nx.DiGraph):
 
                 node (index), object, node name
                 idx, int64, layer to which node belongs
-                name, object, layer name
+                layer_name, object, name of the layer
+                original, object, original node name
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -78,3 +81,28 @@ class SupraGraph(nx.DiGraph):
         self.intra_edges = None
         self.inter_edges = None
         self.nodelist = None
+
+    @property
+    def nodes_new(self) -> DataFrame:
+        """Gather information on terminals of inter-edges.
+
+        Returns:
+            Correspondance between original node, layer and bus for
+            terminals of inter-edges.
+
+            .. csv-table::
+                :header: name, dtype, definition
+
+                origin (index), object, node in geographic graph
+                layer (index), int64, to which layer the node belongs
+                bus, object, node name in supra graph
+        """
+        data = {}
+        for node in self.nodes.data():
+            if "origin" in node[1]:
+                data[(node[1]["origin"], node[1]["layer"])] = node[0]
+        res = pd.DataFrame.from_dict(data, orient="index", columns=["bus"])
+        res.index = pd.MultiIndex.from_tuples(
+            res.index, names=["origin", "layer"]
+        )
+        return res

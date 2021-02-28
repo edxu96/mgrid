@@ -42,7 +42,10 @@ class Ejection:
         return ((self.p_mw / self.power_factor) ** 2 - self.p_mw ** 2) ** 0.5
 
     def update_pandapower(
-        self, net: pandapowerNet, name: str, bus: str,
+        self,
+        net: pandapowerNet,
+        name: str,
+        bus: str,
     ):
         """Update a pandapower model by adding the ejection itself.
 
@@ -90,7 +93,10 @@ class Capacitor:
     loss_factor: float  #: loss factor tan(delta) of the capacitor bank
 
     def update_pandapower(
-        self, net: pandapowerNet, name: str, bus: str,
+        self,
+        net: pandapowerNet,
+        name: str,
+        bus: str,
     ):
         """Update a pandapower model by adding the capacitor itself.
 
@@ -124,7 +130,10 @@ class Slack:
     vm_pu: float = 1.0  #: voltage magnitude in per unit. Default to be 1.
 
     def update_pandapower(
-        self, net: pandapowerNet, name: str, bus: str,
+        self,
+        net: pandapowerNet,
+        name: str,
+        bus: str,
     ):
         """Update a pandapower model by adding the transformer itself.
 
@@ -133,7 +142,8 @@ class Slack:
             name: name of the external grid.
             bus: the bus to which the external grid is attached.
         """
-        net.add("Generator", name=name, bus=bus, control="Slack")
+        bus_idx = pp.get_element_index(net, "bus", bus)
+        pp.create_ext_grid(net, name=name, bus=bus_idx)
 
 
 @dataclass
