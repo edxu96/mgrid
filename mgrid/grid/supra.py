@@ -35,7 +35,14 @@ class SupraGrid(SupraGraph):
                 element, object, model
 
         types (dict): standard element types, keyed by type names.
-
+        buses (DataFrame): sorted list of buses containing layer
+            information.
+            .. csv-table::
+                :header: name, dtype, definition
+                node (index), object, node name
+                idx, int64, layer to which node belongs
+                layer_name, object, name of the layer
+                original, object, original node name
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -56,3 +63,4 @@ class SupraGrid(SupraGraph):
 
         self.conversions = None
         self.types = None
+        self.buses = None

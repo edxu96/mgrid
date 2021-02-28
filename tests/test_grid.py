@@ -201,7 +201,6 @@ def test_graph(planar_graph: GeoGraph):
     res = planar2supra(planar_graph)
 
     assert res.number_of_edges() == 208 + 35
-    assert res.nodelist.shape == (244, 2)
 
     inter_edges = res.inter_edges
     assert res.inter_edges.shape == (35, 4)
@@ -220,14 +219,10 @@ def test_planar_grid(grid: GeoGrid):
     Args:
         grid: initiated planar grid.
     """
-    print(grid.df_layers)
-
     res = planar2supra(grid)
 
-    print(res.conversions)
-
     assert res.number_of_edges() == 208 + 35
-    assert res.nodelist.shape == (244, 3)
+    assert res.buses.shape == (244, 3)
 
     net = supra2pandapower(res)
     print(net)

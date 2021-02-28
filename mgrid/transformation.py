@@ -2,7 +2,7 @@
 from copy import deepcopy
 from itertools import chain
 from statistics import mean
-from typing import Tuple, Union
+from typing import Dict, Set, Tuple, Union
 
 import networkx as nx
 import pandas as pd
@@ -14,7 +14,7 @@ from mgrid.log import LOGGER
 COLUMNS_DI_ORIGINAL = ["source_original", "target_original"]
 
 
-def _planar2supra(g: GeoGrid) -> SupraGrid:
+def _planar2supra(g: GeoGrid) -> Tuple[SupraGrid, Dict[int, Set[str]]]:
     """Convert a planar grid to corresponding supra-grid.
 
     Args:
@@ -97,13 +97,6 @@ def _planar2supra(g: GeoGrid) -> SupraGrid:
 
         dg.remove_node(node)
 
-    # Build nodelist using dictionary for nodes in different layers.
-    keys_sorted = sorted(node_dict)
-    nodelist = pd.DataFrame(
-        {"idx": chain(*[[key] * len(node_dict[key]) for key in keys_sorted])},
-        index=chain(*[node_dict[key] for key in keys_sorted]),
-    )
-
     # Build supra-grid.
     res = SupraGrid(dg)
     res.intra_edges = intra_edges
@@ -111,11 +104,7 @@ def _planar2supra(g: GeoGrid) -> SupraGrid:
     res.inter_edges.index.name = "node"
 
     res.df_layers = g.df_layers.copy(deep=True)
-
-    res.nodelist = nodelist
-    res.nodelist["layer_name"] = res.nodelist["idx"].map(res.df_layers["name"])
-    res.nodelist.index.name = "node"
-    return res
+    return res, node_dict
 
 
 def planar2supra(g: Union[GeoGraph, GeoGrid]) -> SupraGrid:
@@ -128,7 +117,7 @@ def planar2supra(g: Union[GeoGraph, GeoGrid]) -> SupraGrid:
         Resulted supra graph (for the grid).
 
     """
-    supra = _planar2supra(g)
+    supra, node_dict = _planar2supra(g)
 
     if isinstance(g, GeoGrid):
         for node, row in g.inter_nodes.iterrows():
@@ -152,8 +141,19 @@ def planar2supra(g: Union[GeoGraph, GeoGrid]) -> SupraGrid:
 
         supra.types = deepcopy(g.types)
 
-        supra.nodelist["voltage"] = supra.nodelist["idx"].map(
-            supra.df_layers["voltage"]
+        # Build a list of buses using dictionary for nodes in different layers.
+        keys_sorted = sorted(node_dict)
+        data = {
+            "idx": chain(*[[key] * len(node_dict[key]) for key in keys_sorted])
+        }
+        buses = pd.DataFrame(
+            data,
+            index=chain(*[node_dict[key] for key in keys_sorted]),
         )
+
+        buses["layer_name"] = buses["idx"].map(supra.df_layers["name"])
+        buses.index.name = "node"
+        buses["voltage"] = buses["idx"].map(supra.df_layers["voltage"])
+        supra.buses = buses
 
     return supra

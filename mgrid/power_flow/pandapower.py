@@ -52,7 +52,7 @@ def supra2pandapower(supra: SupraGrid) -> pandapowerNet:
         std_type.update_pandapower(net, key)
 
     # Add all the buses.
-    for node, row in supra.nodelist.iterrows():
+    for node, row in supra.buses.iterrows():
         pp.create_bus(net, name=node, vn_kv=row["voltage"])
 
     # Add all the delivery elements.

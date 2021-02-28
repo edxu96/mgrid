@@ -47,17 +47,6 @@ class SupraGraph(nx.DiGraph):
                 lower, int64, integer index of lower layer
                 source, object, source node in supra graph
                 target, object, target node in supra graph
-
-        nodelist (DataFrame): sorted nodelist containing layer
-            information.
-
-            .. csv-table::
-                :header: name, dtype, definition
-
-                node (index), object, node name
-                idx, int64, layer to which node belongs
-                layer_name, object, name of the layer
-                original, object, original node name
     """
 
     def __init__(self, dg: Optional[nx.DiGraph] = None):
@@ -80,14 +69,13 @@ class SupraGraph(nx.DiGraph):
 
         self.intra_edges = None
         self.inter_edges = None
-        self.nodelist = None
 
     @property
     def nodes_new(self) -> DataFrame:
         """Gather information on terminals of inter-edges.
 
         Returns:
-            Correspondance between original node, layer and bus for
+            Correspondance between original nodes, layers and buses for
             terminals of inter-edges.
 
             .. csv-table::
