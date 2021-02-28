@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
@@ -204,7 +205,10 @@
         <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_factor</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
 
 <div class="viewcode-block" id="Ejection.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Ejection.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the ejection itself.</span>
 
@@ -227,7 +231,7 @@
                 <span class="n">q_mvar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q_mvar</span><span class="p">,</span>
                 <span class="n">const_i_percent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">const_z_percent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                <span class="n">in_service</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">in_service</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_mw</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">pp</span><span class="o">.</span><span class="n">create_sgen</span><span class="p">(</span>
@@ -252,7 +256,10 @@
     <span class="n">loss_factor</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1">#: loss factor tan(delta) of the capacitor bank</span>
 
 <div class="viewcode-block" id="Capacitor.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Capacitor.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the capacitor itself.</span>
 
@@ -267,7 +274,7 @@
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">bus</span><span class="o">=</span><span class="n">bus_idx</span><span class="p">,</span>
             <span class="n">q_mvar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">q_mvar</span><span class="p">,</span>
-            <span class="n">loss_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_factor</span>
+            <span class="n">loss_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_factor</span><span class="p">,</span>
         <span class="p">)</span></div></div>
 
 
@@ -286,7 +293,10 @@
     <span class="n">vm_pu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1">#: voltage magnitude in per unit. Default to be 1.</span>
 
 <div class="viewcode-block" id="Slack.update_pandapower"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.Slack.update_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">update_pandapower</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">net</span><span class="p">:</span> <span class="n">pandapowerNet</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bus</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update a pandapower model by adding the transformer itself.</span>
 
@@ -295,7 +305,8 @@
 <span class="sd">            name: name of the external grid.</span>
 <span class="sd">            bus: the bus to which the external grid is attached.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">net</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Generator&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="s2">&quot;Slack&quot;</span><span class="p">)</span></div></div>
+        <span class="n">bus_idx</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get_element_index</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="s2">&quot;bus&quot;</span><span class="p">,</span> <span class="n">bus</span><span class="p">)</span>
+        <span class="n">pp</span><span class="o">.</span><span class="n">create_ext_grid</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus_idx</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="SlackMulti"><a class="viewcode-back" href="../../../power_flow.html#mgrid.power_flow.conversion.SlackMulti">[docs]</a><span class="nd">@dataclass</span>

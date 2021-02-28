@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
@@ -192,12 +193,20 @@
 <span class="sd">            .. csv-table::</span>
 <span class="sd">                :header: name, dtype, definition</span>
 
-<span class="sd">                name (index), object, name of conversion elements.</span>
-<span class="sd">                bus, object, buses to which elements are attached.</span>
-<span class="sd">                element, object, element models.</span>
+<span class="sd">                name (index), object, name of the element.</span>
+<span class="sd">                bus, object, buses to which the element is attached</span>
+<span class="sd">                element, object, model</span>
 
 <span class="sd">        types (dict): standard element types, keyed by type names.</span>
+<span class="sd">        buses (DataFrame): sorted list of buses.</span>
 
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                node (index), object, node name</span>
+<span class="sd">                idx, int64, layer to which node belongs</span>
+<span class="sd">                layer_name, object, name of the layer</span>
+<span class="sd">                original, object, original node name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SupraGrid.__init__"><a class="viewcode-back" href="../../../grid.html#mgrid.grid.supra.SupraGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -217,7 +226,8 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dg</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">conversions</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buses</span> <span class="o">=</span> <span class="kc">None</span></div></div>
 </pre></div>
 
            </div>

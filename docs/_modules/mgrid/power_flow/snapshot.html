@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>mgrid.power_flow.snapshot &mdash; mgrid v0.2.5 documentation</title>
+
+
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+
+
+  <div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+    <a href="https://github.com/edxu96/mgrid/tree/main/docs_raw">documentation source</a> |
+    <a href="https://github.com/edxu96/mgrid">repository</a>
+
+
+
+            <a href="../../../index.html" class="icon icon-home"> mgrid
+
+
+
+          </a>
+
+
+
+
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+
+        </div>
+
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+
+
+
+
+
+
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+</ul>
+
+
+
+        </div>
+
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+
+      <nav class="wy-nav-top" aria-label="top navigation">
+
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">mgrid</a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+
+        <div class="rst-content">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+
+      <li>mgrid.power_flow.snapshot</li>
+
+
+      <li class="wy-breadcrumbs-aside">
+
+      </li>
+
+  </ul>
+
+
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for mgrid.power_flow.snapshot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Store input and calculation results in snapshots.</span>
+
+<span class="sd">Though the power system operates continuously, it is considered in</span>
+<span class="sd">discrete time in power flow calculation. That is, between two</span>
+<span class="sd">consecutive time indices, the system state is assumed to remain steady,</span>
+<span class="sd">so small variations are ignored. Usually, the duration between indices</span>
+<span class="sd">is long compared to the frequency of alternating current (50 Hz in</span>
+<span class="sd">Europe and 60 Hz in the US).</span>
+
+<span class="sd">The result for voltages in the previous snapshot can be used as the</span>
+<span class="sd">initial guess in power flow calculation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+
+<span class="kn">from</span> <span class="nn">mgrid.grid</span> <span class="kn">import</span> <span class="n">GeoGrid</span><span class="p">,</span> <span class="n">SupraGrid</span>
+
+
+<div class="viewcode-block" id="Snapshot"><a class="viewcode-back" href="../../../snapshots.html#mgrid.power_flow.snapshot.Snapshot">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Snapshot</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Store input in incremental format and results in dataframes.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: incremental values of conversion elements with respect to</span>
+    <span class="c1">#: the previous snapshot</span>
+    <span class="n">increments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">previous</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GeoGrid</span><span class="p">,</span> <span class="n">Snapshot</span><span class="p">,</span> <span class="n">SupraGrid</span><span class="p">]</span>  <span class="c1">#: previous snapshot</span>
+    <span class="n">voltages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: votlage at buses in kVA</span>
+    <span class="n">flows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: power flow along edges in kW</span>
+
+<div class="viewcode-block" id="Snapshot.update_previsou"><a class="viewcode-back" href="../../../snapshots.html#mgrid.power_flow.snapshot.Snapshot.update_previsou">[docs]</a>    <span class="k">def</span> <span class="nf">update_previsou</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">:</span> <span class="n">Snapshot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update items with respect to given previous snapshost.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            previous: another snapshot used as previous reference.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">base</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">GeoGrid</span><span class="p">,</span> <span class="n">SupraGrid</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get the base grid model and snapshot.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [type]: [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">GeoGrid</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">SupraGrid</span><span class="p">)):</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">pre</span><span class="o">.</span><span class="n">previous</span>
+        <span class="k">return</span> <span class="n">pre</span>
+
+<div class="viewcode-block" id="Snapshot.result_pandapower"><a class="viewcode-back" href="../../../snapshots.html#mgrid.power_flow.snapshot.Snapshot.result_pandapower">[docs]</a>    <span class="k">def</span> <span class="nf">result_pandapower</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get results from a ``pandapower`` model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a grid modelled using ``pandapower``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Snapshot.result_pypsa"><a class="viewcode-back" href="../../../snapshots.html#mgrid.power_flow.snapshot.Snapshot.result_pypsa">[docs]</a>    <span class="k">def</span> <span class="nf">result_pypsa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get results from a ``pypsa`` model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            net: a grid modelled using ``pypsa``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020-2021, Edward Xu.
+
+    </p>
+  </div>
+
+
+
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+
+
+
+
+
+</body>
+</html>

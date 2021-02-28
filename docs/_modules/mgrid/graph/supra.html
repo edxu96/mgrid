@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
@@ -160,10 +161,12 @@
            <div itemprop="articleBody">
 
   <h1>Source code for mgrid.graph.supra</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Class for multilayer network in supra graph format.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Class for multilayer network in supra-graph format.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas.core.frame</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 
 
 <div class="viewcode-block" id="SupraGraph"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.supra.SupraGraph">[docs]</a><span class="k">class</span> <span class="nc">SupraGraph</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
@@ -207,16 +210,6 @@
 <span class="sd">                lower, int64, integer index of lower layer</span>
 <span class="sd">                source, object, source node in supra graph</span>
 <span class="sd">                target, object, target node in supra graph</span>
-
-<span class="sd">        nodelist (DataFrame): sorted nodelist containing layer</span>
-<span class="sd">            information.</span>
-
-<span class="sd">            .. csv-table::</span>
-<span class="sd">                :header: name, dtype, definition</span>
-
-<span class="sd">                node (index), object, node name</span>
-<span class="sd">                idx, int64, layer to which node belongs</span>
-<span class="sd">                name, object, layer name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SupraGraph.__init__"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.supra.SupraGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -238,8 +231,32 @@
         <span class="c1"># nx.freeze(self)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">intra_edges</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inter_edges</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodelist</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inter_edges</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nodes_new</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Gather information on terminals of inter-edges.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Correspondance between original nodes, layers and buses for</span>
+<span class="sd">            terminals of inter-edges.</span>
+
+<span class="sd">            .. csv-table::</span>
+<span class="sd">                :header: name, dtype, definition</span>
+
+<span class="sd">                origin (index), object, node in geographic graph</span>
+<span class="sd">                layer (index), int64, to which layer the node belongs</span>
+<span class="sd">                bus, object, node name in supra graph</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;origin&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">data</span><span class="p">[(</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;origin&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;layer&quot;</span><span class="p">])]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bus&quot;</span><span class="p">])</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">,</span> <span class="s2">&quot;layer&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 </pre></div>
 
            </div>

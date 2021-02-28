@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
@@ -165,10 +166,12 @@
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
  | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -187,12 +190,12 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.__init__">__init__() (mgrid.graph.planar.PlanarGraph method)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.__init__">__init__() (mgrid.graph.geographic.GeoGraph method)</a>
 
       <ul>
         <li><a href="graph.html#mgrid.graph.supra.SupraGraph.__init__">(mgrid.graph.supra.SupraGraph method)</a>
 </li>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.__init__">(mgrid.grid.planar.PlanarGrid method)</a>
+        <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.__init__">(mgrid.grid.geographic.GeoGrid method)</a>
 </li>
         <li><a href="grid.html#mgrid.grid.supra.SupraGrid.__init__">(mgrid.grid.supra.SupraGrid method)</a>
 </li>
@@ -203,16 +206,32 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.add_conversion">add_conversion() (mgrid.grid.planar.PlanarGrid method)</a>
+      <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.add_conversion">add_conversion() (mgrid.grid.geographic.GeoGrid method)</a>
+</li>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.add_inter_node">add_inter_node() (mgrid.graph.geographic.GeoGraph method)</a>
+
+      <ul>
+        <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.add_inter_node">(mgrid.grid.geographic.GeoGrid method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snapshots.html#mgrid.power_flow.series.SnapshotSeries.add_series">add_series() (mgrid.power_flow.series.SnapshotSeries method)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.series.SnapshotSeries.add_snapshot">add_snapshot() (mgrid.power_flow.series.SnapshotSeries method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.base">base() (mgrid.power_flow.snapshot.Snapshot property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.add_inter_node">add_inter_node() (mgrid.graph.planar.PlanarGraph method)</a>
-
-      <ul>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.add_inter_node">(mgrid.grid.planar.PlanarGrid method)</a>
+      <li><a href="grid.html#mgrid.grid.supra.SupraGrid.buses">buses (mgrid.grid.supra.SupraGrid attribute)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -233,20 +252,22 @@
 </li>
       <li><a href="power_flow.html#mgrid.power_flow.conversion.Capacitor">Capacitor (class in mgrid.power_flow.conversion)</a>
 </li>
-      <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.conversion">conversion (mgrid.grid.planar.PlanarGrid attribute)</a>
+      <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.conversions">conversions (mgrid.grid.geographic.GeoGrid attribute)</a>
+
+      <ul>
+        <li><a href="grid.html#mgrid.grid.supra.SupraGrid.conversions">(mgrid.grid.supra.SupraGrid attribute)</a>
 </li>
-      <li><a href="grid.html#mgrid.grid.supra.SupraGrid.conversions">conversions (mgrid.grid.supra.SupraGrid attribute)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.df_layers">df_layers (mgrid.graph.planar.PlanarGraph attribute)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.df_layers">df_layers (mgrid.graph.geographic.GeoGraph attribute)</a>
 
       <ul>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.df_layers">(mgrid.grid.planar.PlanarGrid attribute)</a>
+        <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.df_layers">(mgrid.grid.geographic.GeoGrid attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -263,11 +284,27 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.find_layer">find_layer() (mgrid.graph.planar.PlanarGraph method)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.find_layer">find_layer() (mgrid.graph.geographic.GeoGraph method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.from_edgelist">from_edgelist() (mgrid.graph.planar.PlanarGraph class method)</a>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.flows">flows (mgrid.power_flow.snapshot.Snapshot attribute)</a>
+</li>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.from_edgelist">from_edgelist() (mgrid.graph.geographic.GeoGraph class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph">GeoGraph (class in mgrid.graph.geographic)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="grid.html#mgrid.grid.geographic.GeoGrid">GeoGrid (class in mgrid.grid.geographic)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.series.SnapshotSeries.get_series">get_series() (mgrid.power_flow.series.SnapshotSeries method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -277,19 +314,21 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.type.TransformerType.i0_percent">i0_percent (mgrid.power_flow.type.TransformerType attribute)</a>
 </li>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.increments">increments (mgrid.power_flow.snapshot.Snapshot attribute)</a>
+</li>
       <li><a href="graph.html#mgrid.graph.supra.SupraGraph.inter_edges">inter_edges (mgrid.graph.supra.SupraGraph attribute)</a>
 </li>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.inter_nodes">inter_nodes (mgrid.graph.planar.PlanarGraph attribute)</a>
-
-      <ul>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.inter_nodes">(mgrid.grid.planar.PlanarGrid attribute)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.inter_nodes">inter_nodes (mgrid.graph.geographic.GeoGraph attribute)</a>
+
+      <ul>
+        <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.inter_nodes">(mgrid.grid.geographic.GeoGrid attribute)</a>
+</li>
+      </ul></li>
       <li><a href="graph.html#mgrid.graph.supra.SupraGraph.intra_edges">intra_edges (mgrid.graph.supra.SupraGraph attribute)</a>
 </li>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.intra_nodes">intra_nodes() (mgrid.graph.planar.PlanarGraph property)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.intra_nodes">intra_nodes() (mgrid.graph.geographic.GeoGraph property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -297,14 +336,14 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.layer_edges">layer_edges() (mgrid.graph.planar.PlanarGraph method)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.layer_edges">layer_edges() (mgrid.graph.geographic.GeoGraph method)</a>
 </li>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.layer_graph">layer_graph() (mgrid.graph.planar.PlanarGraph method)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.layer_graph">layer_graph() (mgrid.graph.geographic.GeoGraph method)</a>
 </li>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph.layers">layers (mgrid.graph.planar.PlanarGraph attribute)</a>
+      <li><a href="graph.html#mgrid.graph.geographic.GeoGraph.layers">layers (mgrid.graph.geographic.GeoGraph attribute)</a>
 
       <ul>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.layers">(mgrid.grid.planar.PlanarGrid attribute)</a>
+        <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.layers">(mgrid.grid.geographic.GeoGrid attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -322,10 +361,10 @@
       <li><a href="power_flow.html#mgrid.power_flow.delivery.Cable.max_i_ka">max_i_ka (mgrid.power_flow.delivery.Cable attribute)</a>
 </li>
       <li>
-    mgrid.graph.planar
+    mgrid.graph.geographic
 
       <ul>
-        <li><a href="graph.html#module-mgrid.graph.planar">module</a>
+        <li><a href="graph.html#module-mgrid.graph.geographic">module</a>
 </li>
       </ul></li>
       <li>
@@ -336,10 +375,10 @@
 </li>
       </ul></li>
       <li>
-    mgrid.grid.planar
+    mgrid.grid.geographic
 
       <ul>
-        <li><a href="grid.html#module-mgrid.grid.planar">module</a>
+        <li><a href="grid.html#module-mgrid.grid.geographic">module</a>
 </li>
       </ul></li>
       <li>
@@ -370,8 +409,22 @@
         <li><a href="power_flow.html#module-mgrid.power_flow.pandapower">module</a>
 </li>
       </ul></li>
+      <li>
+    mgrid.power_flow.series
+
+      <ul>
+        <li><a href="snapshots.html#module-mgrid.power_flow.series">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    mgrid.power_flow.snapshot
+
+      <ul>
+        <li><a href="snapshots.html#module-mgrid.power_flow.snapshot">module</a>
+</li>
+      </ul></li>
       <li>
     mgrid.power_flow.type
 
@@ -390,11 +443,11 @@
     module
 
       <ul>
-        <li><a href="graph.html#module-mgrid.graph.planar">mgrid.graph.planar</a>
+        <li><a href="graph.html#module-mgrid.graph.geographic">mgrid.graph.geographic</a>
 </li>
         <li><a href="graph.html#module-mgrid.graph.supra">mgrid.graph.supra</a>
 </li>
-        <li><a href="grid.html#module-mgrid.grid.planar">mgrid.grid.planar</a>
+        <li><a href="grid.html#module-mgrid.grid.geographic">mgrid.grid.geographic</a>
 </li>
         <li><a href="grid.html#module-mgrid.grid.supra">mgrid.grid.supra</a>
 </li>
@@ -403,6 +456,10 @@
         <li><a href="power_flow.html#module-mgrid.power_flow.delivery">mgrid.power_flow.delivery</a>
 </li>
         <li><a href="power_flow.html#module-mgrid.power_flow.pandapower">mgrid.power_flow.pandapower</a>
+</li>
+        <li><a href="snapshots.html#module-mgrid.power_flow.series">mgrid.power_flow.series</a>
+</li>
+        <li><a href="snapshots.html#module-mgrid.power_flow.snapshot">mgrid.power_flow.snapshot</a>
 </li>
         <li><a href="power_flow.html#module-mgrid.power_flow.type">mgrid.power_flow.type</a>
 </li>
@@ -423,12 +480,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graph.html#mgrid.graph.supra.SupraGraph.nodelist">nodelist (mgrid.graph.supra.SupraGraph attribute)</a>
-
-      <ul>
-        <li><a href="grid.html#mgrid.grid.planar.PlanarGrid.nodelist">(mgrid.grid.planar.PlanarGrid attribute)</a>
+      <li><a href="grid.html#mgrid.grid.geographic.GeoGrid.nodelist">nodelist (mgrid.grid.geographic.GeoGrid attribute)</a>
 </li>
-      </ul></li>
+      <li><a href="graph.html#mgrid.graph.supra.SupraGraph.nodes_new">nodes_new() (mgrid.graph.supra.SupraGraph property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -451,11 +506,9 @@
 </li>
       <li><a href="transformation.html#mgrid.transformation.planar2supra">planar2supra() (in module mgrid.transformation)</a>
 </li>
-      <li><a href="graph.html#mgrid.graph.planar.PlanarGraph">PlanarGraph (class in mgrid.graph.planar)</a>
-</li>
-      <li><a href="grid.html#mgrid.grid.planar.PlanarGrid">PlanarGrid (class in mgrid.grid.planar)</a>
-</li>
       <li><a href="power_flow.html#mgrid.power_flow.conversion.Ejection.power_factor">power_factor (mgrid.power_flow.conversion.Ejection attribute)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.previous">previous (mgrid.power_flow.snapshot.Snapshot attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -477,9 +530,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.delivery.Cable.r_ohm">r_ohm (mgrid.power_flow.delivery.Cable attribute)</a>
 </li>
+      <li><a href="power_flow.html#mgrid.power_flow.delivery.CablePhase.r_ohm_mat">r_ohm_mat (mgrid.power_flow.delivery.CablePhase attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="power_flow.html#mgrid.power_flow.delivery.CablePhase.r_ohm_mat">r_ohm_mat (mgrid.power_flow.delivery.CablePhase attribute)</a>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.result_pandapower">result_pandapower() (mgrid.power_flow.snapshot.Snapshot method)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.result_pypsa">result_pypsa() (mgrid.power_flow.snapshot.Snapshot method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -493,14 +550,18 @@
 </li>
       <li><a href="power_flow.html#mgrid.power_flow.conversion.SlackMulti">SlackMulti (class in mgrid.power_flow.conversion)</a>
 </li>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot">Snapshot (class in mgrid.power_flow.snapshot)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.series.SnapshotSeries">SnapshotSeries (class in mgrid.power_flow.series)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.delivery.CableStd.std_type">std_type (mgrid.power_flow.delivery.CableStd attribute)</a>
 
       <ul>
         <li><a href="power_flow.html#mgrid.power_flow.delivery.TransformerStd.std_type">(mgrid.power_flow.delivery.TransformerStd attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.pandapower.supra2pandapower">supra2pandapower() (in module mgrid.power_flow.pandapower)</a>
 </li>
       <li><a href="graph.html#mgrid.graph.supra.SupraGraph">SupraGraph (class in mgrid.graph.supra)</a>
@@ -544,6 +605,10 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.update_previsou">update_previsou() (mgrid.power_flow.snapshot.Snapshot method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
@@ -553,13 +618,15 @@
 </li>
       <li><a href="power_flow.html#mgrid.power_flow.type.TransformerType.v_low_kv">v_low_kv (mgrid.power_flow.type.TransformerType attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.type.TransformerType.vk_percent">vk_percent (mgrid.power_flow.type.TransformerType attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="power_flow.html#mgrid.power_flow.type.TransformerType.vkr_percent">vkr_percent (mgrid.power_flow.type.TransformerType attribute)</a>
 </li>
       <li><a href="power_flow.html#mgrid.power_flow.conversion.Slack.vm_pu">vm_pu (mgrid.power_flow.conversion.Slack attribute)</a>
+</li>
+      <li><a href="snapshots.html#mgrid.power_flow.snapshot.Snapshot.voltages">voltages (mgrid.power_flow.snapshot.Snapshot attribute)</a>
 </li>
   </ul></td>
 </tr></table>

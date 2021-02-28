@@ -38,7 +38,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Power Flow Calculation" href="power_flow.html" />
+    <link rel="next" title="Transformation" href="transformation.html" />
     <link rel="prev" title="Graph Theoretic Model" href="graph.html" />
 </head>
 
@@ -91,12 +91,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Power Grid</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.grid.planar">as Planar Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.grid.geographic">as Geographic Graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-mgrid.grid.supra">as Supra Graph</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
@@ -169,22 +170,26 @@
 
   <div class="section" id="power-grid">
 <h1>Power Grid<a class="headerlink" href="#power-grid" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-mgrid.grid.planar">
-<span id="as-planar-graph"></span><h2>as Planar Graph<a class="headerlink" href="#module-mgrid.grid.planar" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-mgrid.grid.geographic">
+<span id="as-geographic-graph"></span><h2>as Geographic Graph<a class="headerlink" href="#module-mgrid.grid.geographic" title="Permalink to this headline">¶</a></h2>
 <p>Class for grid in planar graph format.</p>
 <dl class="py class">
-<dt id="mgrid.grid.planar.PlanarGrid">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.grid.planar.</span></code><code class="sig-name descname"><span class="pre">PlanarGrid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/planar.html#PlanarGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="graph.html#mgrid.graph.planar.PlanarGraph" title="mgrid.graph.planar.PlanarGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.graph.planar.PlanarGraph</span></code></a></p>
+<dt id="mgrid.grid.geographic.GeoGrid">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.grid.geographic.</span></code><code class="sig-name descname"><span class="pre">GeoGrid</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/geographic.html#GeoGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="graph.html#mgrid.graph.geographic.GeoGraph" title="mgrid.graph.geographic.GeoGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgrid.graph.geographic.GeoGraph</span></code></a></p>
 <p>Model multilayer graph in plane by contracting inter-edges.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Voltage levels of layers must be specified by updating
-<code class="docutils literal notranslate"><span class="pre">df_layers</span></code> manually.</p>
+<ul class="simple">
+<li><p>There are two kinds of nodes, inter-nodes and planar nodes. If
+an inter-node is isolated in some layer, it cannot be
+recognised directly.</p></li>
+<li><p>It is assumed that every conversion element has a unique name.</p></li>
+</ul>
 </div>
 <dl class="py attribute">
-<dt id="mgrid.grid.planar.PlanarGrid.inter_nodes">
-<code class="sig-name descname"><span class="pre">inter_nodes</span></code><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.inter_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.inter_nodes">
+<code class="sig-name descname"><span class="pre">inter_nodes</span></code><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.inter_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>information on inter-nodes.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -225,8 +230,8 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.grid.planar.PlanarGrid.layers">
-<code class="sig-name descname"><span class="pre">layers</span></code><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.layers" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.layers">
+<code class="sig-name descname"><span class="pre">layers</span></code><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>integer indices of all the layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -236,8 +241,8 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.grid.planar.PlanarGrid.conversion">
-<code class="sig-name descname"><span class="pre">conversion</span></code><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.conversion" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.conversions">
+<code class="sig-name descname"><span class="pre">conversions</span></code><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.conversions" title="Permalink to this definition">¶</a></dt>
 <dd><p>information on conversion elements.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -278,8 +283,8 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.grid.planar.PlanarGrid.df_layers">
-<code class="sig-name descname"><span class="pre">df_layers</span></code><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.df_layers" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.df_layers">
+<code class="sig-name descname"><span class="pre">df_layers</span></code><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.df_layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>information on layers.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -316,8 +321,8 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.grid.planar.PlanarGrid.nodelist">
-<code class="sig-name descname"><span class="pre">nodelist</span></code><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.nodelist" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.nodelist">
+<code class="sig-name descname"><span class="pre">nodelist</span></code><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.nodelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>sorted nodelist containing layer
 information.</p>
 <table class="docutils align-default">
@@ -359,8 +364,8 @@ information.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.grid.planar.PlanarGrid.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/planar.html#PlanarGrid.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/geographic.html#GeoGrid.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Init an empty directed graph or from existing directed graph.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -383,8 +388,8 @@ corresponding inter-node cannot be detected.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.grid.planar.PlanarGrid.add_conversion">
-<code class="sig-name descname"><span class="pre">add_conversion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/planar.html#PlanarGrid.add_conversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.add_conversion" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.add_conversion">
+<code class="sig-name descname"><span class="pre">add_conversion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/geographic.html#GeoGrid.add_conversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.add_conversion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a conversion element to the grid.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -397,7 +402,7 @@ If to a inter-node, <code class="docutils literal notranslate"><span class="pre"
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the conversion element.</p></li>
 <li><p><strong>node</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – name of the node to which the element is attached.</p></li>
-<li><p><strong>element</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="power_flow.html#mgrid.power_flow.conversion.Ejection" title="mgrid.power_flow.conversion.Ejection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ejection</span></code></a>, <a class="reference internal" href="power_flow.html#mgrid.power_flow.conversion.Slack" title="mgrid.power_flow.conversion.Slack"><code class="xref py py-class docutils literal notranslate"><span class="pre">Slack</span></code></a>]) – model for the element.</p></li>
+<li><p><strong>element</strong> (<a class="reference internal" href="power_flow.html#mgrid.power_flow.conversion.Ejection" title="mgrid.power_flow.conversion.Ejection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ejection</span></code></a>) – model for the element.</p></li>
 <li><p><strong>layer</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – layer to which the element belongs. If <code class="docutils literal notranslate"><span class="pre">node</span></code> is an
 intra-node, it is not necessary to specify it. When
 <code class="docutils literal notranslate"><span class="pre">node</span></code> is an inter-node and it is not specified, a
@@ -408,8 +413,8 @@ warning will be echoed.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.grid.planar.PlanarGrid.add_inter_node">
-<code class="sig-name descname"><span class="pre">add_inter_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/planar.html#PlanarGrid.add_inter_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.planar.PlanarGrid.add_inter_node" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.grid.geographic.GeoGrid.add_inter_node">
+<code class="sig-name descname"><span class="pre">add_inter_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/grid/geographic.html#GeoGrid.add_inter_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.grid.geographic.GeoGrid.add_inter_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specify a planar node as an inter-node with an adjacent layer.</p>
 <p>Sometimes, one terminal of an inter-edge is an isolated node in some
 layer, then it will not be recognised as an inter-node. It must be
@@ -472,15 +477,15 @@ attached conversion elements. There is only one type of node here.</p>
 <tbody>
 <tr class="row-even"><td><p>name (index)</p></td>
 <td><p>object</p></td>
-<td><p>name of conversion elements.</p></td>
+<td><p>name of the element.</p></td>
 </tr>
 <tr class="row-odd"><td><p>bus</p></td>
 <td><p>object</p></td>
-<td><p>buses to which elements are attached.</p></td>
+<td><p>buses to which the element is attached</p></td>
 </tr>
 <tr class="row-even"><td><p>element</p></td>
 <td><p>object</p></td>
-<td><p>element models.</p></td>
+<td><p>model</p></td>
 </tr>
 </tbody>
 </table>
@@ -498,6 +503,48 @@ attached conversion elements. There is only one type of node here.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="mgrid.grid.supra.SupraGrid.buses">
+<code class="sig-name descname"><span class="pre">buses</span></code><a class="headerlink" href="#mgrid.grid.supra.SupraGrid.buses" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorted list of buses.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>node (index)</p></td>
+<td><p>object</p></td>
+<td><p>node name</p></td>
+</tr>
+<tr class="row-odd"><td><p>idx</p></td>
+<td><p>int64</p></td>
+<td><p>layer to which node belongs</p></td>
+</tr>
+<tr class="row-even"><td><p>layer_name</p></td>
+<td><p>object</p></td>
+<td><p>name of the layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>original</p></td>
+<td><p>object</p></td>
+<td><p>original node name</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -530,7 +577,7 @@ why.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="power_flow.html" class="btn btn-neutral float-right" title="Power Flow Calculation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="transformation.html" class="btn btn-neutral float-right" title="Transformation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="graph.html" class="btn btn-neutral float-left" title="Graph Theoretic Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

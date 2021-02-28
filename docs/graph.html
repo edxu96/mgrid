@@ -90,13 +90,14 @@
 
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Graph Theoretic Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.graph.planar">Planar Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mgrid.graph.geographic">Geographic Graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-mgrid.graph.supra">Supra Graph</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
@@ -169,26 +170,29 @@
 
   <div class="section" id="graph-theoretic-model">
 <h1>Graph Theoretic Model<a class="headerlink" href="#graph-theoretic-model" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-mgrid.graph.planar">
-<span id="planar-graph"></span><h2>Planar Graph<a class="headerlink" href="#module-mgrid.graph.planar" title="Permalink to this headline">¶</a></h2>
-<p>A class for planar graph corresponding to a multilayer network.</p>
-<p>All the nodes and edges in a planar graph can have geographical
-attributes.</p>
+<div class="section" id="module-mgrid.graph.geographic">
+<span id="geographic-graph"></span><h2>Geographic Graph<a class="headerlink" href="#module-mgrid.graph.geographic" title="Permalink to this headline">¶</a></h2>
+<p>A class for geographic graph corresponding to a multilayer network.</p>
+<p>Geographic graph is a unique concept in this project. Due to the fact
+that there is no duplicated intra-nodes in different layers, all the
+intra-edges can be included in one simple graph (without parallel edge).
+Furthermore, inter-nodes represent transformers in power systems, so
+they are geographical points. That is, all the nodes and edges in a
+planar graph have geographical attributes.</p>
 <dl class="py class">
-<dt id="mgrid.graph.planar.PlanarGraph">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.graph.planar.</span></code><code class="sig-name descname"><span class="pre">PlanarGraph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.graph.geographic.</span></code><code class="sig-name descname"><span class="pre">GeoGraph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.classes.digraph.DiGraph</span></code></p>
-<p>Multilayer network in form of planar graph.</p>
+<p>Multilayer network as a planar graph.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There are two kinds of nodes, inter-nodes and planar nodes. If
-an inter-node is isolated in some layer, it cannot be recognised
-directly. Use method <code class="docutils literal notranslate"><span class="pre">add_inter_node</span></code> to specify those
-inter-nodes.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DiGraph</span></code> from <code class="docutils literal notranslate"><span class="pre">networkx</span></code> is inherited, in order to modify
+terminals of edges directly. The order of edge terminals
+returned by <code class="docutils literal notranslate"><span class="pre">Graph</span></code> class is not consistent.</p>
 </div>
 <dl class="py attribute">
-<dt id="mgrid.graph.planar.PlanarGraph.inter_nodes">
-<code class="sig-name descname"><span class="pre">inter_nodes</span></code><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.inter_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.inter_nodes">
+<code class="sig-name descname"><span class="pre">inter_nodes</span></code><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.inter_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>information on inter-nodes.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -225,8 +229,8 @@ inter-nodes.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.graph.planar.PlanarGraph.layers">
-<code class="sig-name descname"><span class="pre">layers</span></code><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.layers" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.layers">
+<code class="sig-name descname"><span class="pre">layers</span></code><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>integer indices of all the layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -236,8 +240,8 @@ inter-nodes.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mgrid.graph.planar.PlanarGraph.df_layers">
-<code class="sig-name descname"><span class="pre">df_layers</span></code><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.df_layers" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.df_layers">
+<code class="sig-name descname"><span class="pre">df_layers</span></code><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.df_layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>information on layers.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -270,8 +274,8 @@ inter-nodes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Init an empty directed graph or from existing directed graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,12 +285,12 @@ inter-nodes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.add_inter_node">
-<code class="sig-name descname"><span class="pre">add_inter_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.add_inter_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.add_inter_node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specify a planar node as an inter-node with an adjacent layer.</p>
-<p>Sometimes, one terminal of an inter-edge is an isolated node in some
-layer, then it will not be recognised as an inter-node. It must be
-specified manually.</p>
+<dt id="mgrid.graph.geographic.GeoGraph.add_inter_node">
+<code class="sig-name descname"><span class="pre">add_inter_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.add_inter_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.add_inter_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify a planar node as inter-node with an adjacent layer.</p>
+<p>Sometimes, one terminal of an inter-edge is an isolated node in
+some layer, then it will not be recognised as an inter-node. It
+must be specified manually.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Upper layer has a smaller integer index.</p>
@@ -303,8 +307,8 @@ inter-edge is on upper layer.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.find_layer">
-<code class="sig-name descname"><span class="pre">find_layer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.find_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.find_layer" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.find_layer">
+<code class="sig-name descname"><span class="pre">find_layer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.find_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.find_layer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find layer(s) of a given node.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -329,8 +333,8 @@ layer will be returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.from_edgelist">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_edgelist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.from_edgelist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.from_edgelist" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.from_edgelist">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_edgelist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.from_edgelist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.from_edgelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Init a planar graph from an edgelist dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -372,15 +376,15 @@ layer will be returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.intra_nodes">
-<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">intra_nodes</span></code><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.intra_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.intra_nodes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">intra_nodes</span></code><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.intra_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gather all the intra-nodes in a dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>A dataframe for intra-nodes.</p>
+<dd class="field-even"><p><p>Information on intra-nodes.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -410,8 +414,8 @@ layer will be returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.layer_edges">
-<code class="sig-name descname"><span class="pre">layer_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.layer_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.layer_edges" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.layer_edges">
+<code class="sig-name descname"><span class="pre">layer_edges</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.layer_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.layer_edges" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gather all the edges and edge attributes in one layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -427,8 +431,8 @@ layer will be returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="mgrid.graph.planar.PlanarGraph.layer_graph">
-<code class="sig-name descname"><span class="pre">layer_graph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/planar.html#PlanarGraph.layer_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.planar.PlanarGraph.layer_graph" title="Permalink to this definition">¶</a></dt>
+<dt id="mgrid.graph.geographic.GeoGraph.layer_graph">
+<code class="sig-name descname"><span class="pre">layer_graph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/geographic.html#GeoGraph.layer_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.geographic.GeoGraph.layer_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a directed graph for one layer.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -452,7 +456,7 @@ layer will be returned.</p></li>
 </div>
 <div class="section" id="module-mgrid.graph.supra">
 <span id="supra-graph"></span><h2>Supra Graph<a class="headerlink" href="#module-mgrid.graph.supra" title="Permalink to this headline">¶</a></h2>
-<p>Class for multilayer network in supra graph format.</p>
+<p>Class for multilayer network in supra-graph format.</p>
 <dl class="py class">
 <dt id="mgrid.graph.supra.SupraGraph">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mgrid.graph.supra.</span></code><code class="sig-name descname"><span class="pre">SupraGraph</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/supra.html#SupraGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.supra.SupraGraph" title="Permalink to this definition">¶</a></dt>
@@ -564,45 +568,6 @@ planar graph and inter-edges in multilayer graph.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="mgrid.graph.supra.SupraGraph.nodelist">
-<code class="sig-name descname"><span class="pre">nodelist</span></code><a class="headerlink" href="#mgrid.graph.supra.SupraGraph.nodelist" title="Permalink to this definition">¶</a></dt>
-<dd><p>sorted nodelist containing layer
-information.</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>name</p></th>
-<th class="head"><p>dtype</p></th>
-<th class="head"><p>definition</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>node (index)</p></td>
-<td><p>object</p></td>
-<td><p>node name</p></td>
-</tr>
-<tr class="row-odd"><td><p>idx</p></td>
-<td><p>int64</p></td>
-<td><p>layer to which node belongs</p></td>
-</tr>
-<tr class="row-even"><td><p>name</p></td>
-<td><p>object</p></td>
-<td><p>layer name</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt id="mgrid.graph.supra.SupraGraph.__init__">
 <code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mgrid/graph/supra.html#SupraGraph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mgrid.graph.supra.SupraGraph.__init__" title="Permalink to this definition">¶</a></dt>
@@ -616,6 +581,49 @@ why.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dg</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code>]) – an existing directed graph. Default to be None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mgrid.graph.supra.SupraGraph.nodes_new">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodes_new</span></code><a class="headerlink" href="#mgrid.graph.supra.SupraGraph.nodes_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gather information on terminals of inter-edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>Correspondance between original nodes, layers and buses for
+terminals of inter-edges.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>dtype</p></th>
+<th class="head"><p>definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>origin (index)</p></td>
+<td><p>object</p></td>
+<td><p>node in geographic graph</p></td>
+</tr>
+<tr class="row-odd"><td><p>layer (index)</p></td>
+<td><p>int64</p></td>
+<td><p>to which layer the node belongs</p></td>
+</tr>
+<tr class="row-even"><td><p>bus</p></td>
+<td><p>object</p></td>
+<td><p>node name in supra graph</p></td>
+</tr>
+</tbody>
+</table>
+</p>
 </dd>
 </dl>
 </dd></dl>

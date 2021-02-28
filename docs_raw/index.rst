@@ -112,8 +112,9 @@ API
 
    graph
    grid
-   power_flow
    transformation
+   power_flow
+   snapshots
 
 Bibliography
 ------------

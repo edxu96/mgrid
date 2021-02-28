@@ -1,10 +1,10 @@
 Power Grid
 ==========
 
-as Planar Graph
----------------
+as Geographic Graph
+-------------------
 
-.. automodule:: mgrid.grid.planar
+.. automodule:: mgrid.grid.geographic
    :members:
    :undoc-members:
    :show-inheritance:

@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>mgrid.graph.planar &mdash; mgrid v0.2.5 documentation</title>
+  <title>mgrid.graph.geographic &mdash; mgrid v0.2.5 documentation</title>
 
 
 
@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
@@ -144,7 +145,7 @@
 
           <li><a href="../../index.html">Module code</a> &raquo;</li>
 
-      <li>mgrid.graph.planar</li>
+      <li>mgrid.graph.geographic</li>
 
 
       <li class="wy-breadcrumbs-aside">
@@ -159,11 +160,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
 
-  <h1>Source code for mgrid.graph.planar</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A class for planar graph corresponding to a multilayer network.</span>
+  <h1>Source code for mgrid.graph.geographic</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A class for geographic graph corresponding to a multilayer network.</span>
 
-<span class="sd">All the nodes and edges in a planar graph can have geographical</span>
-<span class="sd">attributes.</span>
+<span class="sd">Geographic graph is a unique concept in this project. Due to the fact</span>
+<span class="sd">that there is no duplicated intra-nodes in different layers, all the</span>
+<span class="sd">intra-edges can be included in one simple graph (without parallel edge).</span>
+<span class="sd">Furthermore, inter-nodes represent transformers in power systems, so</span>
+<span class="sd">they are geographical points. That is, all the nodes and edges in a</span>
+<span class="sd">planar graph have geographical attributes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
@@ -178,14 +183,13 @@
 <span class="n">COLUMNS_DI</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="PlanarGraph"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph">[docs]</a><span class="k">class</span> <span class="nc">PlanarGraph</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Multilayer network in form of planar graph.</span>
+<div class="viewcode-block" id="GeoGraph"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph">[docs]</a><span class="k">class</span> <span class="nc">GeoGraph</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multilayer network as a planar graph.</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">        There are two kinds of nodes, inter-nodes and planar nodes. If</span>
-<span class="sd">        an inter-node is isolated in some layer, it cannot be recognised</span>
-<span class="sd">        directly. Use method ``add_inter_node`` to specify those</span>
-<span class="sd">        inter-nodes.</span>
+<span class="sd">        ``DiGraph`` from ``networkx`` is inherited, in order to modify</span>
+<span class="sd">        terminals of edges directly. The order of edge terminals</span>
+<span class="sd">        returned by ``Graph`` class is not consistent.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        inter_nodes (DataFrame): information on inter-nodes.</span>
@@ -207,7 +211,7 @@
 <span class="sd">                name, object, layer names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PlanarGraph.__init__"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GeoGraph.__init__"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Init an empty directed graph or from existing directed graph.</span>
 
 <span class="sd">        Args:</span>
@@ -237,7 +241,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PlanarGraph.from_edgelist"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.from_edgelist">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GeoGraph.from_edgelist"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.from_edgelist">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_edgelist</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span>
@@ -297,7 +301,6 @@
 <span class="sd">                name (index), name of the node</span>
 <span class="sd">                upper, int64, upper layer of the inter-edge</span>
 <span class="sd">                lower, int64, lower layer of the inter-edge</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -323,14 +326,13 @@
         <span class="sd">&quot;&quot;&quot;Gather all the intra-nodes in a dataframe.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A dataframe for intra-nodes.</span>
+<span class="sd">            Information on intra-nodes.</span>
 
 <span class="sd">            .. csv-table::</span>
 <span class="sd">                :header: name, dtype, definition</span>
 
 <span class="sd">                name (index), object, node name</span>
 <span class="sd">                layer, int64, to which layer the node belongs</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">inter_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inter_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
         <span class="n">intra_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inter_nodes</span><span class="p">]</span>
@@ -342,7 +344,7 @@
         <span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;name&quot;</span>
         <span class="k">return</span> <span class="n">res</span>
 
-<div class="viewcode-block" id="PlanarGraph.layer_edges"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.layer_edges">[docs]</a>    <span class="k">def</span> <span class="nf">layer_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
+<div class="viewcode-block" id="GeoGraph.layer_edges"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.layer_edges">[docs]</a>    <span class="k">def</span> <span class="nf">layer_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Gather all the edges and edge attributes in one layer.</span>
 
 <span class="sd">        Args:</span>
@@ -358,7 +360,7 @@
             <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="PlanarGraph.layer_graph"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.layer_graph">[docs]</a>    <span class="k">def</span> <span class="nf">layer_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
+<div class="viewcode-block" id="GeoGraph.layer_graph"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.layer_graph">[docs]</a>    <span class="k">def</span> <span class="nf">layer_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Build a directed graph for one layer.</span>
 
 <span class="sd">        Note:</span>
@@ -378,7 +380,7 @@
             <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="PlanarGraph.find_layer"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.find_layer">[docs]</a>    <span class="k">def</span> <span class="nf">find_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<div class="viewcode-block" id="GeoGraph.find_layer"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.find_layer">[docs]</a>    <span class="k">def</span> <span class="nf">find_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Find layer(s) of a given node.</span>
 
 <span class="sd">        Note:</span>
@@ -410,12 +412,12 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PlanarGraph.add_inter_node"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.planar.PlanarGraph.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Specify a planar node as an inter-node with an adjacent layer.</span>
+<div class="viewcode-block" id="GeoGraph.add_inter_node"><a class="viewcode-back" href="../../../graph.html#mgrid.graph.geographic.GeoGraph.add_inter_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_inter_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Specify a planar node as inter-node with an adjacent layer.</span>
 
-<span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in some</span>
-<span class="sd">        layer, then it will not be recognised as an inter-node. It must be</span>
-<span class="sd">        specified manually.</span>
+<span class="sd">        Sometimes, one terminal of an inter-edge is an isolated node in</span>
+<span class="sd">        some layer, then it will not be recognised as an inter-node. It</span>
+<span class="sd">        must be specified manually.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            Upper layer has a smaller integer index.</span>

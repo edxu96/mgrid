@@ -1,10 +1,10 @@
 Graph Theoretic Model
 =====================
 
-Planar Graph
-------------
+Geographic Graph
+----------------
 
-.. automodule:: mgrid.graph.planar
+.. automodule:: mgrid.graph.geographic
    :members:
    :undoc-members:
    :show-inheritance:

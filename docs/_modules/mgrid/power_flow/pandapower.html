@@ -89,8 +89,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../graph.html">Graph Theoretic Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../grid.html">Power Grid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../transformation.html">Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../power_flow.html">Power Flow Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../snapshots.html">Snapshot</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
@@ -214,7 +215,7 @@
         <span class="n">std_type</span><span class="o">.</span><span class="n">update_pandapower</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
     <span class="c1"># Add all the buses.</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">nodelist</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">supra</span><span class="o">.</span><span class="n">buses</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">pp</span><span class="o">.</span><span class="n">create_bus</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="p">,</span> <span class="n">vn_kv</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;voltage&quot;</span><span class="p">])</span>
 
     <span class="c1"># Add all the delivery elements.</span>
