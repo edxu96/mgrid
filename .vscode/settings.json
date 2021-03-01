@@ -3,6 +3,7 @@
     "python.linting.flake8Enabled": true,
     "python.pythonPath": "/Users/edxu96/GitHub/mgrid/mgrid@3.9/bin/python3.9",
     "editor.wordWrapColumn": 79,
+    "editor.wordWrap": "wordWrapColumn",
     "editor.rulers": [72, 79],
     "cSpell.language": "en-GB",
     "rewrap.wrappingColumn": 72,
@@ -12,4 +13,5 @@
     ],
     "autoDocstring.guessTypes": false,
     "autoDocstring.docstringFormat": "google",
+    "restructuredtext.confPath": "${workspaceFolder}/docs_raw",
 }
