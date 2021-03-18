@@ -1,7 +1,7 @@
-"""Store snapshots in SQLite database."""
+"""Store snapshots for a graph in an SQLite database."""
 import pathlib
 import sqlite3
-from typing import List, Optional, Union
+from typing import List, Optional, Set, Union
 
 from mgrid.log import LOGGER
 
@@ -81,7 +81,59 @@ class GraphSnapshots:
         except sqlite3.Error:
             LOGGER.exception("SQLite DB connection failed.")
 
-    def add(self, source: str, target: str, element: Optional[int] = 0):
+    def _select_direct_links(self, snapshot: str) -> Set[str]:
+        """Select all the direct links of a given snapshot.
+
+        Args:
+            snapshot: the name of an existing snapshot.
+
+        Returns:
+            A set of all the directly linked snapshots.
+        """
+        with self.conn:
+            links = self.conn.execute(
+                "SELECT * FROM links WHERE snapshot = :snapshot",
+                {"snapshot": snapshot},
+            ).fetchmany()
+            res = {link[1] for link in links}
+
+        if len(res) == 0:
+            LOGGER.critical(f'Snapshot "{snapshot}" has no link.')
+            res = None
+        return res
+
+    def _get_links(self, snapshot: str) -> Set[str]:
+        """Get all the links of a given snapshot.
+
+        Args:
+            snapshot: the name of an existing snapshot.
+
+        Returns:
+            A set of all the linked snapshots.
+        """
+        checked = {"head"}
+        links = self._select_direct_links(snapshot)
+        while len(links - checked) > 0:
+            poped = (links - checked).pop()
+            checked.update(poped)
+            links.update(self._select_direct_links(poped))
+
+        LOGGER.debug(f'Snapshot "{snapshot}" is linked to "{links}".')
+        return links
+
+    # def read(self, snapshot: str) -> nx.DiGraph:
+    #     """Get the corresponding directed graph of a snapshot.
+
+    #     Args:
+    #         snapshot: the name of an existing snapshot.
+
+    #     Returns:
+    #         A ``networkx`` directed graph.
+    #     """
+    #     links = self._get_links(snapshot)
+    #     print(links)
+
+    def _add_edge(self, source: str, target: str, element: Optional[int] = 0):
         """Add a new edge.
 
         Args:
@@ -100,6 +152,12 @@ class GraphSnapshots:
 
     def branch(self, name: str, links: Union[str, List[str]]):
         """Init a new snapshot and specify its links.
+
+        Note:
+            - This function is the first step for a new snapshot. It is
+              similar to the beginning of a transaction, but it can be
+              based on different sets of snapshot(s).
+            - Links can be modified later before committing.
 
         Args:
             name: name of the snapshot.
@@ -122,6 +180,6 @@ class GraphSnapshots:
                 f'A new snapshot "{name}" linked to {links} has been branched.'
             )
 
-    def take(self):
-        """Take the snapshot."""
-        pass
+    # def take(self, snapshot: str):
+    #     """Take the snapshot and forbid further modification."""
+    #     pass
