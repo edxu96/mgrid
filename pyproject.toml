@@ -11,6 +11,7 @@ pandas = "^1.2.0"
 loguru = "^0.5.3"
 numpy = "1.20.1"
 pandapower = "^2.5.0"
+neo4j = "^4.2.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
