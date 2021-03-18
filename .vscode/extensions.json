@@ -4,6 +4,8 @@
         "kevinrose.vsc-python-indent",
         "ms-python.vscode-pylance",
         "ms-python.python",
-        "njpwerner.autodocstring"
+        "njpwerner.autodocstring",
+        "lextudio.restructuredtext",
+        "streetsidesoftware.code-spell-checker"
     ]
 }
