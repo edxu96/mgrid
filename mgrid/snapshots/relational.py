@@ -1,7 +1,7 @@
 """Store snapshots in SQLite database."""
 import pathlib
 import sqlite3
-from typing import Optional
+from typing import List, Optional, Union
 
 from mgrid.log import LOGGER
 
@@ -22,6 +22,13 @@ INIT_TABLES = """
         target TEXT NOT NULL,
         FOREIGN KEY (snapshot) REFERENCES snapshots (name),
         FOREIGN KEY (source, target) REFERENCES edges (source, target)
+    );
+
+    CREATE TABLE links (
+        snapshot TEXT NOT NULL,
+        link TEXT NOT NULL,
+        FOREIGN KEY (snapshot) REFERENCES snapshots (name),
+        FOREIGN KEY (link) REFERENCES snapshots (name)
     );
 """
 
@@ -52,6 +59,11 @@ class GraphSnapshots:
             self.conn.executescript(INIT_TABLES)
             LOGGER.info(
                 "A new database for snapshots of a graph has been initiated."
+            )
+
+            self.conn.execute("INSERT INTO snapshots (name) VALUES ('head');")
+            LOGGER.debug(
+                'A new snapshot "head" without any link has been branched.'
             )
 
     @staticmethod
@@ -86,18 +98,29 @@ class GraphSnapshots:
                 query, {"source": source, "target": target, "element": element}
             )
 
-    def branch(self, name: str):
-        """Init a new snapshot.
+    def branch(self, name: str, links: Union[str, List[str]]):
+        """Init a new snapshot and specify its links.
 
         Args:
             name: name of the snapshot.
+            links: other snapshots to which it is linked.
         """
         with self.conn:
-            query = """
-                INSERT INTO snapshots (name)
-                VALUES (:name);
+            self.conn.execute(
+                "INSERT INTO snapshots (name) VALUES (:name);", {"name": name}
+            )
+
+            # Insert snapshot links one-by-one.
+            insertion = """
+                INSERT INTO links (snapshot, link) VALUES (:snapshot, :link)
             """
-            self.conn.execute(query, {"name": name})
+            if isinstance(links, str):
+                links = [links]
+            for link in links:
+                self.conn.execute(insertion, {"snapshot": name, "link": link})
+            LOGGER.info(
+                f'A new snapshot "{name}" linked to {links} has been branched.'
+            )
 
     def take(self):
         """Take the snapshot."""

@@ -7,4 +7,5 @@ def test_init():
     """Test relational database for snapshots of a graph."""
     gs = GraphSnapshots(":memory:")
     gs.add("a", "b", 0)
-    gs.branch("test")
+
+    gs.branch("test", "head")
