@@ -1,7 +1,9 @@
 """Store snapshots for a graph in an SQLite database."""
 import pathlib
 import sqlite3
-from typing import List, Optional, Set, Union
+from typing import Generator, List, Optional, Set, Tuple, Union
+
+# import networkx as nx
 
 from mgrid.log import LOGGER
 
@@ -34,7 +36,11 @@ INIT_TABLES = """
 
 
 class GraphSnapshots:
-    """Database for snapshots of a directed graph."""
+    """Database for snapshots of a directed graph.
+
+    Attributes:
+        cursor (Union[sqlite3.Cursor, None]): a temporary cursor.
+    """
 
     def __init__(self, path: str):
         """Initialise an object for a database for snapshots.
@@ -52,6 +58,8 @@ class GraphSnapshots:
         elif not pathlib.Path(path).exists() and path.endswith(".db"):
             self.conn = self._init_conn(path)
             self._init_tables()
+
+        self.cursor = None
 
     def _init_tables(self):
         """Initialise tables in a database for snapshots."""
@@ -133,30 +141,60 @@ class GraphSnapshots:
     #     links = self._get_links(snapshot)
     #     print(links)
 
-    def _add_edge(self, source: str, target: str, element: Optional[int] = 0):
-        """Add a new edge.
+    def add_edges(self, edges: Generator[Tuple[str, str, int], None, None]):
+        """Add multiple edges to the current snapshot in progress.
+
+        Args:
+            edges: a generator for tuples with three values indicating
+                source, target and element index.
+        """
+        if self.cursor is None:
+            LOGGER.error("A new pose must be created first.")
+        else:
+            query = """
+                INSERT INTO edges (source, target, element)
+                VALUES(?, ?, ?);
+            """
+            self.cursor.executemany(query, edges)
+
+    def add_edge(self, source: str, target: str, element: Optional[int] = 0):
+        """Add a new edge to the current snapshot in progress.
 
         Args:
             source: one terminal of the edge.
             target: the other terminal of the edge.
             element: index of the element representing the edge.
         """
-        with self.conn:
+        if self.cursor is None:
+            LOGGER.error("A new pose must be created first.")
+        else:
             query = """
                 INSERT INTO edges (source, target, element)
                 VALUES(:source, :target, :element);
             """
-            self.conn.execute(
+            self.cursor.execute(
                 query, {"source": source, "target": target, "element": element}
             )
 
-    def branch(self, name: str, links: Union[str, List[str]]):
-        """Init a new snapshot and specify its links.
+    # @property
+    # def current_graph(self) -> nx.DiGraph:
+    #     """Get the graph based on the current snapshot in progress.
+
+    #     Returns:
+    #         A ``networkx`` directed graph based on the working branch.
+    #     """
+    #     if self.cursor is None:
+    #         LOGGER.error('A new pose must be created first.')
+    #     else:
+    #         pass
+
+    def pose(self, name: str, links: Union[str, List[str]]):
+        """Specify links for a new snapshot.
 
         Note:
             - This function is the first step for a new snapshot. It is
               similar to the beginning of a transaction, but it can be
-              based on different sets of snapshot(s).
+              based on different increment(s).
             - Links can be modified later before committing.
 
         Args:
@@ -180,6 +218,12 @@ class GraphSnapshots:
                 f'A new snapshot "{name}" linked to {links} has been branched.'
             )
 
-    # def take(self, snapshot: str):
-    #     """Take the snapshot and forbid further modification."""
-    #     pass
+        self.cursor = self.conn.cursor()
+
+    def rollback(self):
+        """Drop the new snapshot and delete all the modifications."""
+        pass
+
+    def commit(self):
+        """Take the new snapshot and forbid further modification."""
+        pass
