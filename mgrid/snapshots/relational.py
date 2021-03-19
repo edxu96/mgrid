@@ -3,7 +3,7 @@ import pathlib
 import sqlite3
 from typing import Generator, List, Optional, Set, Tuple, Union
 
-# import networkx as nx
+import networkx as nx
 
 from mgrid.log import LOGGER
 
@@ -60,6 +60,7 @@ class GraphSnapshots:
             self._init_tables()
 
         self.cursor = None
+        self.pending_snapshot = None
 
     def _init_tables(self):
         """Initialise tables in a database for snapshots."""
@@ -71,7 +72,7 @@ class GraphSnapshots:
 
             self.conn.execute("INSERT INTO snapshots (name) VALUES ('head');")
             LOGGER.debug(
-                'A new snapshot "head" without any link has been branched.'
+                'A new snapshot "head" without any link has been posed.'
             )
 
     @staticmethod
@@ -138,11 +139,11 @@ class GraphSnapshots:
     #     Returns:
     #         A ``networkx`` directed graph.
     #     """
-    #     links = self._get_links(snapshot)
-    #     print(links)
+    #     increments = self._get_links(snapshot)
+    #     self.gather_events(increments)
 
     def add_edges(self, edges: Generator[Tuple[str, str, int], None, None]):
-        """Add multiple edges to the current snapshot in progress.
+        """Add multiple edges to the pending snapshot.
 
         Args:
             edges: a generator for tuples with three values indicating
@@ -158,7 +159,7 @@ class GraphSnapshots:
             self.cursor.executemany(query, edges)
 
     def add_edge(self, source: str, target: str, element: Optional[int] = 0):
-        """Add a new edge to the current snapshot in progress.
+        """Add a new edge to the pending snapshot.
 
         Args:
             source: one terminal of the edge.
@@ -176,12 +177,49 @@ class GraphSnapshots:
                 query, {"source": source, "target": target, "element": element}
             )
 
+    def sym_diff(self, increments: Set[str]) -> Set[Tuple[str, str]]:
+        """Gather events from symmetric difference of some increments.
+
+        Args:
+            increments: a set of snapshot names.
+
+        Returns:
+            A set of edges.
+        """
+        with self.conn:
+            query = f"""
+                SELECT source, target FROM events
+                WHERE snapshot IN ({','.join(['?'] * len(increments))})
+                GROUP BY source, target
+                HAVING (COUNT(*) % 2) > 0;
+            """
+            events = self.conn.execute(query, tuple(increments)).fetchall()
+        return {event for event in events}
+
+    def replace_pending_snapshot(self, graph: nx.DiGraph):
+        """Replace the entire pending snapshot by a directed graph.
+
+        A prototypical workflow is to modify the pending snapshot from
+        :meth:`GraphSnapshots.pending_snapshot` using `networkx` and
+        feed the modified version back through this function.
+
+        Args:
+            graph: a ``networkx`` directed graph.
+        """
+        pass
+
     # @property
-    # def current_graph(self) -> nx.DiGraph:
-    #     """Get the graph based on the current snapshot in progress.
+    # def pending_snapshot(self) -> nx.DiGraph:
+    #     """Get the graph based on the pending snapshot.
+
+    #     Because the increment for the pending snapshot has been inserted
+    #     (but not committed), a graph can be returned efficiently if the
+    #     pending snapshot is forgotten. The pending snapshot is the
+    #     symmetric difference between the pending increment and all the
+    #     linked increments.
 
     #     Returns:
-    #         A ``networkx`` directed graph based on the working branch.
+    #         A ``networkx`` directed graph based on the pending snapshot.
     #     """
     #     if self.cursor is None:
     #         LOGGER.error('A new pose must be created first.')
@@ -189,13 +227,15 @@ class GraphSnapshots:
     #         pass
 
     def pose(self, name: str, links: Union[str, List[str]]):
-        """Specify links for a new snapshot.
+        """Specify links for a new pending snapshot.
 
         Note:
             - This function is the first step for a new snapshot. It is
               similar to the beginning of a transaction, but it can be
               based on different increment(s).
-            - Links can be modified later before committing.
+            - Initially, the pending increment is empty.
+            - Links can be modified later before committing. Now, links
+              can only be specified via this method.
 
         Args:
             name: name of the snapshot.
